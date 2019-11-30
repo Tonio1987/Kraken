@@ -31,14 +31,12 @@ var CTRL_TradessHistory = require('./controller/CTRL_TradesHistory');
 #############################
 */
 
-API_TradesHistory.kraken_TradesHistory();
-API_TradeBalance.kraken_TradeBalance();
 /*
 CTRL_Time.LoadTime();
 CTRL_Balance.LoadBalance();
 CTRL_LoadTicker.LoadTicker();
 CTRL_TradeBalance.LoadTradeBalance();
-
+CTRL_TradessHistory.LoadTradesHistory();
 */
 
 //API_Ticker.kraken_Ticker('XXBTZEUR.d');
