@@ -19,11 +19,12 @@ var API_OpenPositions = require('./api/kraken/API_OpenPositions');
 var API_TradesHistory = require('./api/kraken/API_TradesHistory');
 
 // CONTROLLER CALL
-var CTRL_LoadTicker = require('./controller/CTRL_LoadTicker');
+var CTRL_LoadTicker = require('./controller/CTRL_Ticker');
 var CTRL_TradeBalance = require('./controller/CTRL_TradeBalance');
 var CTRL_Balance = require('./controller/CTRL_Balance');
 var CTRL_Time = require('./controller/CTRL_Time');
 var CTRL_TradessHistory = require('./controller/CTRL_TradesHistory');
+var CTRL_ClosedOrders = require('./controller/CTRL_ClosedOrders');
 
 /*
 #############################
@@ -31,12 +32,14 @@ var CTRL_TradessHistory = require('./controller/CTRL_TradesHistory');
 #############################
 */
 
+
 /*
 CTRL_Time.LoadTime();
 CTRL_Balance.LoadBalance();
 CTRL_LoadTicker.LoadTicker();
 CTRL_TradeBalance.LoadTradeBalance();
 CTRL_TradessHistory.LoadTradesHistory();
+CTRL_ClosedOrders.LoadClosedOrders();
 */
 
 //API_Ticker.kraken_Ticker('XXBTZEUR.d');

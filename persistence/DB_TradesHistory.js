@@ -12,7 +12,7 @@ module.exports = {
         var trades = data.trades;
         for (var trade in trades) {
             if (trades.hasOwnProperty(trade)) {
-                var Trade = {
+                var tr = {
                     "updateMany": {
                         "filter": { "tradeid": trade, 'postxid' : trades[trade].postxid, 'ordertxid': trades[trade].ordertxid},
                         "update": { "$set": {
@@ -38,7 +38,7 @@ module.exports = {
                         "upsert": true
                     }
                 };
-                myTradesHistory.push(Trade);
+                myTradesHistory.push(tr);
             }
         }
         MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db ) {
