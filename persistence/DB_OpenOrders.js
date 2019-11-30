@@ -4,6 +4,25 @@ var MongoClient = require('mongodb').MongoClient;
 moment.locale('fr');
 
 module.exports = {
+    dropOpenOrders: function(){
+        MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+            if (err){
+                throw err;
+            } else{
+                var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                dbo.collection("OpenOrders").drop(function(err, delOK) {
+                    if (err){
+                        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > Drop Collection Failed - No Open Orders collection detected !');
+                    } else{
+                        if(delOK){
+                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > Collection Open Orders deleted !');
+                        }
+                        db.close();
+                    }
+                });
+            }
+        });
+    },
     upsertOpenOrders: function (data) {
         var date = moment().format('L');
         var hour = moment().format('LTS');

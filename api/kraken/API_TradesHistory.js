@@ -13,7 +13,7 @@ module.exports = {
             if (err) {
                 console.error(err);
             } else{
-                persistence.upsertTradeHistory(data);
+                DB_TradesHistory.upsertTradeHistory(data);
             }
         });
     }

@@ -1,5 +1,5 @@
 var kraken = require('node-kraken-api');
-var persistence = require('../../persistence/DB_Balance');
+var DB_Balance = require('../../persistence/DB_Balance');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,
@@ -13,7 +13,7 @@ module.exports = {
             if (err) {
                 console.error(err);
             } else{
-                persistence.insertBalance(data);
+                DB_Balance.insertBalance(data);
             }
         });
     }

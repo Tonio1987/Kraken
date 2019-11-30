@@ -1,5 +1,5 @@
 var kraken = require('node-kraken-api');
-var persistence = require('../../persistence/DB_OpenOrders');
+var DB_OpenOrders = require('../../persistence/DB_OpenOrders');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,
@@ -13,7 +13,7 @@ module.exports = {
             if (err) {
                 console.error(err);
             } else{
-                persistence.upsertOpenOrders(data);
+                DB_OpenOrders.upsertOpenOrders(data);
             }
         });
     }

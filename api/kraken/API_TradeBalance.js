@@ -1,6 +1,6 @@
 require('dotenv').config();
 var kraken = require('node-kraken-api');
-var persistence = require('../../persistence/DB_TradeBalance');
+var DB_TradeBalance = require('../../persistence/DB_TradeBalance');
 
 
 const api = kraken({
@@ -15,7 +15,7 @@ module.exports = {
             if (err) {
                 console.error(err);
             } else{
-                persistence.insertTradeBalance(data);
+                DB_TradeBalance.insertTradeBalance(data);
             }
         });
     }

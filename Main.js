@@ -32,7 +32,7 @@ var CTRL_OpenOrders = require('./controller/CTRL_OpenOrders');
          TEST ZONE
 #############################
 */
-
+CTRL_OpenOrders.LoadOpenOrders();
 /*
 CTRL_Time.LoadTime();
 CTRL_Balance.LoadBalance();
