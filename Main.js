@@ -80,8 +80,14 @@ var sch5 = schedule.scheduleJob('* */1 * * *', function(){
 //    CTRL_TradessHistory.LoadTradesHistory();
 });
 
+// CALL UPDATE CLOSED ORDERS FROM KRAKEN API - EVERY 1 HOUR
+var sch6 = schedule.scheduleJob('* */1 * * *', function(){
+    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trades Historyr');
+//    CTRL_ClosedOrders.LoadClosedOrders();
+});
+
 // CALL UPDATE TICKER FROM KRAKEN API - EVERY 2 MINUTES
-var sch6 = schedule.scheduleJob('*/2 * * * *', function(){
+var sch7 = schedule.scheduleJob('*/2 * * * *', function(){
     console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
 //    CTRL_LoadTicker.LoadTicker();
 });
