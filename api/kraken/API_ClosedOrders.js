@@ -1,7 +1,6 @@
 var kraken = require('node-kraken-api');
 var moment = require('moment');
 
-moment.locale('fr');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,

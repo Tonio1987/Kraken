@@ -1,8 +1,5 @@
 var kraken = require('node-kraken-api');
-var moment = require('moment');
 var persistence = require('../../persistence/DB_TradesHistory');
-
-moment.locale('fr');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,
