@@ -11,7 +11,7 @@ const api = kraken({
 
 module.exports = {
     kraken_TradeBalance: function() {
-        api.call('TradeBalance', (err, data) => {
+        api.call('TradeBalance', {asset : 'ZEUR'}, (err, data) => {
             if (err) {
                 console.error(err);
             } else{

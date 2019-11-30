@@ -12,9 +12,9 @@ module.exports = {
             } else{
                 var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                 var myobj = {
-                    date: moment().format('L'),
-                    time: moment().format('LTS'),
-                    timestamp: timestamp,
+                    insert_date: moment().format('L'),
+                    insert_hour: moment().format('LTS'),
+                    insert_timestamp: timestamp,
                     pair: pair,
                     ask_price: data[pair].a[0],
                     bid_price: data[pair].b[0],

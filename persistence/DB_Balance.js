@@ -6,7 +6,7 @@ moment.locale('fr');
 module.exports = {
     insertBalance: function (data) {
         var date = moment().format('L');
-        var time = moment().format('LTS');
+        var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
         // Cette limite permet d'éviter d'indiquer dans le portefeuille les fractions de parts de cryptos non détenues
         var limite = 0.0001;
@@ -17,9 +17,9 @@ module.exports = {
                     var currency = i;
                     var units = data[i];
                     var elementOfMyBalance = {
-                        date: date,
-                        time: time,
-                        timestamp: timestamp,
+                        insert_date: date,
+                        insert_hour: hour,
+                        insert_timestamp: timestamp,
                         currency: currency,
                         units: units
                     };

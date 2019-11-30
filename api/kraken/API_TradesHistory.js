@@ -1,5 +1,6 @@
 var kraken = require('node-kraken-api');
 var moment = require('moment');
+var persistence = require('../../persistence/DB_TradesHistory');
 
 moment.locale('fr');
 
@@ -15,7 +16,7 @@ module.exports = {
             if (err) {
                 console.error(err);
             } else{
-                console.log(data);
+                persistence.upsertTradeHistory(data);
             }
         });
     }

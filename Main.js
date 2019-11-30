@@ -16,12 +16,14 @@ var API_TradeBalance = require('./api/kraken/API_TradeBalance');
 var API_ClosedOrders = require('./api/kraken/API_ClosedOrders');
 var API_OpenOrders = require('./api/kraken/API_OpenOrders');
 var API_OpenPositions = require('./api/kraken/API_OpenPositions');
+var API_TradesHistory = require('./api/kraken/API_TradesHistory');
 
 // CONTROLLER CALL
 var CTRL_LoadTicker = require('./controller/CTRL_LoadTicker');
 var CTRL_TradeBalance = require('./controller/CTRL_TradeBalance');
 var CTRL_Balance = require('./controller/CTRL_Balance');
 var CTRL_Time = require('./controller/CTRL_Time');
+var CTRL_TradessHistory = require('./controller/CTRL_TradesHistory');
 
 /*
 #############################
@@ -29,7 +31,8 @@ var CTRL_Time = require('./controller/CTRL_Time');
 #############################
 */
 
-API_OpenOrders.kraken_OpenOrders();
+API_TradesHistory.kraken_TradesHistory();
+API_TradeBalance.kraken_TradeBalance();
 /*
 CTRL_Time.LoadTime();
 CTRL_Balance.LoadBalance();
@@ -66,12 +69,18 @@ var sch3 = schedule.scheduleJob('*/5 * * * *', function(){
 
 // CALL UPDATE BALANCE FROM KRAKEN API - EVERY 1 HOUR
 var sch4 = schedule.scheduleJob('* */1 * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
+    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Balance');
 //    CTRL_Balance.LoadBalance();
 });
 
+// CALL UPDATE TRADES HISTORY FROM KRAKEN API - EVERY 1 HOUR
+var sch5 = schedule.scheduleJob('* */1 * * *', function(){
+    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trades Historyr');
+//    CTRL_TradessHistory.LoadTradesHistory();
+});
+
 // CALL UPDATE TICKER FROM KRAKEN API - EVERY 2 MINUTES
-var sch5 = schedule.scheduleJob('*/2 * * * *', function(){
+var sch6 = schedule.scheduleJob('*/2 * * * *', function(){
     console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
 //    CTRL_LoadTicker.LoadTicker();
 });
