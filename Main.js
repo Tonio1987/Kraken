@@ -25,6 +25,7 @@ var CTRL_Balance = require('./controller/CTRL_Balance');
 var CTRL_Time = require('./controller/CTRL_Time');
 var CTRL_TradessHistory = require('./controller/CTRL_TradesHistory');
 var CTRL_ClosedOrders = require('./controller/CTRL_ClosedOrders');
+var CTRL_OpenOrders = require('./controller/CTRL_OpenOrders');
 
 /*
 #############################
@@ -32,14 +33,14 @@ var CTRL_ClosedOrders = require('./controller/CTRL_ClosedOrders');
 #############################
 */
 
-
 /*
 CTRL_Time.LoadTime();
 CTRL_Balance.LoadBalance();
 CTRL_LoadTicker.LoadTicker();
 CTRL_TradeBalance.LoadTradeBalance();
-CTRL_TradessHistory.LoadTradesHistory();
+CTRL_OpenOrders.LoadOpenOrders();
 CTRL_ClosedOrders.LoadClosedOrders();
+CTRL_TradessHistory.LoadTradesHistory();
 */
 
 //API_Ticker.kraken_Ticker('XXBTZEUR.d');
@@ -76,18 +77,24 @@ var sch4 = schedule.scheduleJob('* */1 * * *', function(){
 
 // CALL UPDATE TRADES HISTORY FROM KRAKEN API - EVERY 1 HOUR
 var sch5 = schedule.scheduleJob('* */1 * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trades Historyr');
+    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trades History');
 //    CTRL_TradessHistory.LoadTradesHistory();
 });
 
 // CALL UPDATE CLOSED ORDERS FROM KRAKEN API - EVERY 1 HOUR
 var sch6 = schedule.scheduleJob('* */1 * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trades Historyr');
+    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Closed Orders');
 //    CTRL_ClosedOrders.LoadClosedOrders();
 });
 
+// CALL UPDATE OPEN ORDERS FROM KRAKEN API - EVERY 1 MINUTES
+var sch7 = schedule.scheduleJob('*/1 * * * *', function(){
+    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Open Orders');
+//    CTRL_OpenOrders.LoadOpenOrders();
+});
+
 // CALL UPDATE TICKER FROM KRAKEN API - EVERY 2 MINUTES
-var sch7 = schedule.scheduleJob('*/2 * * * *', function(){
+var sch8 = schedule.scheduleJob('*/2 * * * *', function(){
     console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
 //    CTRL_LoadTicker.LoadTicker();
 });

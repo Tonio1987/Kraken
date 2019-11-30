@@ -41,21 +41,26 @@ module.exports = {
                 myTradesHistory.push(tr);
             }
         }
-        MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db ) {
-            if (err){
-                throw err;
-            } else{
-                var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                dbo.collection("TradesHistory").bulkWrite(myTradesHistory, function(err, res) {
-                    if (err){
-                        throw err;
-                    } else{
-                        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Trades History isnerted');
-                        db.close();
-                    }
-                });
-            }
-        });
+        if(myTradesHistory.length > 0){
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db ) {
+                if (err){
+                    throw err;
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("TradesHistory").bulkWrite(myTradesHistory, function(err, res) {
+                        if (err){
+                            throw err;
+                        } else{
+                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Trades History isnerted');
+                            db.close();
+                        }
+                    });
+                }
+            });
+        }else{
+            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > No Trades History detected !');
+        }
+
     }
 };
 

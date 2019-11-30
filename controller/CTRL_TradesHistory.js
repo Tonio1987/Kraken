@@ -1,7 +1,7 @@
-var API_ClosedOrders = require('../api/kraken/API_ClosedOrders');
+var API_TradesHistory = require('../api/kraken/API_TradesHistory');
 
 module.exports = {
-    LoadClosedOrders: function() {
-        API_ClosedOrders.kraken_ClosedOrders();
+    LoadTradesHistory: function() {
+        API_TradesHistory.kraken_TradesHistory();
     }
 };

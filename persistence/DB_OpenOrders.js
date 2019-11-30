@@ -4,13 +4,12 @@ var MongoClient = require('mongodb').MongoClient;
 moment.locale('fr');
 
 module.exports = {
-    upsertClosedOrders: function (data) {
+    upsertOpenOrders: function (data) {
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
-
-        var myClosedOrders = [];
-        var orders = data.closed;
+        var myOpenOrders = [];
+        var orders = data.open;
         for (var order in orders) {
             if (orders.hasOwnProperty(order)) {
                 var ord = {
@@ -52,29 +51,28 @@ module.exports = {
                         "upsert": true
                     }
                 };
-                myClosedOrders.push(ord);
+                myOpenOrders.push(ord);
             }
         }
-        if(myClosedOrders.length > 0){
+        if(myOpenOrders.length > 0){
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db ) {
                 if (err){
                     throw err;
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("ClosedOrders").bulkWrite(myClosedOrders, function(err, res) {
+                    dbo.collection("OpenOrders").bulkWrite(myOpenOrders, function(err, res) {
                         if (err){
                             throw err;
                         } else{
-                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Closed Orders isnerted');
+                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Open Orders isnerted');
                             db.close();
                         }
                     });
                 }
             });
         }else{
-            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > No Closed Orders detected !');
+            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > No Open Orders detected !');
         }
-
     }
 };
 
