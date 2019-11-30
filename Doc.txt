@@ -1,0 +1,75 @@
+/*
+
+const key          = '2C7PPpaaHBK1NVCOLJgS4MRzwG+mcojP6InkYQpT3q+6WcFcOY3kvL6r'; // API Key
+const secret       = '2NuuzzjfcDrwkmj9RSDOEnGBNigXZvbAGh5aszJp4P4+gY2Fmr8gyldRefa24CPYV90XR0ibV9kD0JIWEumT/g=='; // API Private Key
+const KrakenClient = require('kraken-api');
+const kraken       = new KrakenClient(key, secret);
+
+(async () => {
+
+    // Display user's balance
+    console.log(await kraken.api('Time'));
+
+    // AssetPairs
+    console.log(await kraken.api('AssetPairs', { pair : 'XXRPZEUR' }));
+
+    // Get Ticker Info
+    console.log(await kraken.api('Ticker', { pair : 'XXRPZEUR' }));
+
+    // OHLC
+    console.log(await kraken.api('OHLC', { pair : 'XXRPZEUR' }));
+
+    // Depth
+    console.log(await kraken.api('Depth', { pair : 'XXRPZEUR', count : 1 }));
+
+    // private/Balance
+    console.log(await kraken.api('Balance'));
+
+    // TradeBalance
+    console.log(await kraken.api('TradeBalance'));
+
+})();
+
+*/
+
+
+
+var sch1 = schedule.scheduleJob('*/15 * * * * *', function(){
+    time().then(function(data){});
+
+    time(function(err, data){
+        if(err){
+            throw err;
+        }
+        console.log(moment().subtract(10, 'days').calendar() +' - '+ moment().format('LTS') + ' - ### - > Kraken server OK ');
+        console.log(moment().subtract(10, 'days').calendar() +' - '+ moment().format('LTS') + ' - ### - > Time : '+data.result.rfc1123);
+    });
+});
+*/
+
+
+var launchTime = require('./controller/launchTime');
+
+var schedule = require('node-schedule');
+
+
+var data = launchTime.returnData();
+console.log(data);
+
+
+
+//  var sch1 = schedule.scheduleJob('*/15 * * * * *', function(){
+
+// });
+
+
+
+    getCredentials: async function getAThing() {
+        let db = await MongoClient.connect(url, {useUnifiedTopology: true});
+        let dbo = await db.db("kraken");
+        let credentials = await dbo.collection("Credentials").findOne({});
+        await db.close();
+        console.log(credentials);
+        return credentials;
+
+    },
