@@ -1,27 +1,44 @@
-var API_OpenOrders = require('../api/kraken/API_OpenOrders');
-var DB_OpenOrders = require('../persistence/DB_OpenOrders');
-var async = require('async');
+const API_OpenOrders = require('../api/kraken/API_OpenOrders');
+const DB_OpenOrders = require('../persistence/DB_OpenOrders');
+const async = require('async');
+const moment = require('moment');
 
 module.exports = {
     LoadOpenOrders: function() {
-        /*
-        async.series([
-            function(callback){
-                DB_OpenOrders.dropOpenOrders(function (err) {
-                    if(err){
-                        console.log(err);
-                    }
-                    callback(null, 1);
-                });
-            },
-            function(callback){
-                API_OpenOrders.kraken_OpenOrders(function () {
-                    callback(null, 2);
-                });
+        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Open Orders STARTED');
+
+        async.waterfall([
+            STEP_DB_dropOpenOrders,
+            STEP_API_getOpenOrders,
+            STEP_DB_insertOpenOrders,
+            STEP_finish
+        ], function (err, result) {
+            // Nothing to do here
+        });
+
+        function STEP_DB_dropOpenOrders() {
+            DB_OpenOrders.dropOpenOrders(STEP_API_getOpenOrders);
+        }
+        function STEP_API_getOpenOrders(res) {
+            if(res){
+                API_OpenOrders.kraken_OpenOrders(STEP_DB_insertOpenOrders);
+            }else{
+                STEP_finish(res);
             }
-        ]);
-        */
-        DB_OpenOrders.dropOpenOrders();
-        API_OpenOrders.kraken_OpenOrders();
+        }
+        function STEP_DB_insertOpenOrders(err, data) {
+            if(!err){
+                DB_OpenOrders.upsertOpenOrders(data, STEP_finish);
+            }else{
+                STEP_finish(err);
+            }
+        }
+        function STEP_finish(res) {
+            if(res){
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Open Orders SUCCESS');
+            }else{
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Open Orders FAILED');
+            }
+        }
     }
 };

@@ -1,7 +1,4 @@
-require('dotenv').config();
-var kraken = require('node-kraken-api');
-var DB_TradeBalance = require('../../persistence/DB_TradeBalance');
-
+const kraken = require('node-kraken-api');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,
@@ -10,13 +7,19 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_TradeBalance: function() {
-        api.call('TradeBalance', {asset : 'ZEUR'}, (err, data) => {
-            if (err) {
-                console.error(err);
-            } else{
-                DB_TradeBalance.insertTradeBalance(data);
-            }
+    kraken_TradeBalance: function(callback) {
+        return new Promise(function (resolve, reject) {
+            api.call('TradeBalance', {asset : 'ZEUR'}, (err, data) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                }
+                resolve(data);
+            });
+        }).then(function(data){
+            callback(null, data);
+        }).catch(function(err) {
+            callback(err, null);
         });
     }
 };

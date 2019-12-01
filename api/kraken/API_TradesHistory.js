@@ -1,5 +1,4 @@
-var kraken = require('node-kraken-api');
-var persistence = require('../../persistence/DB_TradesHistory');
+const kraken = require('node-kraken-api');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,
@@ -8,13 +7,19 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_TradesHistory: function() {
-        api.call('TradesHistory', (err, data) => {
-            if (err) {
-                console.error(err);
-            } else{
-                DB_TradesHistory.upsertTradeHistory(data);
-            }
+    kraken_TradesHistory: function(callback) {
+        return new Promise(function (resolve, reject) {
+            api.call('TradesHistory', (err, data) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                }
+                resolve(data);
+            });
+        }).then(function(data){
+            callback(null, data);
+        }).catch(function(err) {
+            callback(err, null);
         });
     }
 };

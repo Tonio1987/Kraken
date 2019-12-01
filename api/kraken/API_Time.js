@@ -1,5 +1,5 @@
-var kraken = require('node-kraken-api');
-var moment = require('moment');
+const kraken = require('node-kraken-api');
+const moment = require('moment');
 
 moment.locale('fr');
 
@@ -10,14 +10,21 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_Time: function() {
-        api.call('Time', (err, data) => {
-            if (err) {
-                console.error(err);
-            } else{
-                console.log(moment().format('L') +' - '+ moment().format('LTS') + ' - ### - > Kraken server Up !');
-                console.log(moment().format('L') +' - '+ moment().format('LTS') + ' - ### - > Time server : '+data.rfc1123);
-            }
+    kraken_Time: function(callback) {
+        return new Promise(function (resolve, reject) {
+            api.call('Time', (err, data) => {
+                if (err) {
+                    console.error(err);
+                    reject(true);
+                }
+                console.log(moment().format('L') +' - '+ moment().format('LTS') + ' - ### API ### - > Kraken server Up !');
+                console.log(moment().format('L') +' - '+ moment().format('LTS') + ' - ### API ### - > Time server : '+data.rfc1123);
+                resolve(data);
+            });
+        }).then(function(res){
+            callback(res);
+        }).catch(function(err) {
+            callback(err);
         });
     }
 };

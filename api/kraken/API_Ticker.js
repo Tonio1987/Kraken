@@ -1,6 +1,4 @@
-var kraken = require('node-kraken-api');
-var DB_Ticker = require('../../persistence/DB_Ticker');
-
+const kraken = require('node-kraken-api');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,
@@ -9,14 +7,20 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_Ticker: function(pair) {
-        api.call('Ticker', { pair: pair, count: 1 },
-            (err, data) => {
+    kraken_Ticker: function(pair, callback) {
+        return new Promise(function (resolve, reject) {
+            api.call('Ticker', { pair: pair, count: 1 }, (err, data) => {
                 if (err) {
                     console.error(err);
-                } else{
-                   DB_Ticker.insertTicker(data, pair);
+                    reject(err);
                 }
+                resolve(data);
             });
+        }).then(function(data){
+            callback(null, data, pair);
+        }).catch(function(err) {
+            callback(err, null, null);
+        });
+
     }
 };
