@@ -68,9 +68,9 @@ module.exports = {
                 console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > No Trades History detected !');
             }
         }).then(function(res){
-            callback(res);
+            callback(null, res);
         }).catch(function(err) {
-            callback(err);
+            callback(err, null);
         });
     }
 };

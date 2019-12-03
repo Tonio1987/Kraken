@@ -44,9 +44,9 @@ module.exports = {
                 }
             });
         }).then(function(res){
-            callback(res);
+            callback(null, res);
         }).catch(function(err) {
-            callback(err);
+            callback(err, null);
         });
 
     }

@@ -26,6 +26,7 @@ const CTRL_Time = require('./controller/CTRL_Time');
 const CTRL_TradessHistory = require('./controller/CTRL_TradesHistory');
 const CTRL_ClosedOrders = require('./controller/CTRL_ClosedOrders');
 const CTRL_OpenOrders = require('./controller/CTRL_OpenOrders');
+const CTRL_AddOrder = require('./controller/CTRL_AddOrder');
 
 console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### PROGRAM STARTED ###');
 
@@ -34,7 +35,7 @@ console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### PROGR
          TEST ZONE
 #############################
 */
-
+CTRL_AddOrder.addOrder();
 /*
 CTRL_Time.LoadTime();
 CTRL_Balance.LoadBalance();
@@ -52,50 +53,4 @@ CTRL_TradessHistory.LoadTradesHistory();
 #############################
 */
 
-// NODE SERVER IS ALIVE - EVERY 15 SECONDS
-let sch1 = schedule.scheduleJob('*/15 * * * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### NODE SERVER IS ALIVE ###');
-});
-
-// KRAKEN SERVER IS ALIVE - EVERY 1 MINUTE
-let sch2 = schedule.scheduleJob('*/1 * * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Check Kraken Server Time');
-//    CTRL_Time.LoadTime();
-});
-
-// CALL UPDATE TRADE BALANCE FROM KRAKEN API  - EVERY 5 MINUTES
-let sch3 = schedule.scheduleJob('*/5 * * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trade Balance');
-//    CTRL_TradeBalance.LoadTradeBalance();
-});
-
-// CALL UPDATE BALANCE FROM KRAKEN API - EVERY 1 HOUR
-let sch4 = schedule.scheduleJob('* */1 * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Balance');
-//    CTRL_Balance.LoadBalance();
-});
-
-// CALL UPDATE TRADES HISTORY FROM KRAKEN API - EVERY 1 HOUR
-let sch5 = schedule.scheduleJob('* */1 * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trades History');
-//    CTRL_TradessHistory.LoadTradesHistory();
-});
-
-// CALL UPDATE CLOSED ORDERS FROM KRAKEN API - EVERY 1 HOUR
-let sch6 = schedule.scheduleJob('* */1 * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Closed Orders');
-//    CTRL_ClosedOrders.LoadClosedOrders();
-});
-
-// CALL UPDATE OPEN ORDERS FROM KRAKEN API - EVERY 1 MINUTES
-let sch7 = schedule.scheduleJob('*/1 * * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Open Orders');
-//    CTRL_OpenOrders.LoadOpenOrders();
-});
-
-// CALL UPDATE TICKER FROM KRAKEN API - EVERY 2 MINUTES
-let sch8 = schedule.scheduleJob('*/2 * * * *', function(){
-    console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
-//    CTRL_LoadTicker.LoadTicker();
-});
 

@@ -15,8 +15,8 @@ module.exports = {
         function STEP_API_getTime() {
             API_Time.kraken_Time(STEP_finish);
         }
-        function STEP_finish(res) {
-            if(res){
+        function STEP_finish(err, data) {
+            if(!err){
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Time SUCCESS');
             }else{
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Time FAILED');

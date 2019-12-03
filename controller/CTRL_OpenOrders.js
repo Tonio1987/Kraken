@@ -33,8 +33,8 @@ module.exports = {
                 STEP_finish(err);
             }
         }
-        function STEP_finish(res) {
-            if(res){
+        function STEP_finish(err, data) {
+            if(!err){
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Open Orders SUCCESS');
             }else{
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Open Orders FAILED');
