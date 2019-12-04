@@ -34,7 +34,7 @@ module.exports = {
 
         function STEP_ALGO_calculateNN(err, data) {
             if(!err) {
-                ALGO_MM.calculateMM(data,STEP_DB_insertMM);
+                ALGO_MM.calculateMM(data, STEP_DB_insertMM);
             }else{
                 STEP_finish(err);
             }
