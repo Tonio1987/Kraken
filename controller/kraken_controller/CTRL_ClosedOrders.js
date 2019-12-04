@@ -1,7 +1,7 @@
-const API_ClosedOrders = require('../api/kraken/API_ClosedOrders');
-const DB_ClosedOrders = require('../persistence/DB_ClosedOrders');
+const API_ClosedOrders = require('../../api/kraken/API_ClosedOrders');
+const DB_ClosedOrders = require('../../persistence/DB_ClosedOrders');
 const async = require('async');
-const moment = require('moment');
+const moment = require('moment/moment');
 
 module.exports = {
     LoadClosedOrders: function() {

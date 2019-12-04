@@ -1,7 +1,7 @@
-const API_TradesHistory = require('../api/kraken/API_TradesHistory');
-const DB_TradeHistory = require('../persistence/DB_TradesHistory');
+const API_TradesHistory = require('../../api/kraken/API_TradesHistory');
+const DB_TradeHistory = require('../../persistence/DB_TradesHistory');
 const async = require('async');
-const moment = require('moment');
+const moment = require('moment/moment');
 
 module.exports = {
     LoadTradesHistory: function() {

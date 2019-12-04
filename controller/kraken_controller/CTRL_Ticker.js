@@ -1,8 +1,8 @@
-const DB_Pairs = require('../persistence/DB_Pairs');
-const DB_Ticker = require('../persistence/DB_Ticker');
-const API_Ticker = require('../api/kraken/API_Ticker');
+const DB_Pairs = require('../../persistence/DB_Pairs');
+const DB_Ticker = require('../../persistence/DB_Ticker');
+const API_Ticker = require('../../api/kraken/API_Ticker');
 const async = require('async');
-const moment = require('moment');
+const moment = require('moment/moment');
 
 
 module.exports = {

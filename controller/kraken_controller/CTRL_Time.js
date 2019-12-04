@@ -1,6 +1,6 @@
-const API_Time = require('../api/kraken/API_Time');
+const API_Time = require('../../api/kraken/API_Time');
 const async = require('async');
-const moment = require('moment');
+const moment = require('moment/moment');
 
 module.exports = {
     LoadTime: function() {

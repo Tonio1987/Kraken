@@ -19,15 +19,15 @@ const API_OpenPositions = require('./api/kraken/API_OpenPositions');
 const API_TradesHistory = require('./api/kraken/API_TradesHistory');
 
 // CONTROLLER CALL
-const CTRL_LoadTicker = require('./controller/CTRL_Ticker');
-const CTRL_TradeBalance = require('./controller/CTRL_TradeBalance');
-const CTRL_Balance = require('./controller/CTRL_Balance');
-const CTRL_Time = require('./controller/CTRL_Time');
-const CTRL_TradessHistory = require('./controller/CTRL_TradesHistory');
-const CTRL_ClosedOrders = require('./controller/CTRL_ClosedOrders');
-const CTRL_OpenOrders = require('./controller/CTRL_OpenOrders');
-const CTRL_AddOrder = require('./controller/CTRL_AddOrder');
-
+const CTRL_LoadTicker = require('./controller/kraken_controller/CTRL_Ticker');
+const CTRL_TradeBalance = require('./controller/kraken_controller/CTRL_TradeBalance');
+const CTRL_Balance = require('./controller/kraken_controller/CTRL_Balance');
+const CTRL_Time = require('./controller/kraken_controller/CTRL_Time');
+const CTRL_TradessHistory = require('./controller/kraken_controller/CTRL_TradesHistory');
+const CTRL_ClosedOrders = require('./controller/kraken_controller/CTRL_ClosedOrders');
+const CTRL_OpenOrders = require('./controller/kraken_controller/CTRL_OpenOrders');
+const CTRL_AddOrder = require('./controller/kraken_controller/CTRL_AddOrder');
+const CTRL_MMCalculation = require('./controller/algotirhm_controller/CTRL_MMCalculation');
 console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### PROGRAM STARTED ###');
 
 /*
@@ -35,7 +35,7 @@ console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### PROGR
          TEST ZONE
 #############################
 */
-//CTRL_AddOrder.addOrder();
+CTRL_MMCalculation.CalculateMM();
 /*
 CTRL_Time.LoadTime();
 CTRL_Balance.LoadBalance();
@@ -44,6 +44,7 @@ CTRL_TradeBalance.LoadTradeBalance();
 CTRL_OpenOrders.LoadOpenOrders();
 CTRL_ClosedOrders.LoadClosedOrders();
 CTRL_TradessHistory.LoadTradesHistory();
+CTRL_AddOrder.addOrder();
 */
 
 
@@ -99,6 +100,6 @@ let sch7 = schedule.scheduleJob('*/1 * * * *', function(){
 // CALL UPDATE TICKER FROM KRAKEN API - EVERY 1 MINUTES
 let sch8 = schedule.scheduleJob('*/1 * * * *', function(){
     console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
-    CTRL_LoadTicker.LoadTicker();
+//   CTRL_LoadTicker.LoadTicker();
 });
 

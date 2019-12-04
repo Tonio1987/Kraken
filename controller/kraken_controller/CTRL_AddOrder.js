@@ -1,9 +1,9 @@
-const API_AddOrder = require('../api/kraken/API_AddOrder');
-const CTRL_OpenOrders = require('../controller/CTRL_OpenOrders');
-const API_OpenOrders = require('../api/kraken/API_OpenOrders');
-const DB_OpenOrders = require('../persistence/DB_OpenOrders');
+const API_AddOrder = require('../../api/kraken/API_AddOrder');
+const CTRL_OpenOrders = require('./CTRL_OpenOrders');
+const API_OpenOrders = require('../../api/kraken/API_OpenOrders');
+const DB_OpenOrders = require('../../persistence/DB_OpenOrders');
 const async = require('async');
-const moment = require('moment');
+const moment = require('moment/moment');
 
 
 module.exports = {
