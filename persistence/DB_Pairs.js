@@ -15,7 +15,6 @@ module.exports = {
                         if (err){
                             reject(err);
                         }
-                        console.log("on a les paird");
                         db.close();
                         resolve(result);
                     });
