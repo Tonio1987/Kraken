@@ -1,6 +1,7 @@
 const DB_Pairs = require('../../persistence/DB_Pairs');
 const DB_Ticker = require('../../persistence/DB_Ticker');
 const API_Ticker = require('../../api/kraken/API_Ticker');
+const CTRL_MMCalculation = require('../algotirhm_controller/CTRL_MMCalculation');
 const async = require('async');
 const moment = require('moment/moment');
 

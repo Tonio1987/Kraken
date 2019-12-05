@@ -2,6 +2,7 @@ const async = require('async');
 const moment = require('moment');
 const DB_Pairs = require('../../persistence/DB_Pairs');
 const DB_Ticker = require('../../persistence/DB_Ticker');
+const DB_MM = require('../../persistence/DB_MobileM');
 const ALGO_MM = require('../../algorithm/MM_algorithm');
 
 module.exports = {
@@ -39,9 +40,10 @@ module.exports = {
                 STEP_finish(err);
             }
         }
+
         function STEP_DB_insertMM(err, data) {
             if(!err) {
-                console.log(data);
+                DB_MM.insertMM(data, STEP_finish);
             }else{
                 STEP_finish(null, data);
             }
@@ -49,7 +51,7 @@ module.exports = {
 
         function STEP_finish(err, data) {
             if (!err) {
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MM SUCCESS');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MM  SUCCESS');
             } else {
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MM FAILED');
             }
