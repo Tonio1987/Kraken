@@ -62,17 +62,15 @@ module.exports = {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
-                    console.error(err);
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                     dbo.collection("OpenOrders").drop(function(err, delOK) {
                         if (err){
-                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > Drop Collection Failed - No Open Orders collection detected !');
                             reject(err);
                         } else{
                             if(delOK){
-                                console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > Collection Open Orders deleted !');
+
                             }
                             db.close();
                             resolve(true);
@@ -92,16 +90,14 @@ module.exports = {
             if(myOpenOrders.length > 0){
                 MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db ) {
                     if (err){
-                        console.error(err);
                         reject(err);
                     } else{
                         var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                         dbo.collection("OpenOrders").bulkWrite(myOpenOrders, function(err, res) {
                             if (err){
-                                console.error(err);
                                 reject(err);
                             } else{
-                                console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Open Orders isnerted');
+
                                 db.close();
                                 resolve(true);
                             }
@@ -109,7 +105,7 @@ module.exports = {
                     }
                 });
             }else{
-                console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > No Open Orders detected !');
+                resolve(true);
             }
         }).then(function(res){
             callback(null, res);

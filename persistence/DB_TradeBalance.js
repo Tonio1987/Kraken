@@ -22,7 +22,6 @@ module.exports = {
                          if (err){
                              reject(err);
                          } else{
-                             console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Trade Balance isnerted');
                              db.close();
                              resolve(true);
                          }

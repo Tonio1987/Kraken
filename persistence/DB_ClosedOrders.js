@@ -70,10 +70,8 @@ module.exports = {
                         var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                         dbo.collection("ClosedOrders").bulkWrite(myClosedOrders, function(err, res) {
                             if (err){
-                                console.error(err);
                                 reject(err);
                             } else{
-                                console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Closed Orders isnerted');
                                 db.close();
                                 resolve(true);
                             }
@@ -81,7 +79,6 @@ module.exports = {
                     }
                 });
             }else{
-                console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > No Closed Orders detected !');
                 resolve(true);
             }
         }).then(function(res){

@@ -36,7 +36,6 @@ module.exports = {
                         if (err){
                             reject(err);
                         } else{
-                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > Ticker for '+pair+' isnerted');
                             db.close();
                             resolve(true);
                         }

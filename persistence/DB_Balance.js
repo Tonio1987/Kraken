@@ -35,16 +35,13 @@ module.exports = {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
                 if (err) {
-                    console.error(err);
                     reject(err);
                 } else {
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                     dbo.collection("Balance").insertMany(myBalance, function (err, res) {
                         if (err) {
-                            console.error(err);
                             reject(err);
                         } else {
-                            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### DATABASE ### - > New Balance currency isnerted');
                             db.close();
                             resolve(true);
                         }

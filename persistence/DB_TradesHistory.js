@@ -57,7 +57,6 @@ module.exports = {
                             if (err){
                                 reject(err);
                             } else{
-                                console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > New Trades History isnerted');
                                 db.close();
                                 resolve(true);
                             }
@@ -65,7 +64,7 @@ module.exports = {
                     }
                 });
             }else{
-                console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### DATABASE ### - > No Trades History detected !');
+                resolve(true);
             }
         }).then(function(res){
             callback(null, res);

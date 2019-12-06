@@ -39,9 +39,8 @@ module.exports = {
             }
         }
         function STEP_finish(err, data) {
-            if(!err){
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Ticker SUCCESS');
-            }else{
+            if(err){
+                console.log(err);
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Ticker FAILED');
             }
         }
