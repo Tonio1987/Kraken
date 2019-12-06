@@ -5,12 +5,12 @@ require('dotenv').config();
 const moment = require('moment');
 
 // SCHEDULER CALL
-const scheduler = require('./cron/scheduler');
 
 console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### PROGRAM STARTED ###');
 
 // START SCHEDULERS
-scheduler.startSchedule();
+const CTRL = require('./controller/cron_controller/CTRL_CronScheduler');
+CTRL.Init_CronScheduler();
 
 /*
 #############################
