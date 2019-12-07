@@ -166,18 +166,24 @@ module.exports = {
         }
         callback(null, tasks);
     },
-    startSchedule: function () {
-        /*
-        task_ServerOk.start();
-        task_KrakenServerOnline.start();
-        task_LoadTicker.start();
-        task_MMCalculation.start();
-        task_LoadTradeBalance.start();
-        task_LoadBalance.start();
-        task_LoadTradeHistory.start();
-        task_LoadClosedOrders.start();
-        task_LoadOpenOrders.start();
-        */
+    reloadTasksScheduler: function (tasks, callback) {
+        for(let i in tasks) {
+            if (tasks.hasOwnProperty(i)) {
+                let cron_expression = tasks[i].cron_expression;
+                let active = tasks[i].active;
+
+                if(active === 'true'){
+                    fctName = 'start_'+tasks[i].name.toString().trim();
+                    Handler[fctName](cron_expression);
+                }
+
+                if(active === 'false'){
+                    fctName = 'stop_'+tasks[i].name.toString().trim();
+                    Handler[fctName]();
+                }
+            }
+        }
+        callback(null, tasks);
     }
 };
 
