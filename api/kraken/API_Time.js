@@ -17,8 +17,7 @@ module.exports = {
                     console.error(err);
                     reject(true);
                 }
-                console.log(moment().format('L') +' - '+ moment().format('LTS') + ' - ### API ### - > Kraken server Up !');
-                console.log(moment().format('L') +' - '+ moment().format('LTS') + ' - ### API ### - > Time server : '+data.rfc1123);
+                console.log(moment().format('L') +' - '+ moment().format('LTS') + ' - ### API ### - > Kraken server Up ! - Time server : '+data.rfc1123);
                 resolve(data);
             });
         }).then(function(res){

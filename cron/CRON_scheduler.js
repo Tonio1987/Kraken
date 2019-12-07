@@ -22,132 +22,149 @@ let task_LoadTradeHistory = null;
 let task_LoadClosedOrders = null;
 let task_LoadOpenOrders = null;
 
+// HANDLER DYNAMIC FUNCTION
+let Handler={};
+
 // NODE SERVER IS ALIVE - EVERY 15 SECONDS
-function init_task_ServerOk(cron_expression){
+Handler.init_task_ServerOk = function (cron_expression){
     task_ServerOk = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### NODE SERVER IS ALIVE ###');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### -> Node server ok');
     }, {
         scheduled: false
     });
-}
+};
 
 // KRAKEN SERVER IS ALIVE - EVERY 30 SECONDS
-function init_task_KrakenServerOnline(cron_expression){
+Handler.init_task_KrakenServerOnline = function (cron_expression){
     task_KrakenServerOnline = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Check Kraken Server Time');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Check Kraken Server Time');
         CTRL_Time.LoadTime();
     }, {
         scheduled: false
     });
-}
+};
 
 // LOAD TICKER - EVERY 1 MINUTES
-function init_task_LoadTicker(cron_expression){
+Handler.init_task_LoadTicker = function(cron_expression){
     task_LoadTicker = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load new Ticker');
         CTRL_LoadTicker.LoadTicker();
     }, {
         scheduled: false
     });
-}
+};
 
 // CALCULATE MOVING AVERAGES - EVERY 1 MINUTES
-function init_task_MMCalculation(cron_expression){
+Handler.init_task_MMCalculation = function(cron_expression){
     task_MMCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load new Ticker');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load MMCalculation');
         CTRL_MMCalculation.CalculateMM();
     }, {
         scheduled: false
     });
-}
+};
 
 // LOAD TRADE BALANCE - EVERY 5 MINUTES
-function init_task_LoadTradeBalance(cron_expression){
+Handler.init_task_LoadTradeBalance = function(cron_expression){
     task_LoadTradeBalance = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trade Balance');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load Trade Balance');
         CTRL_TradeBalance.LoadTradeBalance();
     }, {
         scheduled: false
     });
-}
+};
 
 // LOAD BALANCE - EVERY 1 HOURS
-function init_task_LoadBalance(cron_expression){
+Handler.init_task_LoadBalance = function(cron_expression){
     task_LoadBalance = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Balance');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load Balance');
         CTRL_Balance.LoadBalance();
     }, {
         scheduled: false
     });
-}
+};
 
 // LOAD TRADE HISTORY - EVERY 1 HOURS
-function init_task_LoadTradeHistory(cron_expression){
+Handler.init_task_LoadTradeHistory = function(cron_expression){
     task_LoadTradeHistory = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Trades History');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load Trades History');
         CTRL_TradesHistory.LoadTradesHistory();
     }, {
         scheduled: false
     });
-}
+};
 
 
 // LOAD CLOSED ORDERS - EVERY 1 HOURS
-function init_task_LoadClosedOrders(cron_expression){
+Handler.init_task_LoadClosedOrders = function(cron_expression){
     task_LoadClosedOrders = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Closed Orders');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load Closed Orders');
         CTRL_ClosedOrders.LoadClosedOrders();
     }, {
         scheduled: false
     });
-}
+};
 
 // LOAD OPEN ORDERS - EVERY 1 MINUTES
-function init_task_LoadOpenOrders(cron_expression){
+Handler.init_task_LoadOpenOrders = function(cron_expression){
     task_LoadOpenOrders = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### SCHEDULER ### - > Load Open Orders');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load Open Orders');
         CTRL_OpenOrders.LoadOpenOrders();
     }, {
         scheduled: false
     });
-}
+};
 
-function start_task_ServerOk(active){
-    task_ServerOk.start();
-}
-function stop_task_ServerOk(active){
-    task_ServerOk.stop();
-}
+Handler.start_task_ServerOk = function(){task_ServerOk.start();};
+Handler.stop_task_ServerOk = function(){task_ServerOk.stop();};
+
+Handler.start_task_KrakenServerOnline = function(){task_KrakenServerOnline.start();};
+Handler.stop_task_KrakenServerOnline = function(){task_KrakenServerOnline.stop();};
+
+Handler.start_task_LoadTicker = function(){task_LoadTicker.start();};
+Handler.stop_task_LoadTicker = function(){task_LoadTicker.stop();};
+
+Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
+Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
+
+Handler.start_task_LoadTradeBalance = function(){task_LoadTradeBalance.start();};
+Handler.stop_task_LoadTradeBalance = function(){task_LoadTradeBalance.stop();};
+
+Handler.start_task_LoadBalance = function(){task_LoadBalance.start();};
+Handler.stop_task_LoadBalance = function(){task_LoadBalance.stop();};
+
+Handler.start_task_LoadTradeHistory = function(){task_LoadTradeHistory.start();};
+Handler.stop_task_LoadTradeHistory = function(){task_LoadTradeHistory.stop();};
+
+Handler.start_task_LoadClosedOrders = function(){task_LoadClosedOrders.start();};
+Handler.stop_task_LoadClosedOrders = function(){task_LoadClosedOrders.stop();};
+
+Handler.start_task_LoadOpenOrders = function(){task_LoadOpenOrders.start();};
+Handler.stop_task_LoadOpenOrders = function(){task_LoadOpenOrders.stop();};
 
 module.exports = {
    initTasksScheduler: function (tasks, callback) {
        for(let i in tasks) {
             if (tasks.hasOwnProperty(i)) {
-                console.log(tasks[i].name);
                 let cron_expression = tasks[i].cron_expression;
                 let active = tasks[i].active;
-                console.log(active);
                 let fctName = 'init_'+tasks[i].name.toString().trim();
 
                 // INIT DU SCHEDULER
-                if(fctName in this && typeof this[fctName] === "function"){
-                    global[fctName](cron_expression);
-                }else{
-                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CRON ### function '+ fctName + ' was not find');
-                }
+                Handler[fctName](cron_expression);
 
                 if(active === 'true'){
                     fctName = 'start_'+tasks[i].name.toString().trim();
-                    if(typeof fctName === "function"){
-                        this[fctName](cron_expression);
-                    }else{
-                        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CRON ### function '+ fctName + ' was not find');
-                    }
+                    Handler[fctName](cron_expression);
+                }
+
+                if(active === 'false'){
+                    fctName = 'stop_'+tasks[i].name.toString().trim();
+                    Handler[fctName]();
                 }
             }
         }
-
-        callback(null, true);
+        callback(null, tasks);
     },
     startSchedule: function () {
         /*
