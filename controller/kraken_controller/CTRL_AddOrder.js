@@ -58,7 +58,7 @@ module.exports = {
             if(err){
                 var error = ''+err;
                 console.log(error);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Add Order FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Add Order FAILED');
             }
         }
     }

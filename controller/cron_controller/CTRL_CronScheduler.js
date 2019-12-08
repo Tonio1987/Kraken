@@ -29,13 +29,11 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Cron Tasks FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Cron Tasks FAILED');
             }
         }
     },
     Reload_CronScheduler: function () {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Reload Cron Tasks STARTED');
-
         async.waterfall([
             STEP_DB_getCronTasks,
             STEP_CRON_reloadTasksScheduler,
@@ -59,7 +57,7 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Cron Tasks FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Cron Tasks FAILED');
             }
         }
     }
