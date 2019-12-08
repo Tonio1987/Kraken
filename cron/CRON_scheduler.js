@@ -11,6 +11,11 @@ const CTRL_ClosedOrders = require('../controller/kraken_controller/CTRL_ClosedOr
 const CTRL_OpenOrders = require('../controller/kraken_controller/CTRL_OpenOrders');
 const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
 const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
+const CTRL_PurgeBalance = require('../controller/db_controller/CTRL_PurgeBalance');
+const CTRL_PurgeTradeBalance = require('../controller/db_controller/CTRL_PurgeTradeBalance');
+const CTRL_PurgeTicker = require('../controller/db_controller/CTRL_PurgeTicker');
+const CTRL_PurgeMobileM = require('../controller/db_controller/CTRL_PurgeMobileM');
+const CTRL_PurgeMobileMEvolution = require('../controller/db_controller/CTRL_PurgeMobileMEvolution');
 
 // INIT TASKS ATTRIBUTES
 let server_start_time = moment();
@@ -24,6 +29,7 @@ let task_LoadBalance = null;
 let task_LoadTradeHistory = null;
 let task_LoadClosedOrders = null;
 let task_LoadOpenOrders = null;
+let task_PurgeData = null;
 
 // HANDLER DYNAMIC FUNCTION
 let Handler={};
@@ -70,7 +76,7 @@ Handler.init_task_MMCalculation = function(cron_expression){
 // CALCULATE MOVING AVERAGES EVOLUTION - EVERY 1 MINUTES AT 30 S
 Handler.init_task_MMEvolCalculation = function(cron_expression){
     task_MMEvolCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load MMCalculation');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load MMEvolCalculation');
         CTRL_MMEvolCalculation.CalculateMMEvol();
     }, {
         scheduled: false
@@ -128,6 +134,20 @@ Handler.init_task_LoadOpenOrders = function(cron_expression){
     });
 };
 
+// PURGE DATA - EVERY 1 DAY
+Handler.init_task_PurgeData = function(cron_expression){
+    task_PurgeData = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Purge Data');
+        CTRL_PurgeBalance.purgeBalanceData();
+        CTRL_PurgeTradeBalance.purgeTradeBalanceData();
+        CTRL_PurgeMobileM.purgeMobileMData();
+        CTRL_PurgeMobileMEvolution.purgeMobileMEvolutionData();
+        CTRL_PurgeTicker.purgeTickerData();
+    }, {
+        scheduled: false
+    });
+};
+
 Handler.start_task_ServerOk = function(){task_ServerOk.start();};
 Handler.stop_task_ServerOk = function(){task_ServerOk.stop();};
 
@@ -157,6 +177,10 @@ Handler.stop_task_LoadClosedOrders = function(){task_LoadClosedOrders.stop();};
 
 Handler.start_task_LoadOpenOrders = function(){task_LoadOpenOrders.start();};
 Handler.stop_task_LoadOpenOrders = function(){task_LoadOpenOrders.stop();};
+
+Handler.start_task_PurgeData = function(){task_PurgeData.start();};
+Handler.stop_task_PurgeData = function(){task_PurgeData.stop();};
+
 
 module.exports = {
    initTasksScheduler: function (tasks, callback) {

@@ -230,7 +230,6 @@ module.exports = {
                     reject();
                 }
             }
-            console.log(count);
             if(count >= 2) {
                 mmEvol.evol_1p_mm5 = ((data[0].mm5 - data[1].mm5) / data[1].mm5) * 100;
                 mmEvol.evol_1p_mm15 = ((data[0].mm15 - data[1].mm15) / data[1].mm15) * 100;
