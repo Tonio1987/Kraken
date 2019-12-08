@@ -5,7 +5,7 @@ const moment = require('moment/moment');
 
 module.exports = {
     LoadOpenOrders: function() {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Open Orders STARTED');
+
 
         async.waterfall([
             STEP_DB_dropOpenOrders,

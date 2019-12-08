@@ -5,7 +5,7 @@ const moment = require('moment/moment');
 
 module.exports = {
     LoadTradeBalance: function() {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Trade Balance STARTED');
+
 
         async.waterfall([
             STEP_API_getTradeBalance,

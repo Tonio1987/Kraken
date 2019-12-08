@@ -7,8 +7,6 @@ const ALGO_MM = require('../../algorithm/MM_Algorithm');
 
 module.exports = {
     CalculateMM: function () {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MM and EvolMM STARTED');
-
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_DB_getTickerByPair,

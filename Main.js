@@ -10,9 +10,9 @@ const CTRL_CronScheduler = require('./controller/cron_controller/CTRL_CronSchedu
 CTRL_CronScheduler.Init_CronScheduler();
 
 // INIT MAIN SCHEDULER
-cron.schedule('*/10 * * * * *', () => {
-    CTRL_CronScheduler.Reload_CronScheduler();
-});
 
-const CTRL_MMEvolCalculation = require('./controller/algotirhm_controller/CTRL_MMEvolCalculation');
-CTRL_MMEvolCalculation.CalculateMMEvol();
+//cron.schedule('*/10 * * * * *', () => {
+//    CTRL_CronScheduler.Reload_CronScheduler();
+//});
+
+

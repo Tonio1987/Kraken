@@ -4,7 +4,7 @@ const moment = require('moment/moment');
 
 module.exports = {
     LoadTime: function() {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Time STARTED');
+
         async.waterfall([
             STEP_API_getTime,
             STEP_finish

@@ -6,8 +6,6 @@ const moment = require('moment/moment');
 module.exports = {
     LoadTradesHistory: function() {
 
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Trade History STARTED');
-
         async.waterfall([
             STEP_API_getTradeHistory,
             STEP_DB_insertTradeHistory,

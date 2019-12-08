@@ -8,7 +8,7 @@ const moment = require('moment/moment');
 
 module.exports = {
     LoadTicker: function () {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Ticker STARTED');
+
 
         async.waterfall([
             STEP_DB_getAllPairs,

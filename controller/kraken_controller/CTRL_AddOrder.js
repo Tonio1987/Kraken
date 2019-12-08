@@ -8,7 +8,7 @@ const moment = require('moment/moment');
 
 module.exports = {
    addOrder: function() {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Add Order STARTED');
+
         async.waterfall([
             STEP_DB_dropOpenOrders,
             STEP_ALGO_PrepareOrder,

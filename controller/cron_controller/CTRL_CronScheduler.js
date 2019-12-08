@@ -6,8 +6,6 @@ const DB_CronTask = require('../../persistence/DB_CronTask');
 
 module.exports = {
     Init_CronScheduler: function () {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Init Cron Tasks STARTED');
-
         async.waterfall([
             STEP_DB_getCronTasks,
             STEP_CRON_initTasksScheduler,

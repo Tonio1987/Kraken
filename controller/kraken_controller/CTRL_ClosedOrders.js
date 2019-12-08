@@ -5,7 +5,7 @@ const moment = require('moment/moment');
 
 module.exports = {
     LoadClosedOrders: function() {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Load Closed Orders STARTED');
+
 
         async.waterfall([
             STEP_API_getClosedOrders,

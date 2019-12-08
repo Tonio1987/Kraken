@@ -10,12 +10,14 @@ const CTRL_TradesHistory = require('../controller/kraken_controller/CTRL_TradesH
 const CTRL_ClosedOrders = require('../controller/kraken_controller/CTRL_ClosedOrders');
 const CTRL_OpenOrders = require('../controller/kraken_controller/CTRL_OpenOrders');
 const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
+const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
 
 // INIT TASKS ATTRIBUTES
 let task_ServerOk = null;
 let task_KrakenServerOnline = null;
 let task_LoadTicker = null;
 let task_MMCalculation = null;
+let task_MMEvolCalculation = null;
 let task_LoadTradeBalance = null;
 let task_LoadBalance = null;
 let task_LoadTradeHistory = null;
@@ -59,6 +61,16 @@ Handler.init_task_MMCalculation = function(cron_expression){
     task_MMCalculation = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load MMCalculation');
         CTRL_MMCalculation.CalculateMM();
+    }, {
+        scheduled: false
+    });
+};
+
+// CALCULATE MOVING AVERAGES EVOLUTION - EVERY 1 MINUTES AT 30 S
+Handler.init_task_MMEvolCalculation = function(cron_expression){
+    task_MMEvolCalculation = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - ### CRON ### - > Load MMCalculation');
+        CTRL_MMEvolCalculation.CalculateMMEvol();
     }, {
         scheduled: false
     });
@@ -127,6 +139,9 @@ Handler.stop_task_LoadTicker = function(){task_LoadTicker.stop();};
 Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
 Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
 
+Handler.start_task_MMEvolCalculation = function(){task_MMEvolCalculation.start();};
+Handler.stop_task_MMEvolCalculation = function(){task_MMEvolCalculation.stop();};
+
 Handler.start_task_LoadTradeBalance = function(){task_LoadTradeBalance.start();};
 Handler.stop_task_LoadTradeBalance = function(){task_LoadTradeBalance.stop();};
 
@@ -171,7 +186,7 @@ module.exports = {
             if (tasks.hasOwnProperty(i)) {
                 let cron_expression = tasks[i].cron_expression;
                 let active = tasks[i].active;
-
+                let fctName = '';
                 if(active === 'true'){
                     fctName = 'start_'+tasks[i].name.toString().trim();
                     Handler[fctName](cron_expression);

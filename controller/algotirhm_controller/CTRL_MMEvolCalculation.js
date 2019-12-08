@@ -7,11 +7,9 @@ const DB_MMEvol = require('../../persistence/DB_MobileMEvolution');
 
 module.exports = {
     CalculateMMEvol: function () {
-        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MM and EvolMM STARTED');
-
         async.waterfall([
             STEP_DB_getAllPairs,
-            STEP_DB_getLast120MM,
+            STEP_DB_getLast1440MM,
             STEP_ALGO_calculateNNEvol,
             STEP_DB_insertMMEvol,
             STEP_finish
@@ -20,13 +18,13 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_getLast120MM);
+            DB_Pairs.getAllPairs(STEP_DB_getLast1440MM);
         }
 
-        function STEP_DB_getLast120MM(err, data) {
+        function STEP_DB_getLast1440MM(err, data) {
             if(!err) {
                 data.forEach(function (pair) {
-                    DB_MM.getLast120MM(pair.kraken_pair_name, STEP_ALGO_calculateNNEvol);
+                    DB_MM.getLast1440MM(pair.kraken_pair_name, STEP_ALGO_calculateNNEvol);
                 });
             }else{
                 STEP_finish(err);
