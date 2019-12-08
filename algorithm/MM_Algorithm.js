@@ -22,7 +22,12 @@ module.exports = {
                 mm75: 0,
                 mm90: 0,
                 mm105: 0,
-                mm120: 0
+                mm120: 0,
+                mm180: 0,
+                mm360: 0,
+                mm540: 0,
+                mm720: 0,
+                mm1440: 0,
             };
             for(let ticker in data){
                 if (data.hasOwnProperty(ticker)) {
@@ -45,6 +50,11 @@ module.exports = {
                     if(count === 98){mm.mm90 = sum/count;}
                     if(count === 105){mm.mm105 = sum/count;}
                     if(count === 120){mm.mm120 = sum/count;}
+                    if(count === 180){mm.mm120 = sum/count;}
+                    if(count === 360){mm.mm120 = sum/count;}
+                    if(count === 540){mm.mm120 = sum/count;}
+                    if(count === 720){mm.mm120 = sum/count;}
+                    if(count === 1440){mm.mm120 = sum/count;}
                 }else{
                     reject();
                 }
