@@ -50,11 +50,11 @@ module.exports = {
                     if(count === 90){mm.mm90 = sum/count;}
                     if(count === 105){mm.mm105 = sum/count;}
                     if(count === 120){mm.mm120 = sum/count;}
-                    if(count === 180){mm.mm120 = sum/count;}
-                    if(count === 360){mm.mm120 = sum/count;}
-                    if(count === 540){mm.mm120 = sum/count;}
-                    if(count === 720){mm.mm120 = sum/count;}
-                    if(count === 1440){mm.mm120 = sum/count;}
+                    if(count === 180){mm.mm180 = sum/count;}
+                    if(count === 360){mm.mm360 = sum/count;}
+                    if(count === 540){mm.mm540 = sum/count;}
+                    if(count === 720){mm.mm720 = sum/count;}
+                    if(count === 1440){mm.mm1440 = sum/count;}
                 }else{
                     reject();
                 }
