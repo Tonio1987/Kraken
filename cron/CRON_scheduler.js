@@ -13,6 +13,7 @@ const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCa
 const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
 
 // INIT TASKS ATTRIBUTES
+let server_start_time = moment();
 let task_ServerOk = null;
 let task_KrakenServerOnline = null;
 let task_LoadTicker = null;
@@ -30,7 +31,7 @@ let Handler={};
 // NODE SERVER IS ALIVE - EVERY 15 SECONDS
 Handler.init_task_ServerOk = function (cron_expression){
     task_ServerOk = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Node server ok');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Node server up since '+ moment(server_start_time).locale('en').fromNow());
     }, {
         scheduled: false
     });

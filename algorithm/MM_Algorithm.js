@@ -47,7 +47,7 @@ module.exports = {
                     if(count === 45){mm.mm45 = sum/count;}
                     if(count === 60){mm.mm60 = sum/count;}
                     if(count === 75){mm.mm75 = sum/count;}
-                    if(count === 98){mm.mm90 = sum/count;}
+                    if(count === 90){mm.mm90 = sum/count;}
                     if(count === 105){mm.mm105 = sum/count;}
                     if(count === 120){mm.mm120 = sum/count;}
                     if(count === 180){mm.mm120 = sum/count;}
