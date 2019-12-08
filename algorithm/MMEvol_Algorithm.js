@@ -230,6 +230,7 @@ module.exports = {
                     reject();
                 }
             }
+            console.log(count);
             if(count >= 2) {
                 mmEvol.evol_1p_mm5 = ((data[0].mm5 - data[1].mm5) / data[1].mm5) * 100;
                 mmEvol.evol_1p_mm15 = ((data[0].mm15 - data[1].mm15) / data[1].mm15) * 100;
@@ -323,7 +324,7 @@ module.exports = {
                 mmEvol.evol_60p_mm180 = ((data[0].mm180 - data[59].mm180) / data[59].mm180) * 100;
                 mmEvol.evol_60p_mm360 = ((data[0].mm360 - data[59].mm360) / data[59].mm360) * 100;
                 mmEvol.evol_60p_mm540 = ((data[0].mm540 - data[59].mm540) / data[59].mm540) * 100;
-                mmEvol.evol_60p_mm720 = ((data[0].mm720 - data[95].mm720) / data[59].mm720) * 100;
+                mmEvol.evol_60p_mm720 = ((data[0].mm720 - data[59].mm720) / data[59].mm720) * 100;
                 mmEvol.evol_60p_mm1440 = ((data[0].mm1440 - data[59].mm1440) / data[59].mm1440) * 100;
             }
             if(count >= 75) {
@@ -353,7 +354,7 @@ module.exports = {
                 mmEvol.evol_90p_mm105 = ((data[0].mm105 - data[89].mm105) / data[89].mm105) * 100;
                 mmEvol.evol_90p_mm120 = ((data[0].mm120 - data[89].mm120) / data[89].mm120) * 100;
                 mmEvol.evol_90p_mm180 = ((data[0].mm180 - data[89].mm180) / data[89].mm180) * 100;
-                mmEvol.evol_90p_mm360 = ((data[0].mm360 - data[89].mm360) / data[98].mm360) * 100;
+                mmEvol.evol_90p_mm360 = ((data[0].mm360 - data[89].mm360) / data[89].mm360) * 100;
                 mmEvol.evol_90p_mm540 = ((data[0].mm540 - data[89].mm540) / data[89].mm540) * 100;
                 mmEvol.evol_90p_mm720 = ((data[0].mm720 - data[89].mm720) / data[89].mm720) * 100;
                 mmEvol.evol_90p_mm1440 = ((data[0].mm1440 - data[89].mm1440) / data[89].mm1440) * 100;
@@ -423,7 +424,7 @@ module.exports = {
                 mmEvol.evol_360p_mm1440 = ((data[0].mm1440 - data[359].mm1440) / data[359].mm1440) * 100;
             }
             if(count >= 540) {
-                mmEvol.evol_540p_mm5 = ((data[0].mm5 - data[543].mm5) / data[539].mm5) * 100;
+                mmEvol.evol_540p_mm5 = ((data[0].mm5 - data[539].mm5) / data[539].mm5) * 100;
                 mmEvol.evol_540p_mm15 = ((data[0].mm15 - data[539].mm15) / data[539].mm15) * 100;
                 mmEvol.evol_540p_mm30 = ((data[0].mm30 - data[539].mm30) / data[539].mm30) * 100;
                 mmEvol.evol_540p_mm45 = ((data[0].mm45 - data[539].mm45) / data[539].mm45) * 100;
@@ -470,7 +471,6 @@ module.exports = {
                 mmEvol.evol_1440p_mm720 = ((data[0].mm720 - data[1439].mm720) / data[1439].mm720) * 100;
                 mmEvol.evol_1440p_mm1440 = ((data[0].mm1440 - data[1439].mm1440) / data[1439].mm1440) * 100;
             }
-
             resolve(mmEvol);
         }).then(function(res){
             callback(null, res);
