@@ -1,0 +1,12 @@
+_id,name,cron_expression,active
+ObjectId("5deacdd0894f423294467899"),task_ServerOk,*/15 * * * * *,true
+ObjectId("5dead0dc00170832943a2810"),task_KrakenServerOnline,*/30 * * * * *,true
+ObjectId("5dead0f700170832943a2811"),task_MMCalculation,20 */1 * * * *,true
+ObjectId("5dead10400170832943a2812"),task_LoadTradeBalance,0 */5 * * * *,true
+ObjectId("5dead14b00170832943a2813"),task_LoadBalance,0 0 */1 * * *,true
+ObjectId("5dead16000170832943a2814"),task_LoadTradeHistory,0 0 */1 * * *,true
+ObjectId("5dead17500170832943a2815"),task_LoadClosedOrders,0 0 */1 * * *,true
+ObjectId("5dead18c00170832943a2816"),task_LoadOpenOrders,45 */1 * * * *,true
+ObjectId("5dec0b1700170832943a2817"),task_LoadTicker,0 */1 * * * *,true
+ObjectId("5decf20a00170832943a2818"),task_MMEvolCalculation,30 */1 * * * *,false
+ObjectId("5ded61a700170832943a29e1"),task_PurgeData,0 0 22 * * *,true
