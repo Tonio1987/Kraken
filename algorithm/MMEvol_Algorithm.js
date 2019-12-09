@@ -454,7 +454,8 @@ module.exports = {
                 mmEvol.evol_720p_mm720 = ((data[0].mm720 - data[719].mm720) / data[719].mm720) * 100;
                 mmEvol.evol_720p_mm1440 = ((data[0].mm1440 - data[719].mm1440) / data[719].mm1440) * 100;
             }
-            if(count >= 720) {
+
+            if(count >= 1440) {
                 mmEvol.evol_1440p_mm5 = ((data[0].mm5 - data[1439].mm5) / data[1439].mm5) * 100;
                 mmEvol.evol_1440p_mm15 = ((data[0].mm15 - data[1439].mm15) / data[1439].mm15) * 100;
                 mmEvol.evol_1440p_mm30 = ((data[0].mm30 - data[1439].mm30) / data[1439].mm30) * 100;
