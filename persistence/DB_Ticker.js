@@ -70,6 +70,80 @@ module.exports = {
             callback(err, null);
         });
     },
+    getPrevious24hTicker: function (pair, callback) {
+        new Promise(function (resolve, reject) {
+            const d = new Date();
+            const yesterday = d.getTime();
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("Ticker").findOne({ pair: pair, insert_timestamp: {$gte: yesterday}}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
+    getPRevious24hHighestTicker: function (pair, callback) {
+        new Promise(function (resolve, reject) {
+            const d = new Date();
+            const yesterday = d.getTime();
+            const now = new Date().getTime();
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("Ticker").findOne({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:-1}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
+    getPrevious24hLowestTicker: function (pair, callback) {
+        new Promise(function (resolve, reject) {
+            const d = new Date();
+            const yesterday = d.getTime();
+            const now = new Date().getTime();
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("Ticker").findOne({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:+1}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
     getMaxInsertTimestamp: function (callback) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
