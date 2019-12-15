@@ -11,6 +11,7 @@ const CTRL_ClosedOrders = require('../controller/kraken_controller/CTRL_ClosedOr
 const CTRL_OpenOrders = require('../controller/kraken_controller/CTRL_OpenOrders');
 const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
 const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
+const CTRL_KeltnerCalculation = require('../controller/algotirhm_controller/CTRL_KeltnerCalculation');
 const CTRL_PurgeBalance = require('../controller/db_controller/CTRL_PurgeBalance');
 const CTRL_PurgeTradeBalance = require('../controller/db_controller/CTRL_PurgeTradeBalance');
 const CTRL_PurgeTicker = require('../controller/db_controller/CTRL_PurgeTicker');
@@ -24,6 +25,7 @@ let task_KrakenServerOnline = null;
 let task_LoadTicker = null;
 let task_MMCalculation = null;
 let task_MMEvolCalculation = null;
+let task_KeltnerCalculation = null;
 let task_LoadTradeBalance = null;
 let task_LoadBalance = null;
 let task_LoadTradeHistory = null;
@@ -78,6 +80,16 @@ Handler.init_task_MMEvolCalculation = function(cron_expression){
     task_MMEvolCalculation = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load MMEvolCalculation');
         CTRL_MMEvolCalculation.CalculateMMEvol();
+    }, {
+        scheduled: false
+    });
+};
+
+// CALCULATE KELTNER - EVERY 1 MINUTES AT 40 S
+Handler.init_task_KeltnerCalculation = function(cron_expression){
+    task_KeltnerCalculation = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load Keltner');
+        CTRL_KeltnerCalculation.CalculateKeltner();
     }, {
         scheduled: false
     });
@@ -162,6 +174,9 @@ Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
 
 Handler.start_task_MMEvolCalculation = function(){task_MMEvolCalculation.start();};
 Handler.stop_task_MMEvolCalculation = function(){task_MMEvolCalculation.stop();};
+
+Handler.start_task_KeltnerCalculation = function(){task_KeltnerCalculation.start();};
+Handler.stop_task_KeltnerCalculation = function(){task_KeltnerCalculation.stop();};
 
 Handler.start_task_LoadTradeBalance = function(){task_LoadTradeBalance.start();};
 Handler.stop_task_LoadTradeBalance = function(){task_LoadTradeBalance.stop();};

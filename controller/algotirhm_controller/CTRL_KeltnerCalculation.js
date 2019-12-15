@@ -10,7 +10,7 @@ let highest = '';
 let lowest = '';
 
 module.exports = {
-    CalculateATR: function () {
+    CalculateKeltner: function () {
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_DB_getPRevious24hTicker,
