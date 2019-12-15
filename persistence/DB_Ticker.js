@@ -72,14 +72,13 @@ module.exports = {
     },
     getPrevious24hTicker: function (pair, callback) {
         new Promise(function (resolve, reject) {
-            const d = new Date();
-            const yesterday = d.getTime();
+            const yesterday = moment().add(-1, 'days').valueOf();
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Ticker").findOne({ pair: pair, insert_timestamp: {$gte: yesterday}}).limit(1).toArray(function(err, result) {
+                    dbo.collection("Ticker").find({ pair: pair, insert_timestamp: {$gte: yesterday}}).sort({insert_timestamp: 1}).limit(1).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }
@@ -94,17 +93,16 @@ module.exports = {
             callback(err, null);
         });
     },
-    getPRevious24hHighestTicker: function (pair, callback) {
+    getPRevious24hHighestTicker: function (pair, last24, callback) {
         new Promise(function (resolve, reject) {
-            const d = new Date();
-            const yesterday = d.getTime();
-            const now = new Date().getTime();
+            const yesterday = moment().add(-1, 'days').valueOf();
+            const now = new moment().valueOf();
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Ticker").findOne({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:-1}).limit(1).toArray(function(err, result) {
+                    dbo.collection("Ticker").find({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:-1}).limit(1).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }
@@ -114,22 +112,19 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data);
+            callback(null, data, last24);
         }).catch(function(err) {
             callback(err, null);
         });
     },
-    getPrevious24hLowestTicker: function (pair, callback) {
+    getLastTicker: function (pair, last24,  highest, lowest, callback) {
         new Promise(function (resolve, reject) {
-            const d = new Date();
-            const yesterday = d.getTime();
-            const now = new Date().getTime();
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Ticker").findOne({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:+1}).limit(1).toArray(function(err, result) {
+                    dbo.collection("Ticker").find({ pair: pair}).sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }
@@ -139,7 +134,31 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data);
+            callback(null, data, lowest, last24, highest);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
+    getPrevious24hLowestTicker: function (pair, last24, highest, callback) {
+        new Promise(function (resolve, reject) {
+            const yesterday = moment().add(-1, 'days').valueOf();
+            const now = new moment().valueOf();
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("Ticker").find({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:+1}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data, last24, highest);
         }).catch(function(err) {
             callback(err, null);
         });
