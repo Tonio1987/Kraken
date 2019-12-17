@@ -39,16 +39,20 @@ module.exports = {
                 low_minus_l24: low_minus_l24,
                 true_range: true_range,
                 last_ATR: last_atr,
+                lastTicker:  lastTicker[0].ask_price,
+                last24: last24[0].ask_price,
+                highest: highest[0].ask_price,
+                lowest: lowest[0].ask_price,
                 keltner_sup: lastTicker[0].ask_price + last_atr,
                 keltner_inf: lastTicker[0].ask_price - last_atr,
-                keltner_sup_1_5x: (lastTicker[0].ask_price + last_atr)*1.5,
-                keltner_inf_1_5x: (lastTicker[0].ask_price - last_atr)*1.5,
-                keltner_sup_2x: (lastTicker[0].ask_price + last_atr)*2,
-                keltner_inf_2x: (lastTicker[0].ask_price - last_atr)*2,
-                keltner_sup_2_5x: (lastTicker[0].ask_price + last_atr)*2.5,
-                keltner_inf_2_5x: (lastTicker[0].ask_price - last_atr)*2.5,
-                keltner_sup_3x: (lastTicker[0].ask_price + last_atr)*3,
-                keltner_inf_3x: (lastTicker[0].ask_price - last_atr)*3,
+                keltner_sup_1_5x: lastTicker[0].ask_price + (last_atr*1.5),
+                keltner_inf_1_5x: lastTicker[0].ask_price - (last_atr*1.5),
+                keltner_sup_2x: lastTicker[0].ask_price + (last_atr*2),
+                keltner_inf_2x: lastTicker[0].ask_price - (last_atr*2),
+                keltner_sup_2_5x: lastTicker[0].ask_price + (last_atr*2.5),
+                keltner_inf_2_5x: lastTicker[0].ask_price - (last_atr*2.5),
+                keltner_sup_3x: lastTicker[0].ask_price + (last_atr*3),
+                keltner_inf_3x: lastTicker[0].ask_price - (last_atr*3)
             };
 
             resolve(keltner);

@@ -17,6 +17,7 @@ const CTRL_PurgeTradeBalance = require('../controller/db_controller/CTRL_PurgeTr
 const CTRL_PurgeTicker = require('../controller/db_controller/CTRL_PurgeTicker');
 const CTRL_PurgeMobileM = require('../controller/db_controller/CTRL_PurgeMobileM');
 const CTRL_PurgeMobileMEvolution = require('../controller/db_controller/CTRL_PurgeMobileMEvolution');
+const CTRL_PurgeKeltner = require('../controller/db_controller/CTRL_PurgeKeltner');
 
 // INIT TASKS ATTRIBUTES
 let server_start_time = moment();
@@ -155,6 +156,7 @@ Handler.init_task_PurgeData = function(cron_expression){
         CTRL_PurgeMobileM.purgeMobileMData();
         CTRL_PurgeMobileMEvolution.purgeMobileMEvolutionData();
         CTRL_PurgeTicker.purgeTickerData();
+        CTRL_PurgeKeltner.purgeKeltnerData();
     }, {
         scheduled: false
     });

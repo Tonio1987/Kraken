@@ -72,10 +72,10 @@ module.exports = {
         }
 
         function STEP_ALGO_KeltnerCalculation(err, lastKeltner, lastTicker, lowest, last24, highest) {
-            if (!err) {
+            if (!err && lastKeltner && lastKeltner.length > 0) {
                 ALGO_Keltner.calculateKeltner(lastTicker, last24, highest, lowest, lastKeltner, STEP_DB_insertKeltner);
             } else {
-                ALGO_Keltner.calculateKeltner(null, last24, highest, lowest, lastKeltner, STEP_DB_insertKeltner);
+                ALGO_Keltner.calculateKeltner(lastTicker, last24, highest, lowest, null, STEP_DB_insertKeltner);
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate Keltner - WARNING - FIRST EXECUTION');
             }
         }
