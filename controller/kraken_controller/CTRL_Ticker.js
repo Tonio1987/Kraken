@@ -35,6 +35,7 @@ module.exports = {
             if(!err){
                 DB_Ticker.insertTicker(data, pair, STEP_finish);
             }else{
+                console.log('Erreur with pair : '+pair);
                 STEP_finish(err);
             }
         }

@@ -11,7 +11,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Pairs").find({}).toArray(function(err, result) {
+                    dbo.collection("Pairs").find({activePair: "true"}).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }

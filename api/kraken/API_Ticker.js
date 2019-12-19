@@ -19,7 +19,7 @@ module.exports = {
         }).then(function(data){
             callback(null, data, pair);
         }).catch(function(err) {
-            callback(err, null, null);
+            callback(err, null, pair);
         });
 
     }
