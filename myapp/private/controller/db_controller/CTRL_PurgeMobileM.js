@@ -1,7 +1,7 @@
 const async = require('async');
 const moment = require('moment/moment');
 
-const DB_MobileM = require('../../persistence/DB_MobileM');
+const DB_MobileM = require('../../persistence/private/DB_MobileM');
 
 module.exports = {
     purgeMobileMData: function () {

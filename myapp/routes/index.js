@@ -4,7 +4,8 @@ var path = require('path');
 
 /* index of my site */
 router.get('/', function(req, res, next) {
-  res.sendFile(path.resolve('views/test.html'));
+  var path = require('path');
+  res.sendFile(path.resolve('views/home.html'));
 });
 
 module.exports = router;

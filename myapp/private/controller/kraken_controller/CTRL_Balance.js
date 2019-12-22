@@ -1,5 +1,5 @@
 const API_Balance = require('../../api/kraken/API_Balance');
-const DB_Balance = require('../../persistence/DB_Balance');
+const DB_Balance = require('../../persistence/private/DB_Balance');
 const async = require('async');
 const moment = require('moment/moment');
 

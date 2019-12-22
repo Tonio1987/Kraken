@@ -1,7 +1,7 @@
 const async = require('async');
 const moment = require('moment/moment');
 
-const DB_Keltner = require('../../persistence/DB_Keltner');
+const DB_Keltner = require('../../persistence/private/DB_Keltner');
 
 module.exports = {
     purgeKeltnerData: function () {

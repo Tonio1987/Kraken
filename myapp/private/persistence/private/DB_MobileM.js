@@ -1,22 +1,44 @@
-const moment = require('moment');
+const moment = require('moment/moment');
 const MongoClient = require('mongodb').MongoClient;
 
 moment.locale('fr');
 
 module.exports = {
-    insertMMEvolution: function (mobileMEvol, callback) {
+    insertMM: function (mobileM, callback) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("MobileMEvolution").insertOne(mobileMEvol, function (err, res) {
+                    dbo.collection("MobileM").insertOne(mobileM, function (err, res) {
                         if (err){
                             reject(err);
                         }
                         db.close();
-                        resolve(mobileMEvol.pair);
+                        resolve(mobileM.pair);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
+    getLast1440MM: function (pair, callback) {
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("MobileM").find({ pair: pair }).sort({insert_timestamp: -1}).limit(1440).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
                     });
                 }
             });
@@ -33,7 +55,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("MobileMEvolution").find().sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
+                    dbo.collection("MobileM").find().sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         } else{
@@ -57,11 +79,11 @@ module.exports = {
                 } else{
                     var myquery = {insert_timestamp : {$lte : twoDaysAgo}};
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("MobileMEvolution").deleteMany(myquery, function(err, obj) {
+                    dbo.collection("MobileM").deleteMany(myquery, function(err, obj) {
                         if (err){
                             reject(err);
                         } else{
-                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - DATABASE - > MobileMEvolution - '+ obj.result.n + ' document(s) deleted');
+                            console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - DATABASE - > MobileM - '+ obj.result.n + ' document(s) deleted');
                             db.close();
                             resolve(true);
                         }

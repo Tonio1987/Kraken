@@ -1,8 +1,8 @@
 const async = require('async');
 const moment = require('moment/moment');
-const DB_Pairs = require('../../persistence/DB_Pairs');
-const DB_Ticker = require('../../persistence/DB_Ticker');
-const DB_Keltner = require('../../persistence/DB_Keltner');
+const DB_Pairs = require('../../persistence/private/DB_Pairs');
+const DB_Ticker = require('../../persistence/private/DB_Ticker');
+const DB_Keltner = require('../../persistence/private/DB_Keltner');
 const ALGO_Keltner = require('../../algorithm/Keltner_Algorithm');
 
 let last24 = '';

@@ -1,5 +1,5 @@
 const API_OpenOrders = require('../../api/kraken/API_OpenOrders');
-const DB_OpenOrders = require('../../persistence/DB_OpenOrders');
+const DB_OpenOrders = require('../../persistence/private/DB_OpenOrders');
 const async = require('async');
 const moment = require('moment/moment');
 

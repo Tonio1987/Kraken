@@ -1,9 +1,9 @@
 const async = require('async');
 const moment = require('moment/moment');
-const DB_Pairs = require('../../persistence/DB_Pairs');
-const DB_MM = require('../../persistence/DB_MobileM');
+const DB_Pairs = require('../../persistence/private/DB_Pairs');
+const DB_MM = require('../../persistence/private/DB_MobileM');
 const ALGO_MMEvol = require('../../algorithm/MMEvol_Algorithm');
-const DB_MMEvol = require('../../persistence/DB_MobileMEvolution');
+const DB_MMEvol = require('../../persistence/private/DB_MobileMEvolution');
 
 module.exports = {
     CalculateMMEvol: function () {

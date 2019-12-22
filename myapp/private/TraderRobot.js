@@ -1,5 +1,5 @@
 // SET ENV VARIABLES
-require('dotenv').config();
+
 
 // NODE MODULE CALL
 const moment = require('moment');

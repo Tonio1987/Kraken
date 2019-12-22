@@ -1,7 +1,7 @@
 const async = require('async');
 const moment = require('moment/moment');
 
-const DB_TradeBalance = require('../../persistence/DB_TradeBalance');
+const DB_TradeBalance = require('../../persistence/private/DB_TradeBalance');
 
 module.exports = {
     purgeTradeBalanceData: function () {

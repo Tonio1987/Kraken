@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment/moment');
 const MongoClient = require('mongodb').MongoClient;
 
 moment.locale('fr');
@@ -7,8 +7,9 @@ function prepareData(data){
     var date = moment().format('L');
     var hour = moment().format('LTS');
     var timestamp = new Date().getTime();
-    var myOpenOrders = [];
-    var orders = data.open;
+
+    var myClosedOrders = [];
+    var orders = data.closed;
     for (var order in orders) {
         if (orders.hasOwnProperty(order)) {
             var ord = {
@@ -50,54 +51,27 @@ function prepareData(data){
                     "upsert": true
                 }
             };
-            myOpenOrders.push(ord);
+            myClosedOrders.push(ord);
         }
     }
-    return myOpenOrders;
+    return myClosedOrders;
 }
 
-
 module.exports = {
-    dropOpenOrders: function(callback){
+    upsertClosedOrders: function (data, callback) {
+        var myClosedOrders = prepareData(data);
         new Promise(function (resolve, reject) {
-            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
-                if (err){
-                    reject(err);
-                } else{
-                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("OpenOrders").drop(function(err, delOK) {
-                        if (err){
-                            reject(err);
-                        } else{
-                            if(delOK){
-
-                            }
-                            db.close();
-                            resolve(true);
-                        }
-                    });
-                }
-            });
-        }).then(function(res){
-            callback(res);
-        }).catch(function(err) {
-            callback(err);
-        });
-    },
-    upsertOpenOrders: function (data, callback) {
-        var myOpenOrders = prepareData(data);
-        new Promise(function (resolve, reject) {
-            if(myOpenOrders.length > 0){
+            if(myClosedOrders.length > 0){
                 MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db ) {
                     if (err){
+                        console.error(err);
                         reject(err);
                     } else{
                         var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                        dbo.collection("OpenOrders").bulkWrite(myOpenOrders, function(err, res) {
+                        dbo.collection("ClosedOrders").bulkWrite(myClosedOrders, function(err, res) {
                             if (err){
                                 reject(err);
                             } else{
-
                                 db.close();
                                 resolve(true);
                             }

@@ -1,7 +1,7 @@
 const async = require('async');
 const moment = require('moment/moment');
 
-const DB_Ticker = require('../../persistence/DB_Ticker');
+const DB_Ticker = require('../../persistence/private/DB_Ticker');
 
 module.exports = {
     purgeTickerData: function () {
