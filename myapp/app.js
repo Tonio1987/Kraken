@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 // CALL TRADING ROBOT
-// var robot = require('./private/TraderRobot');
+var robot = require('./private/TraderRobot');
 
 // CALL MODULES
 var express = require('express');
@@ -28,6 +28,8 @@ var tradeBalanceRouter = require('./routes/rest_api/tradeBalance');
 app.use('/tradeBalance', tradeBalanceRouter);
 var balanceRouter = require('./routes/rest_api/Balance');
 app.use('/balance', balanceRouter);
+var tradeBalancesRouter = require('./routes/rest_api/tradeBalances');
+app.use('/tradeBalances', tradeBalancesRouter);
 
 // INIT APP
 module.exports = app;
