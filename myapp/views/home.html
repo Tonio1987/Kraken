@@ -13,34 +13,101 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </head>
-    <body>
+    <body ng-app="myApp">
 
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Welcome</h1>
-            <h2>Angular & Bootstrap Demo</h2>
-        </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">Status</div>
-            <div class="panel-body">
-                <div ng-app="myApp" ng-controller="myCtrl">
-                    <p>Current Trade Balance is : {{myBalance}} &euro;</p>
+    <!-- Navigation bar -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">My Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Parameters</a>
+        </li>
+    </ul>
+
+    <!-- Main Container -->
+    <div  class="container">
+        <div class="row justify-content-md-center">
+            <div class="col">
+                <div ng-controller="Ctrl_Date" class="text-center">
+                    {{ today | date }}
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="col">
+                    <div ng-controller="Ctrl_tradeBalance">
+                        <br />
+                        <p>Current Trade Balance</p>
+                        <h3>{{myTradeBalance}} &euro;</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <br />
+                <table ng-controller="Ctrl_Balance" class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Currency</th>
+                            <th scope="col">Units</th>
+                            <th scope="col">EUR Stock Price</th>
+                            <th scope="col">EUR value</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="asset in myBalance">
+                        <tr>
+                            <td>{{asset.currency}}</td>
+                            <td>{{asset.units}}</td>
+                            <td>{{asset.price}}</td>
+                            <td>{{asset.eur_value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    
         <script>
             var app = angular.module('myApp', []);
-            app.controller('myCtrl', function($scope, $http, $interval) {
+            app.controller('Ctrl_tradeBalance', function($scope, $http, $interval) {
                 $http.get("tradeBalance")
+                    .then(function(response) {
+                        $scope.myTradeBalance = response.data;
+                    }).catch(function(response) {
+                    $scope.myTradeBalance = 'Erreur';
+                });
+                $interval(function() {
+                    $http.get("tradeBalance")
+                        .then(function(response) {
+                            $scope.myTradeBalance = response.data;
+                        })
+                        .catch(function(response) {
+                            $scope.myTradeBalance = 'Erreur';
+                        });
+                },60000);
+            });
+            app.controller('Ctrl_Date', function($scope, $interval) {
+                $interval(function() {
+                    var currentdate = new Date();
+                    var datetime = "Time : " + currentdate.getDate() + "/"
+                        + (currentdate.getMonth()+1)  + "/"
+                        + currentdate.getFullYear() + "  -  "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
+                    $scope.today = datetime;
+                });
+            });
+            app.controller('Ctrl_Balance', function($scope, $http, $interval) {
+                $http.get("Balance")
                     .then(function(response) {
                         $scope.myBalance = response.data;
                     }).catch(function(response) {
                     $scope.myBalance = 'Erreur';
                 });
                 $interval(function() {
-                    $http.get("tradeBalance")
+                    $http.get("Balance")
                         .then(function(response) {
                             $scope.myBalance = response.data;
                         })
@@ -50,6 +117,5 @@
                 },60000);
             });
         </script>
-
     </body>
 </html>
