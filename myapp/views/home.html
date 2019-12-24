@@ -45,6 +45,30 @@
                     <div ng-controller="Ctrl_tradeBalance">
                         <br />
                         <h4>Current Trade Balance : {{myTradeBalance}} &euro;</h4>
+                        <table class="table table-striped table-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">15m</th>
+                                    <th scope="col">1h</th>
+                                    <th scope="col">3h</th>
+                                    <th scope="col">6h</th>
+                                    <th scope="col">12h</th>
+                                    <th scope="col">1d</th>
+                                    <th scope="col">2d</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{TBEvolution15m}} &percnt;</td>
+                                    <td>{{TBEvolution1h}} &percnt;</td>
+                                    <td>{{TBEvolution3h}} &percnt;</td>
+                                    <td>{{TBEvolution6h}} &percnt;</td>
+                                    <td>{{TBEvolution12h}} &percnt;</td>
+                                    <td>{{TBEvolution1d}} &percnt;</td>
+                                    <td>{{TBEvolution2d}} &percnt;</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <canvas id="TradeBalanceLineChart" width="200" height="200"></canvas>
                     </div>
                 </div>
@@ -70,33 +94,119 @@
                         </tr>
                     </tbody>
                 </table>
+                <h4>Open orders</h4>
+                <table ng-controller="Ctrl_OpenOrders" class="table table-striped table-dark">
+                    <thead>
+                    <tr>
+                        <th scope="col">Pair</th>
+                        <th scope="col">Order type</th>
+                        <th scope="col">Order subtype</th>
+                        <th scope="col">Volume</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="order in myOpenOrders">
+                    <tr>
+                        <td>{{order.pair}}</td>
+                        <td>{{order.type}}</td>
+                        <td>{{order.ordertype}}</td>
+                        <td>{{order.vol}}</td>
+                        <td>{{order.price}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
         <script>
             var app = angular.module('myApp', []);
+
+            /* TRADE BALANCE CONTROLLER */
             app.controller('Ctrl_tradeBalance', function($scope, $http, $interval) {
                 $http.get("tradeBalance")
                     .then(function(response) {
-                        $scope.myTradeBalance = response.data;
-                    }).catch(function(response) {
-                    $scope.myTradeBalance = 'Erreur';
-                });
-                $http.get("tradeBalances")
-                    .then(function(response) {
                         let resp =  response.data;
                         let arrayOfTradeBalances = [];
-                        let numberOfTradeBalances = [];
+                        let datetimeOfTradeBalances = [];
+
                         let i = 1;
                         for(let d in resp){
                             if(resp.hasOwnProperty(d)){
                                 arrayOfTradeBalances.unshift(resp[d].eur_balance);
-                                numberOfTradeBalances.unshift(i);
+                                datetimeOfTradeBalances.unshift(resp[d].insert_date+' '+resp[d].insert_hour);
                                 i++;
                             }
                         }
+                        $scope.myTradeBalance = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
+                        // Evolution calculation
+                        let lastValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
+                        let oldestValue = 0;
+                        let evolution15m = 0;
+                        let evolution1h = 0;
+                        let evolution3h = 0;
+                        let evolution6h = 0;
+                        let evolution12h = 0;
+                        let evolution1d = 0;
+                        let evolution2d = 0;
+                        if(arrayOfTradeBalances.length > 15){
+                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-16];
+                            console.log(lastValue);
+                            console.log(oldestValue);
+                            evolution15m = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolution15m = evolution15m.toFixed(2);
+                        }
+                        if(arrayOfTradeBalances.length > 60){
+                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-61];
+                            console.log(lastValue);
+                            console.log(oldestValue);
+                            evolution1h = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolution1h = evolution1h.toFixed(2);
+                        }
+                        if(arrayOfTradeBalances.length > 180){
+                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-181];
+                            console.log(lastValue);
+                            console.log(oldestValue);
+                            evolution3h = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolution3h = evolution3h.toFixed(2);
+                        }
+                        if(arrayOfTradeBalances.length > 360){
+                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-361];
+                            console.log(lastValue);
+                            console.log(oldestValue);
+                            evolution6h = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolution6h = evolution6h.toFixed(2);
+                        }
+                        if(arrayOfTradeBalances.length > 720){
+                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-721];
+                            console.log(lastValue);
+                            console.log(oldestValue);
+                            evolution12h = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolution12h = evolution12h.toFixed(2);
+                        }
+                        if(arrayOfTradeBalances.length > 1440){
+                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1441];
+                            console.log(lastValue);
+                            console.log(oldestValue);
+                            evolution1d = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolution1d = evolution1d.toFixed(2);
+                        }
+                        if(arrayOfTradeBalances.length > 2880){
+                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-2881];
+                            evolution2d = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolution2d = evolution2d.toFixed(2);
+                        }
+
+
+                        if(arrayOfTradeBalances.length > 1440){
+                            datetimeOfTradeBalances = datetimeOfTradeBalances.slice(-1439, -1);
+                            arrayOfTradeBalances = arrayOfTradeBalances.slice(-1439, -1);
+                        }else{
+                            datetimeOfTradeBalances = datetimeOfTradeBalances.slice(--datetimeOfTradeBalances-1, -1);
+                            arrayOfTradeBalances = arrayOfTradeBalances.slice(-arrayOfTradeBalances.length-1, -1);
+                        }
+
                         let data = {
-                            labels: numberOfTradeBalances,
+                            labels: datetimeOfTradeBalances,
                             datasets: [
                                 {
                                     label: "Trade Balance",
@@ -112,9 +222,7 @@
                                 }
                             ]
                         };
-                        console.log(data);
                         var options = { };
-
                         var ctx = document.getElementById("TradeBalanceLineChart").getContext("2d");
                         var myLineChart = new Chart(ctx, {
                             type: 'line',
@@ -122,30 +230,93 @@
                             options: options
                         });
 
+
                     });
                 $interval(function() {
                     $http.get("tradeBalance")
                         .then(function(response) {
-                            $scope.myTradeBalance = response.data;
-                        })
-                        .catch(function(response) {
-                            $scope.myTradeBalance = 'Erreur';
-                        });
-                    $http.get("tradeBalances")
-                        .then(function(response) {
                             let resp =  response.data;
                             let arrayOfTradeBalances = [];
-                            let numberOfTradeBalances = [];
+                            let datetimeOfTradeBalances = [];
+
                             let i = 1;
                             for(let d in resp){
                                 if(resp.hasOwnProperty(d)){
                                     arrayOfTradeBalances.unshift(resp[d].eur_balance);
-                                    numberOfTradeBalances.unshift(i);
+                                    datetimeOfTradeBalances.unshift(resp[d].insert_date+' '+resp[d].insert_hour);
                                     i++;
                                 }
                             }
+                            $scope.myTradeBalance = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
+                            // Evolution calculation
+                            let lastValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
+                            let oldestValue = 0;
+                            let evolution15m = 0;
+                            let evolution1h = 0;
+                            let evolution3h = 0;
+                            let evolution6h = 0;
+                            let evolution12h = 0;
+                            let evolution1d = 0;
+                            let evolution2d = 0;
+                            if(arrayOfTradeBalances.length > 15){
+                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-16];
+                                console.log(lastValue);
+                                console.log(oldestValue);
+                                evolution15m = ((lastValue - oldestValue) / oldestValue) * 100;
+                                $scope.TBEvolution15m = evolution15m.toFixed(2);
+                            }
+                            if(arrayOfTradeBalances.length > 60){
+                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-61];
+                                console.log(lastValue);
+                                console.log(oldestValue);
+                                evolution1h = ((lastValue - oldestValue) / oldestValue) * 100;
+                                $scope.TBEvolution1h = evolution1h.toFixed(2);
+                            }
+                            if(arrayOfTradeBalances.length > 180){
+                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-181];
+                                console.log(lastValue);
+                                console.log(oldestValue);
+                                evolution3h = ((lastValue - oldestValue) / oldestValue) * 100;
+                                $scope.TBEvolution3h = evolution3h.toFixed(2);
+                            }
+                            if(arrayOfTradeBalances.length > 360){
+                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-361];
+                                console.log(lastValue);
+                                console.log(oldestValue);
+                                evolution6h = ((lastValue - oldestValue) / oldestValue) * 100;
+                                $scope.TBEvolution6h = evolution6h.toFixed(2);
+                            }
+                            if(arrayOfTradeBalances.length > 720){
+                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-721];
+                                console.log(lastValue);
+                                console.log(oldestValue);
+                                evolution12h = ((lastValue - oldestValue) / oldestValue) * 100;
+                                $scope.TBEvolution12h = evolution12h.toFixed(2);
+                            }
+                            if(arrayOfTradeBalances.length > 1440){
+                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1441];
+                                console.log(lastValue);
+                                console.log(oldestValue);
+                                evolution1d = ((lastValue - oldestValue) / oldestValue) * 100;
+                                $scope.TBEvolution1d = evolution1d.toFixed(2);
+                            }
+                            if(arrayOfTradeBalances.length > 2880){
+                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-2881];
+                                evolution2d = ((lastValue - oldestValue) / oldestValue) * 100;
+                                $scope.TBEvolution2d = evolution2d.toFixed(2);
+                            }
+
+
+                            if(arrayOfTradeBalances.length > 1440){
+                                datetimeOfTradeBalances = datetimeOfTradeBalances.slice(-1439, -1);
+                                arrayOfTradeBalances = arrayOfTradeBalances.slice(-1439, -1);
+                            }else{
+                                datetimeOfTradeBalances = datetimeOfTradeBalances.slice(--datetimeOfTradeBalances-1, -1);
+                                arrayOfTradeBalances = arrayOfTradeBalances.slice(-arrayOfTradeBalances.length-1, -1);
+                            }
+
                             let data = {
-                                labels: numberOfTradeBalances,
+                                labels: datetimeOfTradeBalances,
                                 datasets: [
                                     {
                                         label: "Trade Balance",
@@ -161,7 +332,6 @@
                                     }
                                 ]
                             };
-                            console.log(data);
                             var options = { };
 
                             var ctx = document.getElementById("TradeBalanceLineChart").getContext("2d");
@@ -171,9 +341,16 @@
                                 options: options
                             });
 
+                            oldestValue = arrayOfTradeBalances[0];
+                            lastValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
+                            let evolution = ((lastValue - oldestValue) / oldestValue) * 100;
+                            evolution = evolution.toFixed(2);
+                            $scope.myTradeBalanceEvolution = evolution;
                         });
                 },60000);
             });
+
+            /* DATE CONTROLLER */
             app.controller('Ctrl_Date', function($scope, $interval) {
                 $interval(function() {
                     var currentdate = new Date();
@@ -201,11 +378,27 @@
                         .catch(function(response) {
                             $scope.myBalance = 'Erreur';
                         });
-                },300000);
+                },90000);
             });
 
-
-
+            /* OPEN ORDERS CONTROLLER */
+            app.controller('Ctrl_OpenOrders', function($scope, $http, $interval) {
+                $http.get("OpenOrders")
+                    .then(function(response) {
+                        $scope.myOpenOrders = response.data;
+                    }).catch(function(response) {
+                    $scope.myOpenOrders = 'Erreur';
+                });
+                $interval(function() {
+                    $http.get("OpenOrders")
+                        .then(function(response) {
+                            $scope.myOpenOrders = response.data;
+                        })
+                        .catch(function(response) {
+                            $scope.myOpenOrders = 'Erreur';
+                        });
+                },30000);
+            });
         </script>
     </body>
 </html>

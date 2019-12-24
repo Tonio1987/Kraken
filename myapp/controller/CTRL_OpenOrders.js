@@ -1,17 +1,18 @@
-const DB_TradeBalance = require('../persistence/DB_TradeBalance');
+const DB_OpenOrders = require('../persistence/DB_OpenOrders');
 const async = require('async');
 
 module.exports = {
-    getLastTradeBalances: function(callback, req, res, next) {
+    getOpenOrders: function(callback, req, res, next) {
+
         async.waterfall([
-            STEP_DB_getLastTradeBalanceq,
+            STEP_DB_getOpenOrders,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
         });
 
-        function STEP_DB_getLastTradeBalanceq(err, data) {
-            DB_TradeBalance.getLastTradeBalances(STEP_finish);
+        function STEP_DB_getOpenOrders(err, data) {
+            DB_OpenOrders.getOpenOrders(STEP_finish);
         }
 
         function STEP_finish(err, data) {

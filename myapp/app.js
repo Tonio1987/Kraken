@@ -25,11 +25,12 @@ app.use('/', indexRouter);
 
 // CALL API REST ROUTES
 var tradeBalanceRouter = require('./routes/rest_api/tradeBalance');
-app.use('/tradeBalance', tradeBalanceRouter);
 var balanceRouter = require('./routes/rest_api/Balance');
+var openOrdersRouter = require('./routes/rest_api/OpenOrders');
+
+app.use('/tradeBalance', tradeBalanceRouter);
 app.use('/balance', balanceRouter);
-var tradeBalancesRouter = require('./routes/rest_api/tradeBalances');
-app.use('/tradeBalances', tradeBalancesRouter);
+app.use('/openOrders', openOrdersRouter);
 
 // INIT APP
 module.exports = app;
