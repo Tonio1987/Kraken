@@ -7,7 +7,7 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_OHLC: function(pair, callback) {
+    kraken_OHLC: function(callback, pair) {
         return new Promise(function (resolve, reject) {
             api.call('OHLC', { pair: pair, count: 1 }, (err, data) => {
                 if (err) {

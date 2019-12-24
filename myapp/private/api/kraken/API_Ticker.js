@@ -7,7 +7,7 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_Ticker: function(pair, callback) {
+    kraken_Ticker: function(callback, pair) {
         return new Promise(function (resolve, reject) {
             api.call('Ticker', { pair: pair, count: 1 }, (err, data) => {
                 if (err) {

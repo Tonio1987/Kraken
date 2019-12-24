@@ -2,7 +2,7 @@ const moment = require('moment');
 moment.locale('fr');
 
 module.exports = {
-    calculateMMEvol: function(data, callback) {
+    calculateMMEvol: function(callback, data) {
         new Promise(function (resolve, reject) {
             var date = moment().format('L');
             var hour = moment().format('LTS');

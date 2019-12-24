@@ -32,7 +32,7 @@ module.exports = {
         function STEP_DB_getPRevious24hTicker(err, data) {
             if (!err) {
                 data.forEach(function (pair) {
-                    DB_Ticker.getPrevious24hTicker(pair.kraken_pair_name, STEP_DB_getPRevious24hHighestTicker);
+                    DB_Ticker.getPrevious24hTicker(STEP_DB_getPRevious24hHighestTicker, pair.kraken_pair_name);
                 });
             } else {
                 STEP_finish(err);
@@ -41,7 +41,7 @@ module.exports = {
 
         function STEP_DB_getPRevious24hHighestTicker(err, last24) {
             if (!err) {
-                DB_Ticker.getPRevious24hHighestTicker(last24[0].pair, last24, STEP_DB_getPRevious24hLowestTicker);
+                DB_Ticker.getPRevious24hHighestTicker(STEP_DB_getPRevious24hLowestTicker, last24[0].pair, last24);
             } else {
                 STEP_finish(err);
             }
@@ -49,7 +49,7 @@ module.exports = {
 
         function STEP_DB_getPRevious24hLowestTicker(err, highest, last24) {
             if (!err) {
-                DB_Ticker.getPrevious24hLowestTicker(last24[0].pair, last24,  highest, STEP_DB_getLastTicker);
+                DB_Ticker.getPrevious24hLowestTicker(STEP_DB_getLastTicker, last24[0].pair, last24,  highest);
             } else {
                 STEP_finish(err);
             }
@@ -57,7 +57,7 @@ module.exports = {
 
         function STEP_DB_getLastTicker(err, lowest, last24, highest) {
             if (!err) {
-                DB_Ticker.getLastTicker(last24[0].pair, last24,  highest, lowest, STEP_DB_getLastKeltner);
+                DB_Ticker.getLastTicker(STEP_DB_getLastKeltner, last24[0].pair, last24,  highest, lowest);
             } else {
                 STEP_finish(err);
             }
@@ -65,7 +65,7 @@ module.exports = {
 
         function STEP_DB_getLastKeltner(err, lastTicker, lowest, last24, highest) {
             if (!err) {
-                DB_Keltner.getLastKeltner(last24[0].pair, lastTicker, last24,  highest, lowest, STEP_ALGO_KeltnerCalculation);
+                DB_Keltner.getLastKeltner(STEP_ALGO_KeltnerCalculation, last24[0].pair, lastTicker, last24,  highest, lowest);
             } else {
                 STEP_finish(err);
             }
@@ -73,16 +73,16 @@ module.exports = {
 
         function STEP_ALGO_KeltnerCalculation(err, lastKeltner, lastTicker, lowest, last24, highest) {
             if (!err && lastKeltner && lastKeltner.length > 0) {
-                ALGO_Keltner.calculateKeltner(lastTicker, last24, highest, lowest, lastKeltner, STEP_DB_insertKeltner);
+                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, lastKeltner);
             } else {
-                ALGO_Keltner.calculateKeltner(lastTicker, last24, highest, lowest, null, STEP_DB_insertKeltner);
+                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, null);
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate Keltner - WARNING - FIRST EXECUTION');
             }
         }
 
         function STEP_DB_insertKeltner(err, data) {
             if (!err) {
-                DB_Keltner.insertKEltner(data, STEP_finish);
+                DB_Keltner.insertKEltner(STEP_finish, data);
             } else {
                 STEP_finish(null, data);
             }

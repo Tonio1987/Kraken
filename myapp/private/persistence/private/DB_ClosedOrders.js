@@ -58,7 +58,7 @@ function prepareData(data){
 }
 
 module.exports = {
-    upsertClosedOrders: function (data, callback) {
+    upsertClosedOrders: function (callback, data) {
         var myClosedOrders = prepareData(data);
         new Promise(function (resolve, reject) {
             if(myClosedOrders.length > 0){

@@ -8,7 +8,7 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_AddOrder: function(order, callback) {
+    kraken_AddOrder: function(callback, order) {
         return new Promise(function (resolve, reject) {
             api.call('AddOrder',
                 {

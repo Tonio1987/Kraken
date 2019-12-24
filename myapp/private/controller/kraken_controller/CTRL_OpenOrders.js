@@ -28,7 +28,7 @@ module.exports = {
         }
         function STEP_DB_insertOpenOrders(err, data) {
             if(!err){
-                DB_OpenOrders.upsertOpenOrders(data, STEP_finish);
+                DB_OpenOrders.upsertOpenOrders(STEP_finish, data);
             }else{
                 STEP_finish(err);
             }

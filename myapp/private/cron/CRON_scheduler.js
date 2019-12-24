@@ -200,7 +200,7 @@ Handler.stop_task_PurgeData = function(){task_PurgeData.stop();};
 
 
 module.exports = {
-   initTasksScheduler: function (tasks, callback) {
+   initTasksScheduler: function (callback, tasks) {
        for(let i in tasks) {
             if (tasks.hasOwnProperty(i)) {
                 let cron_expression = tasks[i].cron_expression;
@@ -223,7 +223,7 @@ module.exports = {
         }
         callback(null, tasks);
     },
-    reloadTasksScheduler: function (tasks, callback) {
+    reloadTasksScheduler: function (callback, tasks) {
         for(let i in tasks) {
             if (tasks.hasOwnProperty(i)) {
                 let cron_expression = tasks[i].cron_expression;

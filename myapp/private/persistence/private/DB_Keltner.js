@@ -5,7 +5,7 @@ moment.locale('fr');
 
 
 module.exports = {
-    getLastKeltner: function (pair, lastTicker, last24,  highest, lowest, callback) {
+    getLastKeltner: function (callback, pair, lastTicker, last24,  highest, lowest) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -27,7 +27,7 @@ module.exports = {
             callback(err, null, lastTicker, last24,  highest, lowest);
         });
     },
-    insertKEltner: function (data, callback) {
+    insertKEltner: function (callback,data) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -73,7 +73,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    purgeData: function (twoDaysAgo, callback) {
+    purgeData: function (callback, twoDaysAgo) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
                 if (err) {

@@ -22,7 +22,7 @@ module.exports = {
                 if(data.length > 0){
                     var maxInserTimestamp = moment(new Date(data[0].insert_timestamp)).add(-2, 'days').valueOf();
                     let twoDaysAgo = moment(maxInserTimestamp).valueOf();
-                    DB_TradeBalance.purgeData(twoDaysAgo, STEP_finish);
+                    DB_TradeBalance.purgeData(STEP_finish, twoDaysAgo);
                 }else{
                     STEP_finish(err, null);
                 }

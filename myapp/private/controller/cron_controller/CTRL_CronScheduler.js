@@ -20,7 +20,7 @@ module.exports = {
 
         function STEP_CRON_initTasksScheduler(err, tasks) {
             if(!err){
-                CRON_scheduler.initTasksScheduler(tasks, STEP_finish);
+                CRON_scheduler.initTasksScheduler(STEP_finish, tasks);
             }else{
                 STEP_finish(err, null);
             }
@@ -48,7 +48,7 @@ module.exports = {
 
         function STEP_CRON_reloadTasksScheduler(err, tasks) {
             if(!err){
-                CRON_scheduler.reloadTasksScheduler(tasks, STEP_finish);
+                CRON_scheduler.reloadTasksScheduler(STEP_finish, tasks);
             }else{
                 STEP_finish(err, null);
             }

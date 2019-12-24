@@ -4,7 +4,7 @@ var MongoClient = require('mongodb').MongoClient;
 moment.locale('fr');
 
 module.exports = {
-    insertTicker: function (data, pair, callback) {
+    insertTicker: function (callback, data, pair) {
         new Promise(function (resolve, reject) {
             var timestamp = new Date().getTime();
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
@@ -48,7 +48,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getLast1440Ticker: function (pair, callback) {
+    getLast1440Ticker: function (callback, pair) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -70,7 +70,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getPrevious24hTicker: function (pair, callback) {
+    getPrevious24hTicker: function (callback, pair) {
         new Promise(function (resolve, reject) {
             const yesterday = moment().add(-1, 'days').valueOf();
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
@@ -93,7 +93,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getPRevious24hHighestTicker: function (pair, last24, callback) {
+    getPRevious24hHighestTicker: function (callback, pair, last24) {
         new Promise(function (resolve, reject) {
             const yesterday = moment().add(-1, 'days').valueOf();
             const now = new moment().valueOf();
@@ -117,7 +117,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getLastTicker: function (pair, last24,  highest, lowest, callback) {
+    getLastTicker: function (callback, pair, last24,  highest, lowest) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -139,7 +139,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getPrevious24hLowestTicker: function (pair, last24, highest, callback) {
+    getPrevious24hLowestTicker: function (callback, pair, last24, highest) {
         new Promise(function (resolve, reject) {
             const yesterday = moment().add(-1, 'days').valueOf();
             const now = new moment().valueOf();
@@ -186,7 +186,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    purgeData: function (twoDaysAgo, callback) {
+    purgeData: function (callback, twoDaysAgo) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){

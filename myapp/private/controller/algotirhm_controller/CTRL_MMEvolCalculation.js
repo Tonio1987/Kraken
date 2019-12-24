@@ -24,7 +24,7 @@ module.exports = {
         function STEP_DB_getLast1440MM(err, data) {
             if(!err) {
                 data.forEach(function (pair) {
-                    DB_MM.getLast1440MM(pair.kraken_pair_name, STEP_ALGO_calculateNNEvol);
+                    DB_MM.getLast1440MM(STEP_ALGO_calculateNNEvol, pair.kraken_pair_name);
                 });
             }else{
                 STEP_finish(err);
@@ -33,7 +33,7 @@ module.exports = {
 
         function STEP_ALGO_calculateNNEvol(err, data) {
             if(!err) {
-                ALGO_MMEvol.calculateMMEvol(data, STEP_DB_insertMMEvol);
+                ALGO_MMEvol.calculateMMEvol(STEP_DB_insertMMEvol, data);
             }else{
                 STEP_finish(err);
             }
@@ -41,7 +41,7 @@ module.exports = {
 
         function STEP_DB_insertMMEvol(err, data) {
             if(!err) {
-                DB_MMEvol.insertMMEvolution(data, STEP_finish);
+                DB_MMEvol.insertMMEvolution(STEP_finish, data);
             }else{
                 STEP_finish(err);
             }

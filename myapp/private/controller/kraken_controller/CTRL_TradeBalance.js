@@ -20,7 +20,7 @@ module.exports = {
         }
         function STEP_DB_insertTradeBalance(err, data) {
             if(!err){
-                DB_TradeBalance.insertTradeBalance(data, STEP_finish);
+                DB_TradeBalance.insertTradeBalance(STEP_finish, data);
             }else{
                 STEP_finish(err);
             }

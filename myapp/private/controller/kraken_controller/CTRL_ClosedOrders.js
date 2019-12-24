@@ -20,7 +20,7 @@ module.exports = {
         }
         function STEP_DB_insertClosedOrders(err, data) {
             if(!err){
-                DB_ClosedOrders.upsertClosedOrders(data, STEP_finish);
+                DB_ClosedOrders.upsertClosedOrders(STEP_finish, data);
             }else{
                 STEP_finish(err);
             }

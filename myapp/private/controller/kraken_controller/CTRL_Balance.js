@@ -1,5 +1,6 @@
 const API_Balance = require('../../api/kraken/API_Balance');
 const DB_Balance = require('../../persistence/private/DB_Balance');
+const DB_Ticker = require('../../persistence/private/DB_Ticker');
 const async = require('async');
 const moment = require('moment/moment');
 
@@ -17,9 +18,11 @@ module.exports = {
         function STEP_API_getBalance() {
             API_Balance.kraken_Balance(STEP_DB_insertBalance);
         }
+
+
         function STEP_DB_insertBalance(err, data) {
             if(!err){
-                DB_Balance.insertBalance(data, STEP_finish);
+                DB_Balance.insertBalance(STEP_finish, data);
             }else{
                 STEP_finish(err);
             }

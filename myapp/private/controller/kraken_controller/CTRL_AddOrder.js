@@ -37,7 +37,7 @@ module.exports = {
             STEP_API_addOrder(order);
         }
         function STEP_API_addOrder(order) {
-            API_AddOrder.kraken_AddOrder(order, STEP_API_getOpenOrders);
+            API_AddOrder.kraken_AddOrder(STEP_API_getOpenOrders, order);
         }
 
        function STEP_API_getOpenOrders(err, data) {
@@ -49,7 +49,7 @@ module.exports = {
        }
        function STEP_DB_insertOpenOrders(err, data) {
            if(data){
-               DB_OpenOrders.upsertOpenOrders(data, STEP_finish);
+               DB_OpenOrders.upsertOpenOrders(STEP_finish, data);
            }else{
                STEP_finish(err);
            }

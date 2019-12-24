@@ -4,7 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 moment.locale('fr');
 
 module.exports = {
-    insertMMEvolution: function (mobileMEvol, callback) {
+    insertMMEvolution: function (callback, mobileMEvol) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -49,7 +49,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    purgeData: function (twoDaysAgo, callback) {
+    purgeData: function (callback, twoDaysAgo) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){

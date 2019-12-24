@@ -7,7 +7,7 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_Depth: function(pair, callback) {
+    kraken_Depth: function(callback, pair) {
         return new Promise(function (resolve, reject) {
             api.call('Depth', { pair: pair, count: 1 }, (err, data) => {
                 if (err) {

@@ -19,7 +19,7 @@ module.exports = {
         }
         function STEP_DB_insertTradeHistory(err, data) {
             if(!err){
-                DB_TradeHistory.upsertTradeHistory(data, STEP_finish);
+                DB_TradeHistory.upsertTradeHistory(STEP_finish, data);
             }else{
                 STEP_finish(err);
             }

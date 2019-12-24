@@ -30,7 +30,7 @@ function prepareData(data){
 }
 
 module.exports = {
-    insertBalance: function (data, callback) {
+    insertBalance: function (callback, data) {
         var myBalance = prepareData(data);
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
@@ -77,7 +77,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    purgeData: function (twoDaysAgo, callback) {
+    purgeData: function (callback, twoDaysAgo) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){

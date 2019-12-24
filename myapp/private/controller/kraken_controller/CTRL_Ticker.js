@@ -25,7 +25,7 @@ module.exports = {
         function STEP_API_loadTicker(err, data) {
             if(!err){
                 data.forEach(function(pair){
-                    API_Ticker.kraken_Ticker(pair.kraken_pair_name, STEP_DB_insertTicker);
+                    API_Ticker.kraken_Ticker(STEP_DB_insertTicker, pair.kraken_pair_name);
                 });
             }else{
                 STEP_finish(err);
@@ -33,7 +33,7 @@ module.exports = {
         }
         function STEP_DB_insertTicker(err, data, pair) {
             if(!err){
-                DB_Ticker.insertTicker(data, pair, STEP_finish);
+                DB_Ticker.insertTicker(STEP_finish, data, pair);
             }else{
                 console.log('Erreur with pair : '+pair);
                 STEP_finish(err);

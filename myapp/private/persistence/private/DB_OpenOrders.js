@@ -84,7 +84,7 @@ module.exports = {
             callback(err);
         });
     },
-    upsertOpenOrders: function (data, callback) {
+    upsertOpenOrders: function (callback, data) {
         var myOpenOrders = prepareData(data);
         new Promise(function (resolve, reject) {
             if(myOpenOrders.length > 0){

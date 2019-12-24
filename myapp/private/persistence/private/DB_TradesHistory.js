@@ -44,7 +44,7 @@ function prepareData(data){
 }
 
 module.exports = {
-    upsertTradeHistory: function (data, callback) {
+    upsertTradeHistory: function (callback, data) {
         var myTradesHistory = prepareData(data);
         new Promise(function (resolve, reject) {
             if(myTradesHistory.length > 0){

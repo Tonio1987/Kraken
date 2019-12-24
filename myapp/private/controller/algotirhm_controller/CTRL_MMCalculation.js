@@ -24,7 +24,7 @@ module.exports = {
         function STEP_DB_getTickerByPair(err, data) {
             if(!err) {
                 data.forEach(function (pair) {
-                    DB_Ticker.getLast1440Ticker(pair.kraken_pair_name, STEP_ALGO_calculateNN);
+                    DB_Ticker.getLast1440Ticker(STEP_ALGO_calculateNN, pair.kraken_pair_name);
                 });
             }else{
                 STEP_finish(err);
@@ -33,7 +33,7 @@ module.exports = {
 
         function STEP_ALGO_calculateNN(err, data) {
             if(!err) {
-                ALGO_MM.calculateMM(data, STEP_DB_insertMM);
+                ALGO_MM.calculateMM(STEP_DB_insertMM, data);
             }else{
                 STEP_finish(err);
             }
@@ -41,7 +41,7 @@ module.exports = {
 
         function STEP_DB_insertMM(err, data) {
             if(!err) {
-                DB_MM.insertMM(data, STEP_finish);
+                DB_MM.insertMM(STEP_finish, data);
             }else{
                 STEP_finish(null, data);
             }
