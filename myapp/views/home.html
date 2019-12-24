@@ -34,7 +34,7 @@
         <div class="row justify-content-md-center">
             <div class="col">
                 <div ng-controller="Ctrl_Date" class="text-center">
-                    {{ today | date }}
+                    {{ today | date }} - Refresh data in {{remainingTimeBeforeRefresh}} seconds
                 </div>
             </div>
         </div>
@@ -361,8 +361,16 @@
                         + currentdate.getMinutes() + ":"
                         + currentdate.getSeconds();
                     $scope.today = datetime;
-                });
+
+                    // init
+                    if($scope.remainingTimeBeforeRefresh === 0 || !$scope.remainingTimeBeforeRefresh){
+                        $scope.remainingTimeBeforeRefresh = 60;
+                    }
+                    $scope.remainingTimeBeforeRefresh--;
+
+                },1000);
             });
+
             app.controller('Ctrl_Balance', function($scope, $http, $interval) {
                 $http.get("Balance")
                     .then(function(response) {
@@ -378,7 +386,7 @@
                         .catch(function(response) {
                             $scope.myBalance = 'Erreur';
                         });
-                },90000);
+                },60000);
             });
 
             /* OPEN ORDERS CONTROLLER */
@@ -397,7 +405,7 @@
                         .catch(function(response) {
                             $scope.myOpenOrders = 'Erreur';
                         });
-                },30000);
+                },15000);
             });
         </script>
     </body>
