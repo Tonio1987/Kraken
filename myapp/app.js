@@ -32,12 +32,14 @@ var balanceRouter = require('./routes/rest_api/Balance');
 var openOrdersRouter = require('./routes/rest_api/OpenOrders');
 var last5ClosedOrdersRouter = require('./routes/rest_api/Last5ClosedOrders');
 var cronTasksRouter = require('./routes/rest_api/CronTasks');
+var changeCronTaskStatusRouter = require('./routes/rest_api/ChangeCronTaskStatus');
 
 app.use('/tradeBalance', tradeBalanceRouter);
 app.use('/balance', balanceRouter);
 app.use('/openOrders', openOrdersRouter);
 app.use('/last5ClosedOrders', last5ClosedOrdersRouter);
 app.use('/cronTasks', cronTasksRouter);
+app.use('/changeCronTaskStatus', changeCronTaskStatusRouter);
 
 // INIT APP
 module.exports = app;

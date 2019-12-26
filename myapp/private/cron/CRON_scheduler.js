@@ -210,12 +210,12 @@ module.exports = {
                 // INIT DU SCHEDULER
                 Handler[fctName](cron_expression);
 
-                if(active === 'true'){
+                if(active === true){
                     fctName = 'start_'+tasks[i].name.toString().trim();
                     Handler[fctName](cron_expression);
                 }
 
-                if(active === 'false'){
+                if(active === false){
                     fctName = 'stop_'+tasks[i].name.toString().trim();
                     Handler[fctName]();
                 }
@@ -229,12 +229,12 @@ module.exports = {
                 let cron_expression = tasks[i].cron_expression;
                 let active = tasks[i].active;
                 let fctName = '';
-                if(active === 'true'){
+                if(active === true){
                     fctName = 'start_'+tasks[i].name.toString().trim();
                     Handler[fctName](cron_expression);
                 }
 
-                if(active === 'false'){
+                if(active === false){
                     fctName = 'stop_'+tasks[i].name.toString().trim();
                     Handler[fctName]();
                 }

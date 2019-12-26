@@ -3,7 +3,6 @@ const async = require('async');
 
 module.exports = {
     getCronTasks: function(callback, req, res, next) {
-
         async.waterfall([
             STEP_DB_getCronTasks,
             STEP_finish
