@@ -22,6 +22,8 @@ app.use(express.static(path.join(__dirname, 'views')));
 // CALL ROUTES
 var indexRouter = require('./routes/index');
 app.use('/', indexRouter);
+var settingsRouter = require('./routes/settings');
+app.use('/settings', settingsRouter);
 
 // CALL API REST ROUTES
 var tradeBalanceRouter = require('./routes/rest_api/tradeBalance');
