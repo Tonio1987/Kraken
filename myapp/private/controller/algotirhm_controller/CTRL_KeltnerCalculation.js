@@ -63,7 +63,7 @@ module.exports = {
             }
         }
 
-        function STEP_DB_getLastKeltner(err, lastTicker, lowest, last24, highest) {
+        function STEP_DB_getLastKeltner(err, lastTicker, last24, highest, lowest) {
             if (!err) {
                 DB_Keltner.getLastKeltner(STEP_ALGO_KeltnerCalculation, last24[0].pair, lastTicker, last24,  highest, lowest);
             } else {

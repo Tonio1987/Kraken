@@ -15,7 +15,7 @@
         <!--- Chart -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css">
-
+        <link rel="stylesheet" href="/stylesheets/style.css">
     </head>
     <body ng-app="myApp">
 
@@ -59,13 +59,13 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{TBEvolution15m}} &percnt;</td>
-                                    <td>{{TBEvolution1h}} &percnt;</td>
-                                    <td>{{TBEvolution3h}} &percnt;</td>
-                                    <td>{{TBEvolution6h}} &percnt;</td>
-                                    <td>{{TBEvolution12h}} &percnt;</td>
-                                    <td>{{TBEvolution1d}} &percnt;</td>
-                                    <td>{{TBEvolution2d}} &percnt;</td>
+                                    <td ng-class="{'text-red': TBEvolution15m < 0,'text-green': TBEvolution15m >= 0}">{{TBEvolution15m}} &percnt;</td>
+                                    <td ng-class="{'text-red': TBEvolution1h < 0,'text-green': TBEvolution1h >= 0}">{{TBEvolution1h}} &percnt;</td>
+                                    <td ng-class="{'text-red': TBEvolution3h < 0,'text-green': TBEvolution3h >= 0}">{{TBEvolution3h}} &percnt;</td>
+                                    <td ng-class="{'text-red': TBEvolution6h < 0,'text-green': TBEvolution6h >= 0}">{{TBEvolution6h}} &percnt;</td>
+                                    <td ng-class="{'text-red': TBEvolution12h < 0,'text-green': TBEvolution12h >= 0}">{{TBEvolution12h}} &percnt;</td>
+                                    <td ng-class="{'text-red': TBEvolution1d < 0,'text-green': TBEvolution1d >= 0}">{{TBEvolution1d}} &percnt;</td>
+                                    <td ng-class="{'text-red': TBEvolution2d < 0,'text-green': TBEvolution2d >= 0}">{{TBEvolution2d}} &percnt;</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -81,16 +81,18 @@
                         <tr>
                             <th scope="col">Currency</th>
                             <th scope="col">Units</th>
-                            <th scope="col">EUR Stock Price</th>
+                            <th scope="col">Price</th>
                             <th scope="col">EUR value</th>
+                            <th scope="col">24h Evol</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat="asset in myBalance">
                         <tr>
                             <td>{{asset.currency}}</td>
                             <td>{{asset.units}}</td>
-                            <td>{{asset.price}}</td>
-                            <td>{{asset.eur_value}}</td>
+                            <td>{{asset.price.toFixed(4)}} &euro;</td>
+                            <td>{{asset.eur_value.toFixed(2)}} &euro;</td>
+                            <td ng-class="{'text-red': asset.evolution < 0,'text-green': asset.evolution >= 0}">{{asset.evolution.toFixed(3)}} &percnt;</td>
                         </tr>
                     </tbody>
                 </table>
@@ -150,43 +152,31 @@
                         let evolution2d = 0;
                         if(arrayOfTradeBalances.length > 15){
                             oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-16];
-                            console.log(lastValue);
-                            console.log(oldestValue);
                             evolution15m = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolution15m = evolution15m.toFixed(2);
                         }
                         if(arrayOfTradeBalances.length > 60){
                             oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-61];
-                            console.log(lastValue);
-                            console.log(oldestValue);
                             evolution1h = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolution1h = evolution1h.toFixed(2);
                         }
                         if(arrayOfTradeBalances.length > 180){
                             oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-181];
-                            console.log(lastValue);
-                            console.log(oldestValue);
                             evolution3h = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolution3h = evolution3h.toFixed(2);
                         }
                         if(arrayOfTradeBalances.length > 360){
                             oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-361];
-                            console.log(lastValue);
-                            console.log(oldestValue);
                             evolution6h = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolution6h = evolution6h.toFixed(2);
                         }
                         if(arrayOfTradeBalances.length > 720){
                             oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-721];
-                            console.log(lastValue);
-                            console.log(oldestValue);
                             evolution12h = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolution12h = evolution12h.toFixed(2);
                         }
                         if(arrayOfTradeBalances.length > 1440){
                             oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1441];
-                            console.log(lastValue);
-                            console.log(oldestValue);
                             evolution1d = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolution1d = evolution1d.toFixed(2);
                         }
@@ -210,14 +200,9 @@
                             datasets: [
                                 {
                                     label: "Trade Balance",
-                                    backgroundColor: "rgba(51,153,255,1)",
-                                    borderColor: "rgba(204,229,255,1)",
-                                    strokeColor: "rgba(151,187,205,1)",
-                                    strokeColor: "rgba(151,187,205,1)",
-                                    pointColor: "rgba(151,187,205,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(220,220,220,1)",
+                                    backgroundColor: "rgba(224,224,224, 1)",
+                                    pointBackgroundColor: "rgba(160,160,160, 1)",
+                                    pointStyle: "cross",
                                     data: arrayOfTradeBalances
                                 }
                             ]
@@ -260,43 +245,31 @@
                             let evolution2d = 0;
                             if(arrayOfTradeBalances.length > 15){
                                 oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-16];
-                                console.log(lastValue);
-                                console.log(oldestValue);
                                 evolution15m = ((lastValue - oldestValue) / oldestValue) * 100;
                                 $scope.TBEvolution15m = evolution15m.toFixed(2);
                             }
                             if(arrayOfTradeBalances.length > 60){
                                 oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-61];
-                                console.log(lastValue);
-                                console.log(oldestValue);
                                 evolution1h = ((lastValue - oldestValue) / oldestValue) * 100;
                                 $scope.TBEvolution1h = evolution1h.toFixed(2);
                             }
                             if(arrayOfTradeBalances.length > 180){
                                 oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-181];
-                                console.log(lastValue);
-                                console.log(oldestValue);
                                 evolution3h = ((lastValue - oldestValue) / oldestValue) * 100;
                                 $scope.TBEvolution3h = evolution3h.toFixed(2);
                             }
                             if(arrayOfTradeBalances.length > 360){
                                 oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-361];
-                                console.log(lastValue);
-                                console.log(oldestValue);
                                 evolution6h = ((lastValue - oldestValue) / oldestValue) * 100;
                                 $scope.TBEvolution6h = evolution6h.toFixed(2);
                             }
                             if(arrayOfTradeBalances.length > 720){
                                 oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-721];
-                                console.log(lastValue);
-                                console.log(oldestValue);
                                 evolution12h = ((lastValue - oldestValue) / oldestValue) * 100;
                                 $scope.TBEvolution12h = evolution12h.toFixed(2);
                             }
                             if(arrayOfTradeBalances.length > 1440){
                                 oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1441];
-                                console.log(lastValue);
-                                console.log(oldestValue);
                                 evolution1d = ((lastValue - oldestValue) / oldestValue) * 100;
                                 $scope.TBEvolution1d = evolution1d.toFixed(2);
                             }
@@ -320,14 +293,9 @@
                                 datasets: [
                                     {
                                         label: "Trade Balance",
-                                        backgroundColor: "rgba(51,153,255,1)",
-                                        borderColor: "rgba(204,229,255,1)",
-                                        strokeColor: "rgba(151,187,205,1)",
-                                        strokeColor: "rgba(151,187,205,1)",
-                                        pointColor: "rgba(151,187,205,1)",
-                                        pointStrokeColor: "#fff",
-                                        pointHighlightFill: "#fff",
-                                        pointHighlightStroke: "rgba(220,220,220,1)",
+                                        backgroundColor: "rgba(224,224,224, 1)",
+                                        pointBackgroundColor: "rgba(160,160,160, 1)",
+                                        pointStyle: "cross",
                                         data: arrayOfTradeBalances
                                     }
                                 ]

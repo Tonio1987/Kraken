@@ -1,5 +1,5 @@
 const async = require('async');
-const moment = require('moment/moment');
+const moment = require('moment');
 
 const CRON_scheduler = require('../../cron/CRON_scheduler');
 const DB_CronTask = require('../../persistence/private/DB_CronTask');

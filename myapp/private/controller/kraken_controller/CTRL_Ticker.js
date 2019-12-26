@@ -9,7 +9,6 @@ const moment = require('moment/moment');
 module.exports = {
     LoadTicker: function () {
 
-
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_API_loadTicker,

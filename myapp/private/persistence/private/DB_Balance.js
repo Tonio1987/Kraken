@@ -3,42 +3,39 @@ const MongoClient = require('mongodb').MongoClient;
 
 moment.locale('fr');
 
-function prepareData(data){
-    var date = moment().format('L');
-    var hour = moment().format('LTS');
-    var timestamp = new Date().getTime();
-    // Cette limite permet d'éviter d'indiquer dans le portefeuille les fractions de parts de cryptos non détenues
-    var limite = 0.0001;
-    var myBalance = [];
-    for (var i in data) {
-        if (data.hasOwnProperty(i)) {
-            if (data[i] > limite) {
-                var currency = i;
-                var units = data[i];
-                var elementOfMyBalance = {
-                    insert_date: date,
-                    insert_hour: hour,
-                    insert_timestamp: timestamp,
-                    currency: currency,
-                    units: units
-                };
-                myBalance.push(elementOfMyBalance);
-            }
-        }
+function prepareData(bid_price, currency, nb_units, date, hour, timestamp){
+
+    var eur_value = 0;
+    // Cas de l'EURO et du DOGE
+    if(bid_price > 0){
+        eur_value = nb_units*bid_price;
+    }else{
+        eur_value = nb_units;
     }
-    return myBalance;
+
+    var elementOfMyBalance = {
+        insert_date: date,
+        insert_hour: hour,
+        insert_timestamp: timestamp,
+        currency: currency,
+        units: nb_units,
+        price: bid_price,
+        eur_value: eur_value
+    };
+
+    return elementOfMyBalance;
 }
 
 module.exports = {
-    insertBalance: function (callback, data) {
-        var myBalance = prepareData(data);
+    insertBalance: function (callback, bid_price, currency, nb_units, date, hour, timestamp) {
+        var elementOfMyBalance = prepareData(bid_price, currency, nb_units, date, hour, timestamp);
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
                 if (err) {
                     reject(err);
                 } else {
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Balance").insertMany(myBalance, function (err, res) {
+                    dbo.collection("Balance").insertOne(elementOfMyBalance, function (err, res) {
                         if (err) {
                             reject(err);
                         } else {

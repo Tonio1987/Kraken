@@ -1,4 +1,4 @@
-const moment = require('moment/moment');
+const moment = require('moment');
 var MongoClient = require('mongodb').MongoClient;
 
 moment.locale('fr');
@@ -134,7 +134,7 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, lowest, last24, highest);
+            callback(null, data, last24, highest, lowest);
         }).catch(function(err) {
             callback(err, null);
         });
