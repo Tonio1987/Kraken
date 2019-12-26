@@ -58,6 +58,29 @@ function prepareData(data){
 }
 
 module.exports = {
+    dropClosedOrders: function(callback){
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("ClosedOrders").drop(function(err, delOK) {
+                        if (err){
+                            reject(err);
+                        } else{
+                            db.close();
+                            resolve(true);
+                        }
+                    });
+                }
+            });
+        }).then(function(res){
+            callback(null, res);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
     upsertClosedOrders: function (callback, data) {
         var myClosedOrders = prepareData(data);
         new Promise(function (resolve, reject) {

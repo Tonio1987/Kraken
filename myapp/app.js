@@ -21,18 +21,23 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 // CALL ROUTES
 var indexRouter = require('./routes/index');
-app.use('/', indexRouter);
 var settingsRouter = require('./routes/settings');
+
+app.use('/', indexRouter);
 app.use('/settings', settingsRouter);
 
 // CALL API REST ROUTES
 var tradeBalanceRouter = require('./routes/rest_api/tradeBalance');
 var balanceRouter = require('./routes/rest_api/Balance');
 var openOrdersRouter = require('./routes/rest_api/OpenOrders');
+var last5ClosedOrdersRouter = require('./routes/rest_api/Last5ClosedOrders');
+var cronTasksRouter = require('./routes/rest_api/CronTasks');
 
 app.use('/tradeBalance', tradeBalanceRouter);
 app.use('/balance', balanceRouter);
 app.use('/openOrders', openOrdersRouter);
+app.use('/last5ClosedOrders', last5ClosedOrdersRouter);
+app.use('/cronTasks', cronTasksRouter);
 
 // INIT APP
 module.exports = app;

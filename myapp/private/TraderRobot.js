@@ -21,6 +21,7 @@ CTRL_CronScheduler.Init_CronScheduler();
 
 console.log('-------> Main Scheduler initialization ...  ');
 cron.schedule('*/10 * * * * *', () => {
+    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CRON - > Reload CRON Schedulers');
     CTRL_CronScheduler.Reload_CronScheduler();
 });
 

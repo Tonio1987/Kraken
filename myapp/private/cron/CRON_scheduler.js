@@ -69,7 +69,7 @@ Handler.init_task_LoadTicker = function(cron_expression){
 // CALCULATE MOVING AVERAGES - EVERY 1 MINUTES
 Handler.init_task_MMCalculation = function(cron_expression){
     task_MMCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load MMCalculation');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MM');
         CTRL_MMCalculation.CalculateMM();
     }, {
         scheduled: false
@@ -79,7 +79,7 @@ Handler.init_task_MMCalculation = function(cron_expression){
 // CALCULATE MOVING AVERAGES EVOLUTION - EVERY 1 MINUTES AT 30 S
 Handler.init_task_MMEvolCalculation = function(cron_expression){
     task_MMEvolCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load MMEvolCalculation');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MMEvolution');
         CTRL_MMEvolCalculation.CalculateMMEvol();
     }, {
         scheduled: false
@@ -89,7 +89,7 @@ Handler.init_task_MMEvolCalculation = function(cron_expression){
 // CALCULATE KELTNER - EVERY 1 MINUTES AT 40 S
 Handler.init_task_KeltnerCalculation = function(cron_expression){
     task_KeltnerCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load Keltner');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands');
         CTRL_KeltnerCalculation.CalculateKeltner();
     }, {
         scheduled: false

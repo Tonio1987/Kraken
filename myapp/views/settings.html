@@ -28,6 +28,61 @@
             <a class="nav-link active" href="/settings">Settings</a>
         </li>
     </ul>
+    <div  class="container">
+        <div class="row justify-content-md-center">
+            <div class="col">
+                <div ng-controller="Ctrl_Date" class="text-center">
+                    {{ today | date }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <br />
+            <h4>Cron Tasks</h4>
+            <table ng-controller="Ctrl_CronTasks" class="table table-striped table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">CRON expression</th>
+                    <th scope="col">Active</th>
+                </tr>
+                </thead>
+                <tbody ng-repeat="tasks in myCronTasks">
+                <tr>
+                    <td>{{tasks.name}}</td>
+                    <td>{{tasks.cron_expression}}</td>
+                    <td>{{tasks.active}}</td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('Ctrl_CronTasks', function($scope, $http) {
+            $http.get("cronTasks")
+                .then(function(response) {
+                    $scope.myCronTasks = response.data;
+                }).catch(function(response) {
+                $scope.myCronTasks = 'Erreur';
+            });
+        });
+
+        // DATE Controller
+        app.controller('Ctrl_Date', function($scope, $interval) {
+            $interval(function() {
+                var currentdate = new Date();
+                var datetime = "Time : " + currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/"
+                    + currentdate.getFullYear() + "  -  "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
+                $scope.today = datetime;
+            },1000);
+        });
+    </script>
 
 </body>
 </html>
