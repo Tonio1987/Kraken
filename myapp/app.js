@@ -34,7 +34,9 @@ var last5ClosedOrdersRouter = require('./routes/rest_api/Last5ClosedOrders');
 var cronTasksRouter = require('./routes/rest_api/CronTasks');
 var changeCronTaskStatusRouter = require('./routes/rest_api/ChangeCronTaskStatus');
 var triggersMMEvolRouter = require('./routes/rest_api/TriggersMMEvol');
-var changeTriggerStatusRouter = require('./routes/rest_api/ChangeTriggerStatus');
+var changeMMEvolTriggerStatusRouter = require('./routes/rest_api/ChangeTriggerStatus');
+var triggersKeltnerRouter = require('./routes/rest_api/TriggersKeltner');
+var changeKeltnerTriggerStatusRouter = require('./routes/rest_api/ChangeKeltnerTriggerStatus');
 
 app.use('/tradeBalance', tradeBalanceRouter);
 app.use('/balance', balanceRouter);
@@ -42,8 +44,10 @@ app.use('/openOrders', openOrdersRouter);
 app.use('/last5ClosedOrders', last5ClosedOrdersRouter);
 app.use('/cronTasks', cronTasksRouter);
 app.use('/changeCronTaskStatus', changeCronTaskStatusRouter);
-app.use('/triggers', triggersMMEvolRouter);
-app.use('/changeTriggerStatus', changeTriggerStatusRouter);
+app.use('/mmEvolTriggers', triggersMMEvolRouter);
+app.use('/changeTriggerStatus', changeMMEvolTriggerStatusRouter);
+app.use('/keltnerTriggers', triggersKeltnerRouter);
+app.use('/changeKeltnerTriggersStatus', changeKeltnerTriggerStatusRouter);
 
 // INIT APP
 module.exports = app;

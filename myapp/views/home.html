@@ -370,6 +370,7 @@
                 $http.get("Balance")
                     .then(function(response) {
                         $scope.myBalance = response.data;
+                        console.log(response.data);
                     }).catch(function(response) {
                     $scope.myBalance = 'Erreur';
                 });
@@ -400,7 +401,7 @@
                         .catch(function(response) {
                             $scope.myOpenOrders = 'Erreur';
                         });
-                },15000);
+                },30000);
             });
 
             /* CLOSED ORDERS CONTROLLER */
