@@ -44,6 +44,27 @@ module.exports = {
             }
         }
     },
+    getTriggerAutonomous: function(callback, req, res, next) {
+        async.waterfall([
+            STEP_DB_getTriggers,
+            STEP_finish
+        ], function (err, result) {
+            // Nothing to do here
+        });
+
+        function STEP_DB_getTriggers() {
+            DB_Triggers.getTriggerAutonomous(STEP_finish);
+        }
+
+        function STEP_finish(err, data) {
+            if(err){
+                console.log(err);
+                callback(err, data, req, res, next);
+            }else{
+                callback(err, data, req, res, next);
+            }
+        }
+    },
     changeTriggerStatus: function(callback, req, res, next) {
         async.waterfall([
             STEP_DB_changeTrigerStatus,

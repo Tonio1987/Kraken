@@ -3,8 +3,8 @@ var router = express.Router();
 
 const CTRL_Triggers = require('../../controller/CTRL_Triggers');
 
-function call_CTRL_getTriggersKeltner(req, res, next){
-    CTRL_Triggers.getTriggersKeltner(renderResult, req, res, next);
+function call_CTRL_getTriggerAutonomousMode(req, res, next){
+    CTRL_Triggers.getTriggerAutonomous(renderResult, req, res, next);
 }
 
 function renderResult(err, data, req, res, next){
@@ -18,7 +18,7 @@ function renderResult(err, data, req, res, next){
 }
 
 router.get('/', function(req, res, next) {
-    call_CTRL_getTriggersKeltner(req, res, next);
+    call_CTRL_getTriggerAutonomousMode(req, res, next);
 });
 
 module.exports = router;

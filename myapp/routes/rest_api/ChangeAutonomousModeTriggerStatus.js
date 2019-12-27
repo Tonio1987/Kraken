@@ -3,8 +3,8 @@ var router = express.Router();
 
 const CTRL_Triggers = require('../../controller/CTRL_Triggers');
 
-function call_CTRL_getTriggersKeltner(req, res, next){
-    CTRL_Triggers.getTriggersKeltner(renderResult, req, res, next);
+function call_CTRL_changeAutonomousModeTriggerStatus(req, res, next){
+    CTRL_Triggers.changeTriggerStatus(renderResult, req, res, next);
 }
 
 function renderResult(err, data, req, res, next){
@@ -13,12 +13,12 @@ function renderResult(err, data, req, res, next){
         res.send({Erreur: 'Erreur'});
     }else{
         res.set('Access-Control-Allow-Origin', '*');
-        res.status(200).send((data));
+        res.status(200).send(("ok"));
     }
 }
 
-router.get('/', function(req, res, next) {
-    call_CTRL_getTriggersKeltner(req, res, next);
+router.post('/', function(req, res, next) {
+    call_CTRL_changeAutonomousModeTriggerStatus(req, res, next);
 });
 
 module.exports = router;
