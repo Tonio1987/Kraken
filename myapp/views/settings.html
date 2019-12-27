@@ -66,6 +66,45 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="col">
+            <br />
+            <h4>Mobile Average Triggers</h4>
+            <table ng-controller="Ctrl_Triggers" class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Period</th>
+                        <th scope="col">5m</th>
+                        <th scope="col">15m</th>
+                        <th scope="col">30m</th>
+                        <th scope="col">45m</th>
+                        <th scope="col">60m</th>
+                        <th scope="col">75m</th>
+                        <th scope="col">90m</th>
+                        <th scope="col">105m</th>
+                        <th scope="col">2h</th>
+                        <th scope="col">3h</th>
+                        <th scope="col">6h</th>
+                        <th scope="col">9h</th>
+                        <th scope="col">12h</th>
+                        <th scope="col">1d</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="triggers in myMMEvolTriggers">
+                        <td> p {{triggers[0].period}}</td>
+                        <td ng-repeat="trig in triggers">
+                            <div ng-if="trig.active == true">
+                                <a ng-click="changeTriggerStatus(trig.id, trig.active)"><img src="/images/switch_on_min.png" /></a>
+                            </div>
+                            <div ng-if="trig.active == false">
+                                <img ng-attr-id="{{trig.id}}" src="/images/switch_off_min.png" ng-click="changeTriggerStatus(trig.id, trig.active)" />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -91,6 +130,68 @@
                             $scope.myCronTasks = response.data;
                         }).catch(function(response) {
                         $scope.myCronTasks = 'Erreur';
+                    });
+                });
+            }
+        });
+
+        app.controller('Ctrl_Triggers', function($scope, $http) {
+            $http.get("triggers")
+                .then(function(response) {
+                    let triggers = response.data;
+                    let tableTriggers = [];
+                    let tableTriggers2d = [];
+                    let count = 1;
+                    for(let i=0; i<triggers.length; i++){
+                         let triggerLine = {
+                             id: triggers[i]._id,
+                             period: triggers[i].period,
+                             mm: triggers[i].mm,
+                             active:  triggers[i].active
+                         };
+                         tableTriggers.push(triggerLine);
+                         if(count % 14 === 0){
+                             tableTriggers2d.push(tableTriggers);
+                             tableTriggers = [];
+                         }
+                         count++;
+                    }
+                    $scope.myMMEvolTriggers = tableTriggers2d;
+                }).catch(function(response) {
+                $scope.myMMEvolTriggers = 'Erreur';
+                });
+
+            $scope.changeTriggerStatus = function(id, active) {
+                let data = {trig_id: id, active_trig: active};
+                $http({
+                    method: 'POST',
+                    url: 'changeTriggerStatus',
+                    headers: {'Content-Type': 'application/json'},
+                    data: data
+                }).then(function (response) {
+                    $http.get("triggers")
+                        .then(function(response) {
+                            let triggers = response.data;
+                            let tableTriggers = [];
+                            let tableTriggers2d = [];
+                            let count = 1;
+                            for(let i=0; i<triggers.length; i++){
+                                let triggerLine = {
+                                    id: triggers[i]._id,
+                                    period: triggers[i].period,
+                                    mm: triggers[i].mm,
+                                    active:  triggers[i].active
+                                };
+                                tableTriggers.push(triggerLine);
+                                if(count % 14 === 0){
+                                    tableTriggers2d.push(tableTriggers);
+                                    tableTriggers = [];
+                                }
+                                count++;
+                            }
+                            $scope.myMMEvolTriggers = tableTriggers2d;
+                        }).catch(function(response) {
+                        $scope.myMMEvolTriggers = 'Erreur';
                     });
                 });
             }
