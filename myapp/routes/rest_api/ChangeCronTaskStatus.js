@@ -4,9 +4,7 @@ var router = express.Router();
 const CTRL_CronTasks = require('../../controller/CTRL_CronTasks');
 
 function call_CTRL_getCronTasks(req, res, next){
-    // CTRL_CronTasks.getCronTasks(renderResult, req, res, next);
-    console.log("here we are");
-    renderResult(null, null, req, res, next);
+    CTRL_CronTasks.changeCronTaskStatus(renderResult, req, res, next);
 }
 
 function renderResult(err, data, req, res, next){

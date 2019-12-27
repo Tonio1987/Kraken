@@ -25,6 +25,9 @@
             <a class="nav-link active" href="/">Home</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#">Analyses</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="/settings">Settings</a>
         </li>
     </ul>
@@ -53,7 +56,7 @@
                                 <th scope="col">6h</th>
                                 <th scope="col">12h</th>
                                 <th scope="col">1d</th>
-                                <th scope="col">2d</th>
+                                <th scope="col">Max</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,7 +67,7 @@
                                 <td ng-class="{'text-red': TBEvolution6h < 0,'text-green': TBEvolution6h >= 0}">{{TBEvolution6h}} &percnt;</td>
                                 <td ng-class="{'text-red': TBEvolution12h < 0,'text-green': TBEvolution12h >= 0}">{{TBEvolution12h}} &percnt;</td>
                                 <td ng-class="{'text-red': TBEvolution1d < 0,'text-green': TBEvolution1d >= 0}">{{TBEvolution1d}} &percnt;</td>
-                                <td ng-class="{'text-red': TBEvolution2d < 0,'text-green': TBEvolution2d >= 0}">{{TBEvolution2d}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolutionMax < 0,'text-green': TBEvolutionMax >= 0}">{{TBEvolutionMax}} &percnt;</td>
                             </tr>
                         </tbody>
                     </table>
@@ -177,7 +180,7 @@
                         let evolution6h = 0;
                         let evolution12h = 0;
                         let evolution1d = 0;
-                        let evolution2d = 0;
+                        let evolutionMax = 0;
                         if(arrayOfTradeBalances.length > 15){
                             oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-16];
                             evolution15m = ((lastValue - oldestValue) / oldestValue) * 100;
@@ -208,12 +211,10 @@
                             evolution1d = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolution1d = evolution1d.toFixed(2);
                         }
-                        if(arrayOfTradeBalances.length > 2880){
-                            oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-2881];
-                            evolution2d = ((lastValue - oldestValue) / oldestValue) * 100;
-                            $scope.TBEvolution2d = evolution2d.toFixed(2);
-                        }
 
+                        oldestValue = arrayOfTradeBalances[0];
+                        evolutionMax = ((lastValue - oldestValue) / oldestValue) * 100;
+                        $scope.TBEvolutionMax = evolutionMax.toFixed(2);
 
                         if(arrayOfTradeBalances.length > 1440){
                             datetimeOfTradeBalances = datetimeOfTradeBalances.slice(-1439, -1);
@@ -270,7 +271,7 @@
                             let evolution6h = 0;
                             let evolution12h = 0;
                             let evolution1d = 0;
-                            let evolution2d = 0;
+                            let evolutionMax = 0;
                             if(arrayOfTradeBalances.length > 15){
                                 oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-16];
                                 evolution15m = ((lastValue - oldestValue) / oldestValue) * 100;
@@ -301,11 +302,9 @@
                                 evolution1d = ((lastValue - oldestValue) / oldestValue) * 100;
                                 $scope.TBEvolution1d = evolution1d.toFixed(2);
                             }
-                            if(arrayOfTradeBalances.length > 2880){
-                                oldestValue = arrayOfTradeBalances[arrayOfTradeBalances.length-2881];
-                                evolution2d = ((lastValue - oldestValue) / oldestValue) * 100;
-                                $scope.TBEvolution2d = evolution2d.toFixed(2);
-                            }
+                            oldestValue = arrayOfTradeBalances[0];
+                            evolutionMax = ((lastValue - oldestValue) / oldestValue) * 100;
+                            $scope.TBEvolutionMax = evolutionMax.toFixed(2);
 
 
                             if(arrayOfTradeBalances.length > 1440){

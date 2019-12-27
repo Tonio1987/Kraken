@@ -25,6 +25,9 @@
             <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#">Analyses</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link active" href="/settings">Settings</a>
         </li>
     </ul>
@@ -50,14 +53,14 @@
                 </thead>
                 <tbody ng-repeat="tasks in myCronTasks">
                 <tr>
-                    <td>{{tasks.name}</td>
+                    <td>{{tasks.name}}</td>
                     <td>{{tasks.cron_expression}}</td>
                     <td>
                         <div ng-if="tasks.active == true">
-                            <button ng-attr-id="{{tasks._id}}" type="button" class="btn btn-danger btn-sm" ng-click="test(tasks._id)">D&eacute;sactiver</button>
+                            <button ng-attr-id="{{tasks._id}}" type="button" class="btn btn-danger btn-sm" ng-click="changeCronTaskStatus(tasks._id, tasks.active)">D&eacute;sactiver</button>
                         </div>
                         <div ng-if="tasks.active == false">
-                            <button ng-attr-id="{{tasks._id}}" type="button" class="btn btn-success btn-sm" ng-click="test(tasks._id)">Activer</button>
+                            <button ng-attr-id="{{tasks._id}}" type="button" class="btn btn-success btn-sm" ng-click="changeCronTaskStatus(tasks._id, tasks.active)">Activer</button>
                         </div>
                     </td>
                 </tr>
@@ -75,14 +78,20 @@
                 $scope.myCronTasks = 'Erreur';
             });
 
-            $scope.test = function(id) {
+            $scope.changeCronTaskStatus = function(id, active) {
+                let data = {task_id: id, active_task: active};
                 $http({
                     method: 'POST',
                     url: 'changeCronTaskStatus',
-                    data: id,
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                }).then(function successCallback(response) {
-                    console.log("here we are");
+                    headers: {'Content-Type': 'application/json'},
+                    data: data
+                }).then(function (response) {
+                    $http.get("cronTasks")
+                        .then(function(response) {
+                            $scope.myCronTasks = response.data;
+                        }).catch(function(response) {
+                        $scope.myCronTasks = 'Erreur';
+                    });
                 });
             }
         });
