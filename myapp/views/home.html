@@ -25,7 +25,7 @@
             <a class="nav-link active" href="/">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Market</a>
+            <a class="nav-link" href="/market">Market</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Analyses</a>
@@ -370,15 +370,14 @@
             });
 
             app.controller('Ctrl_Balance', function($scope, $http, $interval) {
-                $http.get("Balance")
+                $http.get("balance")
                     .then(function(response) {
                         $scope.myBalance = response.data;
-                        console.log(response.data);
                     }).catch(function(response) {
                     $scope.myBalance = 'Erreur';
                 });
                 $interval(function() {
-                    $http.get("Balance")
+                    $http.get("balance")
                         .then(function(response) {
                             $scope.myBalance = response.data;
                         })

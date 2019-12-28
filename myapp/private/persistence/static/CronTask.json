@@ -1,0 +1,12 @@
+{"_id":{"$oid":"5deacdd0894f423294467899"},"name":"task_ServerOk","cron_expression":"*/15 * * * * *","active":true}
+{"_id":{"$oid":"5dead0dc00170832943a2810"},"name":"task_KrakenServerOnline","cron_expression":"*/30 * * * * *","active":false}
+{"_id":{"$oid":"5dead0f700170832943a2811"},"name":"task_MMCalculation","cron_expression":"15 */1 * * * *","active":true}
+{"_id":{"$oid":"5dead10400170832943a2812"},"name":"task_LoadTradeBalance","cron_expression":"1 */1 * * * *","active":true}
+{"_id":{"$oid":"5dead14b00170832943a2813"},"name":"task_LoadBalance","cron_expression":"5 */1 * * * *","active":true}
+{"_id":{"$oid":"5dead16000170832943a2814"},"name":"task_LoadTradeHistory","cron_expression":"0 0 */1 * * *","active":true}
+{"_id":{"$oid":"5dead17500170832943a2815"},"name":"task_LoadClosedOrders","cron_expression":"0 * */1 * * *","active":true}
+{"_id":{"$oid":"5dead18c00170832943a2816"},"name":"task_LoadOpenOrders","cron_expression":"10 */1 * * * *","active":true}
+{"_id":{"$oid":"5dec0b1700170832943a2817"},"name":"task_LoadTicker","cron_expression":"0 */1 * * * *","active":true}
+{"_id":{"$oid":"5decf20a00170832943a2818"},"name":"task_MMEvolCalculation","cron_expression":"25 */1 * * * *","active":true}
+{"_id":{"$oid":"5ded61a700170832943a29e1"},"name":"task_PurgeData","cron_expression":"0 12 0 * * *","active":true}
+{"_id":{"$oid":"5df68758fd7b1d7970528f9f"},"name":"task_KeltnerCalculation","cron_expression":"35 */1 * * * *","active":true}

@@ -4,17 +4,16 @@ var MongoClient = require('mongodb').MongoClient;
 moment.locale('fr');
 
 module.exports = {
-    insertTicker: function (callback, data, pair) {
+    insertTicker: function (callback, data, pair, insert_date, insert_hour, timestamp) {
         new Promise(function (resolve, reject) {
-            var timestamp = new Date().getTime();
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                     var myobj = {
-                        insert_date: moment().format('L'),
-                        insert_hour: moment().format('LTS'),
+                        insert_date: insert_date,
+                        insert_hour: insert_hour,
                         insert_timestamp: timestamp,
                         pair: pair,
                         ask_price: data[pair].a[0],

@@ -21,9 +21,11 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 // CALL ROUTES
 var indexRouter = require('./routes/index');
+var marketRouter = require('./routes/market');
 var settingsRouter = require('./routes/settings');
 
 app.use('/', indexRouter);
+app.use('/market', marketRouter);
 app.use('/settings', settingsRouter);
 
 // CALL API REST ROUTES
@@ -39,6 +41,7 @@ var triggersKeltnerRouter = require('./routes/rest_api/TriggersKeltner');
 var changeKeltnerTriggerStatusRouter = require('./routes/rest_api/ChangeKeltnerTriggerStatus');
 var triggerAutonomousModeRouter = require('./routes/rest_api/TriggerAutonomousMode');
 var changeAutonomousModeTriggerStatusRouter = require('./routes/rest_api/ChangeAutonomousModeTriggerStatus');
+var marketInfoRouter = require('./routes/rest_api/MarketInfo');
 
 app.use('/tradeBalance', tradeBalanceRouter);
 app.use('/balance', balanceRouter);
@@ -52,6 +55,7 @@ app.use('/keltnerTriggers', triggersKeltnerRouter);
 app.use('/changeKeltnerTriggersStatus', changeKeltnerTriggerStatusRouter);
 app.use('/autonomousModeTrigger', triggerAutonomousModeRouter);
 app.use('/changeAutonomousModeTriggerStatus', changeAutonomousModeTriggerStatusRouter);
+app.use('/marketInfo', marketInfoRouter);
 
 // INIT APP
 module.exports = app;

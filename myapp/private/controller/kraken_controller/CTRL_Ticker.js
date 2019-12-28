@@ -8,7 +8,9 @@ const moment = require('moment/moment');
 
 module.exports = {
     LoadTicker: function () {
-
+        let insert_date = moment().format('L');
+        let insert_hour = moment().format('LTS');
+        let timestamp = new Date().getTime();
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_API_loadTicker,
@@ -32,7 +34,7 @@ module.exports = {
         }
         function STEP_DB_insertTicker(err, data, pair) {
             if(!err){
-                DB_Ticker.insertTicker(STEP_finish, data, pair);
+                DB_Ticker.insertTicker(STEP_finish, data, pair, insert_date, insert_hour, timestamp);
             }else{
                 console.log('Erreur with pair : '+pair);
                 STEP_finish(err);
