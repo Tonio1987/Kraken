@@ -5,3 +5,7 @@
 .text-green{
   color:lightgreen;
 }
+
+.table-row{
+  cursor:pointer;
+}

@@ -3,7 +3,6 @@ const async = require('async');
 
 module.exports = {
     getLast24hTicker: function(callback, req, res, next) {
-
         async.waterfall([
             STEP_DB_getMaxInsertTimestamp,
             STEP_DB_getLastTickers,
@@ -52,6 +51,27 @@ module.exports = {
                 }
             }
             STEP_finish(null, marketInfo);
+        }
+
+        function STEP_finish(err, marketInfo) {
+            if(err){
+                console.log(err);
+                callback(err, marketInfo, req, res, next);
+            }else{
+                callback(err, marketInfo, req, res, next);
+            }
+        }
+    },
+    getLast1440Ticker: function(callback, req, res, next) {
+        async.waterfall([
+            STEP_DB_getlast24hTickerData,
+            STEP_finish
+        ], function (err, result) {
+            // Nothing to do here
+        });
+
+        function STEP_DB_getlast24hTickerData() {
+            DB_Tickers.getLast1440Ticker(STEP_finish, req.body.pair);
         }
 
         function STEP_finish(err, marketInfo) {

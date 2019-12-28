@@ -42,6 +42,7 @@ var changeKeltnerTriggerStatusRouter = require('./routes/rest_api/ChangeKeltnerT
 var triggerAutonomousModeRouter = require('./routes/rest_api/TriggerAutonomousMode');
 var changeAutonomousModeTriggerStatusRouter = require('./routes/rest_api/ChangeAutonomousModeTriggerStatus');
 var marketInfoRouter = require('./routes/rest_api/MarketInfo');
+var tickerDataRouter = require('./routes/rest_api/TickerData');
 
 app.use('/tradeBalance', tradeBalanceRouter);
 app.use('/balance', balanceRouter);
@@ -56,6 +57,7 @@ app.use('/changeKeltnerTriggersStatus', changeKeltnerTriggerStatusRouter);
 app.use('/autonomousModeTrigger', triggerAutonomousModeRouter);
 app.use('/changeAutonomousModeTriggerStatus', changeAutonomousModeTriggerStatusRouter);
 app.use('/marketInfo', marketInfoRouter);
+app.use('/tickerData', tickerDataRouter);
 
 // INIT APP
 module.exports = app;
