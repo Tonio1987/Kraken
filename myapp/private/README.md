@@ -1,2 +1,0 @@
-# Kraken
-Crypto Trading Robot

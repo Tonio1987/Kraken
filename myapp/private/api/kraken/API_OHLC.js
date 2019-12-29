@@ -9,7 +9,7 @@ const api = kraken({
 module.exports = {
     kraken_OHLC: function(callback, pair) {
         return new Promise(function (resolve, reject) {
-            api.call('OHLC', { pair: pair, count: 1 }, (err, data) => {
+            api.call('OHLC', { pair: pair, interval: 5, count: 1 }, (err, data) => {
                 if (err) {
                     console.error(err);
                     reject(err);
@@ -17,9 +17,9 @@ module.exports = {
                 resolve(data);
             });
         }).then(function(data){
-            callback(null, data);
+            callback(null, data, pair);
         }).catch(function(err) {
-            callback(err, null);
+            callback(err, null, null);
         });
     }
 };

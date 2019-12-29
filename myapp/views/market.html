@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="row justify-content-md-center" ng-controller="Ctrl_Market">
-                <div class="col-7 float-left">
+                <div class="col-6 float-left">
                     <br />
                     <h4>Market informations</h4>
                     <table class="table table-striped table-dark">
@@ -68,7 +68,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-5">
+                <div class="col-3">
                     <br />
                     <h4>Ticker History : {{selectedTicker}}</h4>
                     <canvas id="TickerLineChart" width="200" height="200"></canvas>
@@ -112,7 +112,7 @@
                     for (let d in resp) {
                         if (resp.hasOwnProperty(d)) {
                             arrayOfTickers.unshift(resp[d].ask_price);
-                            datetimeOfTickers.unshift(resp[d].insert_date + ' ' + resp[d].insert_hour);
+                            datetimeOfTickers.unshift(resp[d].insert_hour);
                             i++;
                         }
                     }
@@ -156,7 +156,7 @@
                         for (let d in resp) {
                             if (resp.hasOwnProperty(d)) {
                                 arrayOfTickers.unshift(resp[d].ask_price);
-                                datetimeOfTickers.unshift(resp[d].insert_date + ' ' + resp[d].insert_hour);
+                                datetimeOfTickers.unshift(resp[d].insert_hour);
                                 i++;
                             }
                         }
