@@ -79,9 +79,10 @@
             </div>
             <div class="col">
                 <br />
-                <h4>Balance details</h4>
-                <table ng-controller="Ctrl_Balance" class="table table-striped table-dark">
-                    <thead>
+                <div>
+                    <h4>Balance details</h4>
+                    <table ng-controller="Ctrl_Balance" class="table table-striped table-dark">
+                        <thead>
                         <tr>
                             <th scope="col">Currency</th>
                             <th scope="col">Units</th>
@@ -89,8 +90,8 @@
                             <th scope="col">EUR value</th>
                             <th scope="col">24h Evol</th>
                         </tr>
-                    </thead>
-                    <tbody ng-repeat="asset in myBalance">
+                        </thead>
+                        <tbody ng-repeat="asset in myBalance">
                         <tr>
                             <td>{{asset.currency}}</td>
                             <td>{{asset.units}}</td>
@@ -98,29 +99,34 @@
                             <td>{{asset.eur_value.toFixed(2)}} &euro;</td>
                             <td ng-class="{'text-red': asset.evolution < 0,'text-green': asset.evolution >= 0}">{{asset.evolution.toFixed(3)}} &percnt;</td>
                         </tr>
-                    </tbody>
-                </table>
-                <h4>Open orders</h4>
-                <table ng-controller="Ctrl_OpenOrders" class="table table-striped table-dark">
-                    <thead>
-                    <tr>
-                        <th scope="col">Pair</th>
-                        <th scope="col">Order type</th>
-                        <th scope="col">Order subtype</th>
-                        <th scope="col">Volume</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                    </thead>
-                    <tbody ng-repeat="order in myOpenOrders">
-                    <tr>
-                        <td>{{order.pair}}</td>
-                        <td>{{order.type}}</td>
-                        <td>{{order.ordertype}}</td>
-                        <td>{{order.vol}}</td>
-                        <td>{{order.price}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-controller="Ctrl_OpenOrders">
+                    <h4>Open orders</h4>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">Pair</th>
+                            <th scope="col">Order type</th>
+                            <th scope="col">Order subtype</th>
+                            <th scope="col">Volume</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="order in myOpenOrders">
+                        <tr>
+                            <td>{{order.pair}}</td>
+                            <td>{{order.type}}</td>
+                            <td>{{order.ordertype}}</td>
+                            <td>{{order.vol}}</td>
+                            <td>{{order.price}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h4>Min Trade Balance value: {{myMinTradeBalance.toFixed(2)}} &euro;</h4>
+                </div>
+
             </div>
         </div>
         <div class="row">
@@ -392,16 +398,36 @@
                 $http.get("OpenOrders")
                     .then(function(response) {
                         $scope.myOpenOrders = response.data;
+                        let openOrders = response.data;
+                        let minTradeBalancevalue = 0;
+                        for(let order in openOrders){
+                            if(openOrders.hasOwnProperty(order)){
+                                console.log(order);
+                                minTradeBalancevalue = minTradeBalancevalue + openOrders[order].vol*openOrders[order].price;
+                            }
+                        }
+                        $scope.myMinTradeBalance = minTradeBalancevalue;
                     }).catch(function(response) {
                     $scope.myOpenOrders = 'Erreur';
+                    $scope.myMinTradeBalance = 0;
                 });
                 $interval(function() {
                     $http.get("OpenOrders")
                         .then(function(response) {
                             $scope.myOpenOrders = response.data;
+                            let openOrders = response.data;
+                            let minTradeBalancevalue = 0;
+                            for(let order in openOrders){
+                                if(openOrders.hasOwnProperty(order)){
+                                    console.log(order);
+                                    minTradeBalancevalue = minTradeBalancevalue + openOrders[order].vol*openOrders[order].price;
+                                }
+                            }
+                            $scope.myMinTradeBalance = minTradeBalancevalue;
                         })
                         .catch(function(response) {
                             $scope.myOpenOrders = 'Erreur';
+                            $scope.myMinTradeBalance = 0;
                         });
                 },30000);
             });

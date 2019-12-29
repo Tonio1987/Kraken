@@ -57,7 +57,7 @@
                         </tr>
                         </thead>
                         <tbody ng-repeat="ticker in tickers | orderBy:'-evol'">
-                        <tr ng-click="loadTickerData(ticker.pair)" class="table-row">
+                        <tr ng-click="loadGraphData(ticker.pair)" class="table-row">
                             <td>{{ticker.pair}}</td>
                             <td>{{ticker.ask_price}} {{ticker.cvl_currency}}</td>
                             <td>{{ticker.bid_price}}  {{ticker.cvl_currency}}</td>
@@ -72,6 +72,11 @@
                     <br />
                     <h4>Ticker History : {{selectedTicker}}</h4>
                     <canvas id="TickerLineChart" width="200" height="200"></canvas>
+                </div>
+                <div class="col-3">
+                    <br />
+                    <h4>Market Trades : {{selectedTicker}}</h4>
+                    <canvas id="MarketTradesLineChart" width="200" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -138,7 +143,56 @@
                     $scope.selectedTicker = 'XXBTZEUR';
                 });
 
-                $scope.loadTickerData = function(pair) {
+                $http({
+                    method: 'POST',
+                    url: 'marketTradesData',
+                    headers: {'Content-Type': 'application/json'},
+                    data: data
+                }).then(function (response) {
+                    let resp = response.data;
+
+                    let arrayOfTrades = [];
+                    let datetimeOfTrades = [];
+
+                    let i = 1;
+                    for (let d in resp) {
+                        if (resp.hasOwnProperty(d)) {
+                            var time = new Date(resp[d].time);
+                            var datetime = time.getDate() + "/"
+                                + (time.getMonth()+1)  + "/"
+                                + time.getFullYear() + "  -  "
+                                + time.getHours() + ":"
+                                + time.getMinutes() + ":"
+                                + time.getSeconds();
+
+                            arrayOfTrades.unshift(resp[d].volume);
+                            datetimeOfTrades.unshift(datetime);
+                            i++;
+                        }
+                    }
+                    let data = {
+                        labels: datetimeOfTrades,
+                        datasets: [
+                            {
+                                label: 'XXBTZEUR',
+                                backgroundColor: "rgba(224,224,224, 1)",
+                                pointBackgroundColor: "rgba(160,160,160, 1)",
+                                pointStyle: "cross",
+                                data: arrayOfTrades
+                            }
+                        ]
+                    };
+                    var options = {};
+                    var ctx2 = document.getElementById("MarketTradesLineChart").getContext("2d");
+                    var myLineChart = new Chart(ctx2, {
+                        type: 'line',
+                        data: data,
+                        options: options
+                    });
+                    $scope.selectedTicker = 'XXBTZEUR';
+                });
+
+                $scope.loadGraphData = function(pair) {
                     let data = {pair: pair};
 
                     $http({
@@ -181,8 +235,58 @@
                         });
                     });
 
-                    $scope.selectedTicker = pair;
-                }
+                    $http({
+                        method: 'POST',
+                        url: 'marketTradesData',
+                        headers: {'Content-Type': 'application/json'},
+                        data: data
+                    }).then(function (response) {
+                        let resp = response.data;
+
+                        let arrayOfTrades = [];
+                        let datetimeOfTrades = [];
+
+                        let i = 1;
+                        for (let d in resp) {
+                            if (resp.hasOwnProperty(d)) {
+                                var time = new Date(resp[d].time);
+                                var datetime = time.getDate() + "/"
+                                    + (time.getMonth()+1)  + "/"
+                                    + time.getFullYear() + "  -  "
+                                    + time.getHours() + ":"
+                                    + time.getMinutes() + ":"
+                                    + time.getSeconds();
+
+                                arrayOfTrades.unshift(resp[d].volume);
+                                datetimeOfTrades.unshift(datetime);
+                                i++;
+                            }
+                        }
+                        let data = {
+                            labels: datetimeOfTrades,
+                            datasets: [
+                                {
+                                    label: pair,
+                                    backgroundColor: "rgba(224,224,224, 1)",
+                                    pointBackgroundColor: "rgba(160,160,160, 1)",
+                                    pointStyle: "cross",
+                                    data: arrayOfTrades
+                                }
+                            ]
+                        };
+                        var options = {};
+                        var ctx2 = document.getElementById("MarketTradesLineChart").getContext("2d");
+                        var myLineChart = new Chart(ctx2, {
+                            type: 'line',
+                            data: data,
+                            options: options
+                        });
+                        $scope.selectedTicker = pair;
+                    });
+
+                };
+
+
 
             });
 
