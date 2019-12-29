@@ -9,6 +9,7 @@ const CTRL_Time = require('../controller/kraken_controller/CTRL_Time');
 const CTRL_TradesHistory = require('../controller/kraken_controller/CTRL_TradesHistory');
 const CTRL_ClosedOrders = require('../controller/kraken_controller/CTRL_ClosedOrders');
 const CTRL_OpenOrders = require('../controller/kraken_controller/CTRL_OpenOrders');
+const CTRL_Trades = require('../controller/kraken_controller/CTRL_Trades');
 const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
 const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
 const CTRL_KeltnerCalculation = require('../controller/algotirhm_controller/CTRL_KeltnerCalculation');
@@ -32,6 +33,7 @@ let task_LoadBalance = null;
 let task_LoadTradeHistory = null;
 let task_LoadClosedOrders = null;
 let task_LoadOpenOrders = null;
+let task_LoadMarketTrades = null;
 let task_PurgeData = null;
 
 // HANDLER DYNAMIC FUNCTION
@@ -106,11 +108,21 @@ Handler.init_task_LoadTradeBalance = function(cron_expression){
     });
 };
 
-// LOAD BALANCE - EVERY 1 HOURS
+// LOAD BALANCE - EVERY 1 MINUTE
 Handler.init_task_LoadBalance = function(cron_expression){
     task_LoadBalance = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  - > Load Balance');
         CTRL_Balance.LoadBalance();
+    }, {
+        scheduled: false
+    });
+};
+
+// LOAD MARKET TRADES - EVERY 30 MINUTE
+Handler.init_task_LoadMarketTrades = function(cron_expression){
+    task_LoadMarketTrades = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  - > Load Market trades');
+        CTRL_Trades.LoadTrades();
     }, {
         scheduled: false
     });
@@ -194,6 +206,9 @@ Handler.stop_task_LoadClosedOrders = function(){task_LoadClosedOrders.stop();};
 
 Handler.start_task_LoadOpenOrders = function(){task_LoadOpenOrders.start();};
 Handler.stop_task_LoadOpenOrders = function(){task_LoadOpenOrders.stop();};
+
+Handler.start_task_LoadMarketTrades = function(){task_LoadMarketTrades.start();};
+Handler.stop_task_LoadMarketTrades = function(){task_LoadMarketTrades.stop();};
 
 Handler.start_task_PurgeData = function(){task_PurgeData.start();};
 Handler.stop_task_PurgeData = function(){task_PurgeData.stop();};

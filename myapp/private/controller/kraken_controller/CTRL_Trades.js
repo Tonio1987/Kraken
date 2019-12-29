@@ -1,39 +1,43 @@
 const DB_Pairs = require('../../persistence/private/DB_Pairs');
-const DB_Depth = require('../../persistence/private/DB_Depth');
-const API_Depth = require('../../api/kraken/API_Depth');
+const DB_Trades = require('../../persistence/private/DB_Trades');
+const API_Trades = require('../../api/kraken/API_Trades');
 const async = require('async');
 const moment = require('moment/moment');
 
 
 module.exports = {
-    LoadTicker: function () {
+    LoadTrades: function () {
         let insert_date = moment().format('L');
         let insert_hour = moment().format('LTS');
         let timestamp = new Date().getTime();
         async.waterfall([
+            STEP_DB_dropMarketTrades,
             STEP_DB_getAllPairs,
-            STEP_API_loadDepth,
-            STEP_DB_insertDepth,
+            STEP_API_loadTrades,
+            STEP_DB_insertTrades,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
         });
-
-        function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_API_loadDepth);
+        function STEP_DB_dropMarketTrades() {
+            DB_Trades.dropMarketTrades(STEP_DB_getAllPairs);
         }
-        function STEP_API_loadDepth(err, data) {
+        function STEP_DB_getAllPairs() {
+            DB_Pairs.getAllPairs(STEP_API_loadTrades);
+        }
+        function STEP_API_loadTrades(err, data) {
             if(!err){
                 data.forEach(function(pair){
-                    API_Depth.kraken_Depth(STEP_DB_insertDepth, pair.kraken_pair_name);
+                    API_Trades.kraken_Trades(STEP_DB_insertTrades, pair.kraken_pair_name);
                 });
+
             }else{
                 STEP_finish(err);
             }
         }
-        function STEP_DB_insertDepth(err, data, pair) {
+        function STEP_DB_insertTrades(err, data, pair) {
             if(!err){
-                DB_Depth.insertDepth(STEP_finish, data, pair, insert_date, insert_hour, timestamp);
+                DB_Trades.insertTrades(STEP_finish, data, pair, insert_date, insert_hour, timestamp);
             }else{
                 console.log('Erreur with pair : '+pair);
                 STEP_finish(err);
@@ -42,7 +46,7 @@ module.exports = {
         function STEP_finish(err, data) {
             if(err){
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load OHLC FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Depth FAILED');
             }
         }
     }

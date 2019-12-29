@@ -7,9 +7,9 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_Depth: function(callback, pair) {
+    kraken_Trades: function(callback, pair) {
         return new Promise(function (resolve, reject) {
-            api.call('Depth', { pair: pair, count: 1 }, (err, data) => {
+            api.call('Trades', { pair: pair}, (err, data) => {
                 if (err) {
                     console.error(err);
                     reject(err);
@@ -17,9 +17,9 @@ module.exports = {
                 resolve(data);
             });
         }).then(function(data){
-            callback(null, data);
+            callback(null, data, pair);
         }).catch(function(err) {
-            callback(err, null);
+            callback(err, null, null);
         });
 
     }

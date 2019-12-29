@@ -10,3 +10,4 @@
 {"_id":{"$oid":"5decf20a00170832943a2818"},"name":"task_MMEvolCalculation","cron_expression":"25 */1 * * * *","active":true}
 {"_id":{"$oid":"5ded61a700170832943a29e1"},"name":"task_PurgeData","cron_expression":"0 12 0 * * *","active":true}
 {"_id":{"$oid":"5df68758fd7b1d7970528f9f"},"name":"task_KeltnerCalculation","cron_expression":"35 */1 * * * *","active":true}
+{"_id":{"$oid":"5e09189ab549b617148a96af"},"name":"task_LoadMarketTrades","cron_expression":"5 */5 * * * *","active":true}

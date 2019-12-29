@@ -97,7 +97,6 @@ module.exports = {
                             if (err){
                                 reject(err);
                             } else{
-
                                 db.close();
                                 resolve(true);
                             }
