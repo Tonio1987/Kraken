@@ -159,7 +159,7 @@ Handler.init_task_LoadOpenOrders = function(cron_expression){
     });
 };
 
-// PURGE DATA - EVERY 1 DAY
+// PURGE DATA - EVERY 1 HOUR - KEEP LAST 2 DAYS DATA
 Handler.init_task_PurgeData = function(cron_expression){
     task_PurgeData = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Purge Data');
