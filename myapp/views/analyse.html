@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>--- Trading Robot interface ---</title>
+        <!-- favicon -->
+        <link rel="icon" type="image/x-icon" href="images/favicon.jpg" />
+        <!-- Angular JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+        <script src="/lib/angular/angular.js"></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <!--- Chart -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css">
+        <link rel="stylesheet" href="/stylesheets/style.css">
+    </head>
+    <body ng-app="myApp">
+
+        <!-- Navigation bar -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/market">Market</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" active href="/analyse">Analyses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/settings">Settings</a>
+            </li>
+        </ul>
+        <div class="container-fluid">
+            <div class="row justify-content-md-center">
+                <div class="col">
+                    <div ng-controller="Ctrl_Date" class="text-center">
+                        {{ today | date }}
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-md-center">
+                <div ng-controller="Ctrl_Pairs" class="col-auto my-1">
+                    <br />
+                     Select pair :
+                    <select  name="pairsSelect" id="pairsSelect" ng-model="pairSelected" ng-change="loadPairData(pairSelected)" class="custom-select mr-sm-2">
+                        <option ng-repeat="pair in pairs" value="{{pair.kraken_pair_name}}">{{pair.kraken_pair_name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+         <script>
+             var app = angular.module('myApp', []);
+
+             // PAIR Controller
+             app.controller('Ctrl_Pairs', function($scope, $http) {
+                 $http.get("pairsList")
+                     .then(function(response) {
+                         $scope.pairs = response.data;
+                     }).catch(function(response) {
+                     $scope.pairs = 'Erreur';
+                 });
+
+                 $scope.loadPairData = function(pairSelected){
+                     $http.get("/MMEvolPairData")
+                         .then(function(response) {
+                             $scope.MMEvolPairData = response.data;
+                         }).catch(function(response) {
+                         $scope.MMEvolPairData = 'Erreur';
+                     });
+                 }
+             });
+
+
+             // DATE Controller
+             app.controller('Ctrl_Date', function($scope, $interval) {
+                $interval(function() {
+                    var currentdate = new Date();
+                    var datetime = "Time : " + currentdate.getDate() + "/"
+                        + (currentdate.getMonth()+1)  + "/"
+                        + currentdate.getFullYear() + "  -  "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
+                    $scope.today = datetime;
+                },1000);
+            });
+        </script>
+
+    </body>
+</html>

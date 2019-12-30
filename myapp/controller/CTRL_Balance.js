@@ -41,18 +41,23 @@ module.exports = {
                 var myBalance = [];
                 for(elem in lastBalance){
                     if(lastBalance.hasOwnProperty(elem)){
-                        for(elem2 in oneDayAgoBalance){
-                            if(oneDayAgoBalance.hasOwnProperty(elem2)){
-                                if(lastBalance[elem].currency === oneDayAgoBalance[elem2].currency){
-                                    let evolution = ((lastBalance[elem].eur_value - oneDayAgoBalance[elem2].eur_value) / oneDayAgoBalance[elem2].eur_value) * 100;
-                                    let elementOfMyBalance = {
-                                        currency : lastBalance[elem].currency,
-                                        units: lastBalance[elem].units,
-                                        price: lastBalance[elem].price,
-                                        eur_value: lastBalance[elem].eur_value,
-                                        evolution: evolution
-                                    }
-                                    myBalance.push(elementOfMyBalance);
+                        let elementOfMyBalance = {
+                            currency : lastBalance[elem].currency,
+                            units: lastBalance[elem].units,
+                            price: lastBalance[elem].price,
+                            eur_value: lastBalance[elem].eur_value
+                        }
+                        myBalance.push(elementOfMyBalance);
+                    }
+                }
+                for(elem in myBalance){
+                    if(myBalance.hasOwnProperty(elem)){
+                        for(elem2 in oneDayAgoBalance) {
+                            if (oneDayAgoBalance.hasOwnProperty(elem2)) {
+                                let evolution = 0;
+                                if (myBalance[elem].currency === oneDayAgoBalance[elem2].currency) {
+                                    evolution = ((myBalance[elem].eur_value - oneDayAgoBalance[elem2].eur_value) / oneDayAgoBalance[elem2].eur_value) * 100;
+                                    myBalance[elem].evolution = evolution;
                                 }
                             }
                         }

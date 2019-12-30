@@ -22,10 +22,12 @@ app.use(express.static(path.join(__dirname, 'views')));
 // CALL ROUTES
 var indexRouter = require('./routes/index');
 var marketRouter = require('./routes/market');
+var analysesRouter = require('./routes/analyse');
 var settingsRouter = require('./routes/settings');
 
 app.use('/', indexRouter);
 app.use('/market', marketRouter);
+app.use('/analyse', analysesRouter);
 app.use('/settings', settingsRouter);
 
 // CALL API REST ROUTES
@@ -44,6 +46,7 @@ var changeAutonomousModeTriggerStatusRouter = require('./routes/rest_api/ChangeA
 var marketInfoRouter = require('./routes/rest_api/MarketInfo');
 var tickerDataRouter = require('./routes/rest_api/TickerData');
 var marketTradesDataRouter = require('./routes/rest_api/MarketTradesData');
+var pairsListRouter = require('./routes/rest_api/PairsList');
 
 app.use('/tradeBalance', tradeBalanceRouter);
 app.use('/balance', balanceRouter);
@@ -60,7 +63,7 @@ app.use('/changeAutonomousModeTriggerStatus', changeAutonomousModeTriggerStatusR
 app.use('/marketInfo', marketInfoRouter);
 app.use('/tickerData', tickerDataRouter);
 app.use('/marketTradesData', marketTradesDataRouter);
-
+app.use('/pairsList', pairsListRouter);
 
 // INIT APP
 module.exports = app;
