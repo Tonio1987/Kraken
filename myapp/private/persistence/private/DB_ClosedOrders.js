@@ -13,7 +13,7 @@ function prepareData(data){
     for (var order in orders) {
         if (orders.hasOwnProperty(order)) {
             var ord = {
-                "updateMany": {
+                "updateOne": {
                     "filter": { "orderid": order},
                     "update": { "$set": {
                             insert_date: date,

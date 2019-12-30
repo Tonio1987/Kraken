@@ -14,18 +14,13 @@ module.exports = {
         ], function (err, result) {
             // Nothing to do here
         });
-
+/*
         function STEP_DB_dropClosedOrders() {
             DB_ClosedOrders.dropClosedOrders(STEP_API_getClosedOrders);
         }
-
-        function STEP_API_getClosedOrders(err, res) {
-            if(!err){
-                API_ClosedOrders.kraken_ClosedOrders(STEP_DB_insertClosedOrders);
-            }else{
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Warning - First time Closed Order Loading');
-                API_ClosedOrders.kraken_ClosedOrders(STEP_DB_insertClosedOrders);
-            }
+*/
+        function STEP_API_getClosedOrders() {
+            API_ClosedOrders.kraken_ClosedOrders(STEP_DB_insertClosedOrders);
         }
 
         function STEP_DB_insertClosedOrders(err, data) {

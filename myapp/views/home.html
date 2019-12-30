@@ -120,7 +120,7 @@
                             <td>{{order.type}}</td>
                             <td>{{order.ordertype}}</td>
                             <td>{{order.vol}}</td>
-                            <td>{{order.price}}</td>
+                            <td>{{order.price}} &euro;</td>
                         </tr>
                         </tbody>
                     </table>
@@ -140,6 +140,7 @@
                         <th scope="col">Pair</th>
                         <th scope="col">Order type</th>
                         <th scope="col">Volume</th>
+                        <th scope="col">Volume Exec</th>
                         <th scope="col">Price</th>
                         <th scope="col">Value</th>
                         <th scope="col">Fees</th>
@@ -151,9 +152,10 @@
                         <td>{{order.pair}}</td>
                         <td>{{order.type}} - {{order.ordertype}}</td>
                         <td>{{order.vol}}</td>
+                        <td ng-class="{'text-yellow': order.vol_exec != order.vol,'text-green': order.vol_exec == order.vol}">{{order.vol_exec}}</td>
                         <td>{{order.price3}}</td>
-                        <td>{{order.cost}}</td>
-                        <td>{{order.fee}}</td>
+                        <td>{{order.cost}} &euro;</td>
+                        <td>{{order.fee}} &euro;</td>
                     </tr>
                     </tbody>
                 </table>

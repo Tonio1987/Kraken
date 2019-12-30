@@ -6,6 +6,10 @@
   color:lightgreen;
 }
 
+.text-yellow{
+  color:yellow;
+}
+
 .table-row{
   cursor:pointer;
 }
