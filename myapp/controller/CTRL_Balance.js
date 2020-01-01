@@ -57,6 +57,7 @@ module.exports = {
             if(err){
                 STEP_finish(err, null);
             }else{
+                console.log(balanceChanges);
                 var myBalance = [];
                 for(elem in lastBalance){
                     if(lastBalance.hasOwnProperty(elem)){
