@@ -249,7 +249,11 @@
                                 }
                             ]
                         };
-                        var options = { };
+                        var options = {elements: {
+                                point:{
+                                    radius: 0
+                                }
+                            } };
                         var ctx = document.getElementById("TradeBalanceLineChart").getContext("2d");
                         var myLineChart = new Chart(ctx, {
                             type: 'line',

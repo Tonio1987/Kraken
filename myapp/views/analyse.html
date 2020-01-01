@@ -339,7 +339,12 @@
                 <div class="col-10">
                     <br />
                     <h4>Mobile Averages Graph for pair {{p}}</h4>
-                    <canvas id="MobileAverageLineChart" width="200" height="200"></canvas>
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas id="MobileAverageLineChart"></canvas>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -390,6 +395,101 @@
                  }, function(){
                      if(Fact.MMGraph.length > 0){
                          $scope.p = Fact.MMGraph[0].pair;
+                         let MMData = Fact.MMGraph;
+                         let arrayOfMM5 = [];
+                         let arrayOfMM15 = [];
+                         let arrayOfMM30 = [];
+                         let arrayOfMM45 = [];
+                         let arrayOfMM60 = [];
+                         let arrayOfMM75 = [];
+                         let arrayOfMM90 = [];
+                         let arrayOfMM105 = [];
+                         let arrayOfMM120 = [];
+                         let arrayOfMM180 = [];
+                         let arrayOfMM360 = [];
+                         let arrayOfMM540 = [];
+                         let arrayOfMM720 = [];
+                         let arrayOfMM1440 = [];
+                         let datetimeOfTMM = [];
+
+                         for(let MM in MMData){
+                             if(MMData.hasOwnProperty(MM)){
+                                 datetimeOfTMM.unshift(MMData[MM].insert_date+' '+MMData[MM].insert_hour);
+                                 arrayOfMM5.unshift(MMData[MM].mm5);
+                                 arrayOfMM15.unshift(MMData[MM].mm15);
+                                 arrayOfMM30.unshift(MMData[MM].mm30);
+                                 arrayOfMM45.unshift(MMData[MM].mm45);
+                                 arrayOfMM60.unshift(MMData[MM].mm60);
+                                 arrayOfMM75.unshift(MMData[MM].mm75);
+                                 arrayOfMM90.unshift(MMData[MM].mm90);
+                                 arrayOfMM105.unshift(MMData[MM].mm105);
+                                 arrayOfMM120.unshift(MMData[MM].mm120);
+                                 arrayOfMM180.unshift(MMData[MM].mm180);
+                                 arrayOfMM360.unshift(MMData[MM].mm360);
+                                 arrayOfMM540.unshift(MMData[MM].mm540);
+                                 arrayOfMM720.unshift(MMData[MM].mm720);
+                                 arrayOfMM1440.unshift(MMData[MM].mm1440);
+                             }
+                         }
+
+
+
+                         var myLineChart = new Chart(document.getElementById("MobileAverageLineChart"), {
+                             type: 'line',
+                             data: {
+                                 labels: datetimeOfTMM,
+                                 datasets: [
+                                     {
+                                         data: arrayOfMM15,
+                                         label: "MM15",
+                                         borderColor: "#ffffff",
+                                         borderWidth: 1,
+                                         fill: false
+                                     }, {
+                                         data: arrayOfMM60,
+                                         label: "MM60",
+                                         borderColor: "#ffffe6",
+                                         borderWidth: 1,
+                                         fill: false
+                                     }, {
+                                         data: arrayOfMM180,
+                                         label: "MM180",
+                                         borderColor: "#ffffb3",
+                                         borderWidth: 2,
+                                         fill: false
+                                     }, {
+                                         data: arrayOfMM360,
+                                         label: "MM360",
+                                         borderColor: "#ffd9b3",
+                                         borderWidth: 2,
+                                         fill: false
+                                     }, {
+                                         data: arrayOfMM720,
+                                         label: "MM720",
+                                         borderColor: "#ffa64d",
+                                         borderWidth: 3,
+                                         fill: false
+                                     }, {
+                                         data: arrayOfMM1440,
+                                         label: "MM1440",
+                                         borderColor: "#ff0000",
+                                         borderWidth: 3,
+                                         fill: false
+                                     }
+                                 ]
+                             },
+                             options: {
+                                 title: {
+                                     display: true,
+                                     text: 'MM Evolution'
+                                 },
+                                 elements: {
+                                     point:{
+                                         radius: 0
+                                     }
+                                 }
+                             }
+                         });
                      }
                  });
              });
