@@ -76,8 +76,10 @@ module.exports = {
                                 if (pair === keltners[elem2].pair || pairx === keltners[elem2].pair) {
                                     atr = keltners[elem2].last_ATR;
                                     volat = (atr / lastBalance[elem].price)*100;
+                                    hypSellPrice = lastBalance[elem].price - keltners[elem2].last_ATR;
                                     myBalance[elem].atr = atr;
                                     myBalance[elem].volat = volat;
+                                    myBalance[elem].hyp_sell_price = hypSellPrice;
                                 }
                             }
                         }
@@ -88,9 +90,13 @@ module.exports = {
                         for(elem2 in balanceChanges) {
                             if (balanceChanges.hasOwnProperty(elem2)) {
                                 let evolution = 0;
+                                let buy_price = 0;
                                 if (myBalance[elem].currency === balanceChanges[elem2].currency) {
                                     evolution = ((myBalance[elem].eur_value - balanceChanges[elem2].eur_value) / balanceChanges[elem2].eur_value) * 100;
+                                    buy_price = balanceChanges[elem2].price;
                                     myBalance[elem].evolution = evolution;
+                                    myBalance[elem].buy_price = buy_price;
+
                                 }
                             }
                         }

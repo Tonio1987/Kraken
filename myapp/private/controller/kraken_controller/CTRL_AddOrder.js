@@ -10,8 +10,11 @@ module.exports = {
    addOrder: function() {
 
         async.waterfall([
-            STEP_DB_dropOpenOrders,
+            STEP_DB_getOpenOrders,
+            STEP_DB_getBalance,
+            STEP_DB_getKeltner,
             STEP_ALGO_PrepareOrder,
+            STEP_DB_dropOpenOrders,
             STEP_API_addOrder,
             STEP_API_getOpenOrders,
             STEP_DB_insertOpenOrders,
@@ -20,9 +23,7 @@ module.exports = {
             // Nothing to do here
         });
 
-       function STEP_DB_dropOpenOrders() {
-           DB_OpenOrders.dropOpenOrders(STEP_ALGO_PrepareOrder);
-       }
+
         function STEP_ALGO_PrepareOrder() {
             const order =
                 {
@@ -36,6 +37,11 @@ module.exports = {
                 };
             STEP_API_addOrder(order);
         }
+
+       function STEP_DB_dropOpenOrders() {
+           DB_OpenOrders.dropOpenOrders(STEP_ALGO_PrepareOrder);
+       }
+
         function STEP_API_addOrder(order) {
             API_AddOrder.kraken_AddOrder(STEP_API_getOpenOrders, order);
         }
