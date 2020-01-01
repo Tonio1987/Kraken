@@ -99,7 +99,7 @@
                             <td>{{asset.price.toFixed(4)}} &euro;</td>
                             <td>{{asset.eur_value.toFixed(2)}} &euro;</td>
                             <td ng-class="{'text-red': asset.evolution < 0,'text-green': asset.evolution >= 0}">{{asset.evolution.toFixed(3)}} &percnt;</td>
-                            <td>{{asset.atr.toFixed(4)}} &euro;</td>
+                            <td>{{asset.atr.toFixed(4)}} &euro; | {{asset.volat.toFixed(2)}} &percnt;</td>
                         </tr>
                         </tbody>
                     </table>
@@ -406,9 +406,9 @@
                         let minTradeBalancevalue = 0;
                         for(let order in openOrders){
                             if(openOrders.hasOwnProperty(order)){
-                                console.log(order);
                                 minTradeBalancevalue = minTradeBalancevalue + openOrders[order].vol*openOrders[order].price;
                             }
+
                         }
                         $scope.myMinTradeBalance = minTradeBalancevalue;
                     }).catch(function(response) {
@@ -423,7 +423,6 @@
                             let minTradeBalancevalue = 0;
                             for(let order in openOrders){
                                 if(openOrders.hasOwnProperty(order)){
-                                    console.log(order);
                                     minTradeBalancevalue = minTradeBalancevalue + openOrders[order].vol*openOrders[order].price;
                                 }
                             }

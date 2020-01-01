@@ -57,7 +57,6 @@ module.exports = {
             if(err){
                 STEP_finish(err, null);
             }else{
-                console.log(balanceChanges);
                 var myBalance = [];
                 for(elem in lastBalance){
                     if(lastBalance.hasOwnProperty(elem)){
@@ -73,9 +72,12 @@ module.exports = {
                                 let pair = lastBalance[elem].currency+'EUR';
                                 let pairx = lastBalance[elem].currency+'ZEUR';
                                 let atr = 0;
+                                let volat = 0;
                                 if (pair === keltners[elem2].pair || pairx === keltners[elem2].pair) {
                                     atr = keltners[elem2].last_ATR;
+                                    volat = (atr / lastBalance[elem].price)*100;
                                     myBalance[elem].atr = atr;
+                                    myBalance[elem].volat = volat;
                                 }
                             }
                         }
