@@ -47,6 +47,7 @@ var marketInfoRouter = require('./routes/rest_api/MarketInfo');
 var tickerDataRouter = require('./routes/rest_api/TickerData');
 var marketTradesDataRouter = require('./routes/rest_api/MarketTradesData');
 var pairsListRouter = require('./routes/rest_api/PairsList');
+var MMPairDataRouter = require('./routes/rest_api/MMPairData');
 var MMEvolPairDataRouter = require('./routes/rest_api/MMEvolPairData');
 
 app.use('/tradeBalance', tradeBalanceRouter);
@@ -65,6 +66,7 @@ app.use('/marketInfo', marketInfoRouter);
 app.use('/tickerData', tickerDataRouter);
 app.use('/marketTradesData', marketTradesDataRouter);
 app.use('/pairsList', pairsListRouter);
+app.use('/MMPairData', MMPairDataRouter);
 app.use('/MMEvolPairData', MMEvolPairDataRouter);
 
 // INIT APP

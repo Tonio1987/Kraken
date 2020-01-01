@@ -54,7 +54,7 @@
             <div ng-controller="Ctrl_MMEvolData" class="row justify-content-md-center">
                 <div class="col-10">
                     <br />
-                    <h4>Mobile Average Evolution for pair {{pp}}</h4>
+                    <h4>Mobile Average Evolution for pair {{p}}</h4>
                     <table class="table table-striped table-dark table-sm">
                         <thead class="thead-dark">
                             <tr class="table-center-text">
@@ -338,7 +338,7 @@
             <div ng-controller="Ctrl_MMGraph" class="row justify-content-md-center">
                 <div class="col-10">
                     <br />
-                    <h4>Mobile Averages Graph for pair {{pp}}</h4>
+                    <h4>Mobile Averages Graph for pair {{p}}</h4>
                     <canvas id="MobileAverageLineChart" width="200" height="200"></canvas>
                 </div>
             </div>
@@ -388,7 +388,9 @@
                  $scope.$watch(function(){
                      return Fact.MMGraph;
                  }, function(){
-
+                     if(Fact.MMGraph.length > 0){
+                         $scope.p = Fact.MMGraph[0].pair;
+                     }
                  });
              });
 
@@ -398,7 +400,7 @@
                      return Fact.MMEVolTable;
                  }, function(){
                      if(Fact.MMEVolTable.length > 0){
-                         $scope.pp = Fact.MMEVolTable[0].pair;
+                         $scope.p = Fact.MMEVolTable[0].pair;
                          $scope.evol_1p_mm5 = Fact.MMEVolTable[0].evol_1p_mm5.toFixed(3);
                          $scope.evol_5p_mm5 = Fact.MMEVolTable[0].evol_5p_mm5.toFixed(3);
                          $scope.evol_15p_mm5 = Fact.MMEVolTable[0].evol_15p_mm5.toFixed(3);
