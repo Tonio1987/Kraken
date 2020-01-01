@@ -8,7 +8,7 @@ module.exports = {
         async.waterfall([
             STEP_DB_getBalanceMaxInsertTimestamp,
             STEP_DB_getLastBalance,
-            STEP_DB_get24hAgoBalance,
+            STEP_DB_getBalanceChanges,
             STEP_DB_getKeltnerMaxInsertTimestamp,,
             STEP_DB_getLastKeltner,
             STEP_ALGO_CalculateCurrencyEvolution,
@@ -25,39 +25,38 @@ module.exports = {
             if(err){
                 STEP_finish(err, null);
             }else{
-                DB_Balance.getLastBalance(STEP_DB_get24hAgoBalance, data);
+                DB_Balance.getLastBalance(STEP_DB_getBalanceChanges, data);
             }
         }
 
-        function STEP_DB_get24hAgoBalance(err, data) {
+        function STEP_DB_getBalanceChanges(err, data) {
             if(err){
                 STEP_finish(err, null);
             }else{
-                DB_Balance.get24hAgoBalance(STEP_DB_getKeltnerMaxInsertTimestamp, data);
+                DB_Balance.getBalanceChanges(STEP_DB_getKeltnerMaxInsertTimestamp, data);
             }
         }
 
-        function STEP_DB_getKeltnerMaxInsertTimestamp(err, data, lastBalance) {
+        function STEP_DB_getKeltnerMaxInsertTimestamp(err, balanceChanges, lastBalance) {
             if(err){
                 STEP_finish(err, null);
             }else{
-                DB_Keltner.getMaxInsertTimestamp(STEP_DB_getLastKeltner, data, lastBalance);
+                DB_Keltner.getMaxInsertTimestamp(STEP_DB_getLastKeltner, balanceChanges, lastBalance);
             }
         }
 
-        function STEP_DB_getLastKeltner(err, data, oneDayAgoBalance, lastBalance) {
+        function STEP_DB_getLastKeltner(err, data, balanceChanges, lastBalance) {
             if(err){
                 STEP_finish(err, null);
             }else{
-                DB_Keltner.getLastKeltner(STEP_ALGO_CalculateCurrencyEvolution, data, oneDayAgoBalance, lastBalance);
+                DB_Keltner.getLastKeltner(STEP_ALGO_CalculateCurrencyEvolution, data, balanceChanges, lastBalance);
             }
         }
 
-        function STEP_ALGO_CalculateCurrencyEvolution(err, keltners, oneDayAgoBalance, lastBalance) {
+        function STEP_ALGO_CalculateCurrencyEvolution(err, keltners, balanceChanges, lastBalance) {
             if(err){
                 STEP_finish(err, null);
             }else{
-                console.log(oneDayAgoBalance);
                 var myBalance = [];
                 for(elem in lastBalance){
                     if(lastBalance.hasOwnProperty(elem)){
@@ -83,11 +82,11 @@ module.exports = {
                 }
                 for(elem in myBalance){
                     if(myBalance.hasOwnProperty(elem)){
-                        for(elem2 in oneDayAgoBalance) {
-                            if (oneDayAgoBalance.hasOwnProperty(elem2)) {
+                        for(elem2 in balanceChanges) {
+                            if (balanceChanges.hasOwnProperty(elem2)) {
                                 let evolution = 0;
-                                if (myBalance[elem].currency === oneDayAgoBalance[elem2].currency) {
-                                    evolution = ((myBalance[elem].eur_value - oneDayAgoBalance[elem2].eur_value) / oneDayAgoBalance[elem2].eur_value) * 100;
+                                if (myBalance[elem].currency === balanceChanges[elem2].currency) {
+                                    evolution = ((myBalance[elem].eur_value - balanceChanges[elem2].eur_value) / balanceChanges[elem2].eur_value) * 100;
                                     myBalance[elem].evolution = evolution;
                                 }
                             }

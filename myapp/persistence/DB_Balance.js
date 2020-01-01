@@ -54,8 +54,8 @@ module.exports = {
             callback(err, null);
         });
     },
-    // Get 24h ago balance sorted by eur value - near 0 filtered
-    get24hAgoBalance: function (callback, lastBalance) {
+    // Get Balance changes
+    getBalanceChanges: function (callback, lastBalance) {
         new Promise(function (resolve, reject) {
             let lim = lastBalance.length;
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
