@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 module.exports = {
-    getMaxInsertTimestamp: function (callback, oneDayAgoBalance, lastBalance) {
+    getMaxInsertTimestamp: function (callback, balanceChanges, lastBalance) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -19,12 +19,12 @@ module.exports = {
                 }
             });
         }).then(function(res){
-            callback(null, res, oneDayAgoBalance, lastBalance);
+            callback(null, res, balanceChanges, lastBalance);
         }).catch(function(err) {
             callback(err, null);
         });
     },
-    getLastKeltner: function (callback, data, oneDayAgoBalance, lastBalance) {
+    getLastKeltner: function (callback, data, balanceChanges, lastBalance) {
         new Promise(function (resolve, reject) {
             let timestamp = data[0].insert_timestamp;
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
@@ -43,7 +43,7 @@ module.exports = {
                 }
             });
         }).then(function(result){
-            callback(null, result, oneDayAgoBalance, lastBalance);
+            callback(null, result, balanceChanges, lastBalance);
         }).catch(function(err) {
             console.log(err);
             callback(err, null);
