@@ -2,11 +2,9 @@ const moment = require('moment');
 moment.locale('fr');
 
 module.exports = {
-    calculateMM: function(callback, data) {
+    calculateMM: function(callback, data, date, hour, timestamp) {
         new Promise(function (resolve, reject) {
-            var date = moment().format('L');
-            var hour = moment().format('LTS');
-            var timestamp = new Date().getTime();
+
             let count = 0;
             let sum = 0;
             let  mm = {

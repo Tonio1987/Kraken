@@ -57,16 +57,13 @@ module.exports = {
     // Get 24h ago balance sorted by eur value - near 0 filtered
     get24hAgoBalance: function (callback, lastBalance) {
         new Promise(function (resolve, reject) {
-            const yesterday = moment().add(-1, 'days').valueOf();
-            const yesterday1m = moment().add({days:-1,minutes:1}).valueOf();
-            //const yesterday = moment().add(-12, 'hours').valueOf();
-            //const yesterday1m = moment().add({hours:-12,minutes:1}).valueOf();
+            let lim = lastBalance.length;
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Balance").find({insert_timestamp: {$gte: yesterday, $lt: yesterday1m}, units: { $gt: 0 }, eur_value: { $gt: 0.01 }}).sort({eur_value: -1}).toArray(function(err, result) {
+                    dbo.collection("Balance").find({change: true, units: { $gt: 0 }, eur_value: { $gt: 0.01 }}).limit(lim).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         } else{

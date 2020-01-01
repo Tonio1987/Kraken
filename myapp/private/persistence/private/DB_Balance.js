@@ -3,7 +3,18 @@ const MongoClient = require('mongodb').MongoClient;
 
 moment.locale('fr');
 
-function prepareData(bid_price, currency, nb_units, date, hour, timestamp){
+function prepareData(lastBalance, bid_price, currency, nb_units, date, hour, timestamp){
+    let change = false;
+    for(elem in lastBalance){
+        if(lastBalance.hasOwnProperty(elem)){
+            if(lastBalance[elem].currency == currency){
+                if(lastBalance[elem].units != nb_units){
+                    console.log(currency + '  '+ nb_units +  '   '+ lastBalance[elem].units);
+                    change = true;
+                }
+            }
+        }
+    }
 
     var eur_value = 0;
     // Cas de l'EURO et du DOGE
@@ -20,15 +31,16 @@ function prepareData(bid_price, currency, nb_units, date, hour, timestamp){
         currency: currency,
         units: nb_units,
         price: bid_price,
-        eur_value: eur_value
+        eur_value: eur_value,
+        change: change
     };
 
     return elementOfMyBalance;
 }
 
 module.exports = {
-    insertBalance: function (callback, bid_price, currency, nb_units, date, hour, timestamp) {
-        var elementOfMyBalance = prepareData(bid_price, currency, nb_units, date, hour, timestamp);
+    insertBalance: function (callback, lastBalance, bid_price, currency, nb_units, date, hour, timestamp) {
+        var elementOfMyBalance = prepareData(lastBalance, bid_price, currency, nb_units, date, hour, timestamp);
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
                 if (err) {
@@ -51,6 +63,29 @@ module.exports = {
             callback(err, null);
         });
      },
+    getLastBalance: function (callback, ticker, currency, nb_units) {
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("Balance").find().sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        } else{
+                            db.close();
+                            resolve(result);
+                        }
+                    });
+                }
+            });
+        }).then(function(res){
+            callback(null, res, ticker, currency, nb_units);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
     getMaxInsertTimestamp: function (callback) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
@@ -80,7 +115,7 @@ module.exports = {
                 if (err){
                     reject(err);
                 } else{
-                    var myquery = {insert_timestamp : {$lte : twoDaysAgo}};
+                    var myquery = {change: false, insert_timestamp : {$lte : twoDaysAgo}};
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                     dbo.collection("Balance").deleteMany(myquery, function(err, obj) {
                         if (err){

@@ -36,7 +36,7 @@
     </ul>
 
     <!-- Main Container -->
-    <div  class="container">
+    <div  class="container-fluid">
         <div class="row justify-content-md-center">
             <div class="col">
                 <div ng-controller="Ctrl_Date" class="text-center">
@@ -45,8 +45,8 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
+        <div class="row justify-content-md-center">
+            <div class="col-5">
                 <div ng-controller="Ctrl_tradeBalance">
                     <br />
                     <h4>Current Trade Balance : {{myTradeBalance}} &euro;</h4>
@@ -64,20 +64,20 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td ng-class="{'text-red': TBEvolution15m < 0,'text-green': TBEvolution15m >= 0}">{{TBEvolution15m}} &percnt;</td>
-                                <td ng-class="{'text-red': TBEvolution1h < 0,'text-green': TBEvolution1h >= 0}">{{TBEvolution1h}} &percnt;</td>
-                                <td ng-class="{'text-red': TBEvolution3h < 0,'text-green': TBEvolution3h >= 0}">{{TBEvolution3h}} &percnt;</td>
-                                <td ng-class="{'text-red': TBEvolution6h < 0,'text-green': TBEvolution6h >= 0}">{{TBEvolution6h}} &percnt;</td>
-                                <td ng-class="{'text-red': TBEvolution12h < 0,'text-green': TBEvolution12h >= 0}">{{TBEvolution12h}} &percnt;</td>
-                                <td ng-class="{'text-red': TBEvolution1d < 0,'text-green': TBEvolution1d >= 0}">{{TBEvolution1d}} &percnt;</td>
-                                <td ng-class="{'text-red': TBEvolutionMax < 0,'text-green': TBEvolutionMax >= 0}">{{TBEvolutionMax}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolution15m < 0, 'text-green': TBEvolution15m >= 0}">{{TBEvolution15m}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolution1h < 0, 'text-green': TBEvolution1h >= 0}">{{TBEvolution1h}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolution3h < 0, 'text-green': TBEvolution3h >= 0}">{{TBEvolution3h}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolution6h < 0, 'text-green': TBEvolution6h >= 0}">{{TBEvolution6h}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolution12h < 0, 'text-green': TBEvolution12h >= 0}">{{TBEvolution12h}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolution1d < 0, 'text-green': TBEvolution1d >= 0}">{{TBEvolution1d}} &percnt;</td>
+                                <td ng-class="{'text-red': TBEvolutionMax < 0, 'text-green': TBEvolutionMax >= 0}">{{TBEvolutionMax}} &percnt;</td>
                             </tr>
                         </tbody>
                     </table>
                     <canvas id="TradeBalanceLineChart" width="200" height="200"></canvas>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-5">
                 <br />
                 <div>
                     <h4>Balance details</h4>
@@ -88,7 +88,8 @@
                             <th scope="col">Units</th>
                             <th scope="col">Price</th>
                             <th scope="col">EUR value</th>
-                            <th scope="col">24h Evol</th>
+                            <th scope="col">Inv Evol</th>
+                            <th scope="col">ATR</th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="asset in myBalance">
@@ -98,6 +99,7 @@
                             <td>{{asset.price.toFixed(4)}} &euro;</td>
                             <td>{{asset.eur_value.toFixed(2)}} &euro;</td>
                             <td ng-class="{'text-red': asset.evolution < 0,'text-green': asset.evolution >= 0}">{{asset.evolution.toFixed(3)}} &percnt;</td>
+                            <td>{{asset.atr.toFixed(4)}} &euro;</td>
                         </tr>
                         </tbody>
                     </table>
@@ -129,8 +131,8 @@
 
             </div>
         </div>
-        <div class="row">
-            <div class="col">
+        <div class="row justify-content-md-center">
+            <div class="col-9">
                 <br />
                 <h4>Last Closed Orders</h4>
                 <table ng-controller="Ctrl_ClosedOrders" class="table table-striped table-dark">

@@ -2,11 +2,8 @@ const moment = require('moment');
 moment.locale('fr');
 
 module.exports = {
-    calculateKeltner: function(callback, lastTicker, last24, highest, lowest, lastKeltner) {
+    calculateKeltner: function(callback, lastTicker, last24, highest, lowest, lastKeltner, date, hour, timestamp) {
         new Promise(function (resolve, reject) {
-            var date = moment().format('L');
-            var hour = moment().format('LTS');
-            var timestamp = new Date().getTime();
             var high_minus_low = highest[0].ask_price-lowest[0].ask_price;
             var high_minus_l24 = Math.abs(highest[0].ask_price-last24[0].ask_price);
             var low_minus_l24 = Math.abs(lowest[0].ask_price-last24[0].ask_price);

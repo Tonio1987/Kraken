@@ -1,20 +1,23 @@
 const DB_Balance = require('../persistence/DB_Balance');
+const DB_Keltner = require('../persistence/DB_Keltner');
 const async = require('async');
 
 module.exports = {
     getBalance: function(callback, req, res, next) {
 
         async.waterfall([
-            STEP_DB_getMaxInsertTimestamp,
+            STEP_DB_getBalanceMaxInsertTimestamp,
             STEP_DB_getLastBalance,
             STEP_DB_get24hAgoBalance,
+            STEP_DB_getKeltnerMaxInsertTimestamp,,
+            STEP_DB_getLastKeltner,
             STEP_ALGO_CalculateCurrencyEvolution,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
         });
 
-        function STEP_DB_getMaxInsertTimestamp(err, data) {
+        function STEP_DB_getBalanceMaxInsertTimestamp(err, data) {
             DB_Balance.getMaxInsertBalanceTimestamp(STEP_DB_getLastBalance);
         }
 
@@ -30,14 +33,31 @@ module.exports = {
             if(err){
                 STEP_finish(err, null);
             }else{
-                DB_Balance.get24hAgoBalance(STEP_ALGO_CalculateCurrencyEvolution, data);
+                DB_Balance.get24hAgoBalance(STEP_DB_getKeltnerMaxInsertTimestamp, data);
             }
         }
 
-        function STEP_ALGO_CalculateCurrencyEvolution(err, oneDayAgoBalance, lastBalance) {
+        function STEP_DB_getKeltnerMaxInsertTimestamp(err, data, lastBalance) {
             if(err){
                 STEP_finish(err, null);
             }else{
+                DB_Keltner.getMaxInsertTimestamp(STEP_DB_getLastKeltner, data, lastBalance);
+            }
+        }
+
+        function STEP_DB_getLastKeltner(err, data, oneDayAgoBalance, lastBalance) {
+            if(err){
+                STEP_finish(err, null);
+            }else{
+                DB_Keltner.getLastKeltner(STEP_ALGO_CalculateCurrencyEvolution, data, oneDayAgoBalance, lastBalance);
+            }
+        }
+
+        function STEP_ALGO_CalculateCurrencyEvolution(err, keltners, oneDayAgoBalance, lastBalance) {
+            if(err){
+                STEP_finish(err, null);
+            }else{
+                console.log(oneDayAgoBalance);
                 var myBalance = [];
                 for(elem in lastBalance){
                     if(lastBalance.hasOwnProperty(elem)){
@@ -48,6 +68,17 @@ module.exports = {
                             eur_value: lastBalance[elem].eur_value
                         }
                         myBalance.push(elementOfMyBalance);
+                        for(elem2 in keltners){
+                            if(keltners.hasOwnProperty(elem2)){
+                                let pair = lastBalance[elem].currency+'EUR';
+                                let pairx = lastBalance[elem].currency+'ZEUR';
+                                let atr = 0;
+                                if (pair === keltners[elem2].pair || pairx === keltners[elem2].pair) {
+                                    atr = keltners[elem2].last_ATR;
+                                    myBalance[elem].atr = atr;
+                                }
+                            }
+                        }
                     }
                 }
                 for(elem in myBalance){

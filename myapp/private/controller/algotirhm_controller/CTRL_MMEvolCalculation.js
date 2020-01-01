@@ -7,6 +7,9 @@ const DB_MMEvol = require('../../persistence/private/DB_MobileMEvolution');
 
 module.exports = {
     CalculateMMEvol: function () {
+        var date = moment().format('L');
+        var hour = moment().format('LTS');
+        var timestamp = new Date().getTime();
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_DB_getLast1440MM,
@@ -33,7 +36,7 @@ module.exports = {
 
         function STEP_ALGO_calculateNNEvol(err, data) {
             if(!err) {
-                ALGO_MMEvol.calculateMMEvol(STEP_DB_insertMMEvol, data);
+                ALGO_MMEvol.calculateMMEvol(STEP_DB_insertMMEvol, data, date, hour, timestamp);
             }else{
                 STEP_finish(err);
             }

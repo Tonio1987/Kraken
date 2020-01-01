@@ -11,6 +11,11 @@ let lowest = '';
 
 module.exports = {
     CalculateKeltner: function () {
+
+        var date = moment().format('L');
+        var hour = moment().format('LTS');
+        var timestamp = new Date().getTime();
+
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_DB_getPRevious24hTicker,
@@ -73,9 +78,9 @@ module.exports = {
 
         function STEP_ALGO_KeltnerCalculation(err, lastKeltner, lastTicker, lowest, last24, highest) {
             if (!err && lastKeltner && lastKeltner.length > 0) {
-                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, lastKeltner);
+                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, lastKeltner, date, hour, timestamp);
             } else {
-                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, null);
+                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, null, date, hour, timestamp);
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate Keltner - WARNING - FIRST EXECUTION');
             }
         }

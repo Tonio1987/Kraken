@@ -7,6 +7,10 @@ const ALGO_MM = require('../../algorithm/MM_Algorithm');
 
 module.exports = {
     CalculateMM: function () {
+        var date = moment().format('L');
+        var hour = moment().format('LTS');
+        var timestamp = new Date().getTime();
+
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_DB_getTickerByPair,
@@ -33,7 +37,7 @@ module.exports = {
 
         function STEP_ALGO_calculateNN(err, data) {
             if(!err) {
-                ALGO_MM.calculateMM(STEP_DB_insertMM, data);
+                ALGO_MM.calculateMM(STEP_DB_insertMM, data, date, hour, timestamp);
             }else{
                 STEP_finish(err);
             }
