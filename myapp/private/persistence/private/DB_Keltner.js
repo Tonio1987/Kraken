@@ -27,7 +27,7 @@ module.exports = {
             callback(err, null, lastTicker, last24,  highest, lowest);
         });
     },
-    insertKEltner: function (callback,data) {
+    insertKEltner: function (callback, data) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){

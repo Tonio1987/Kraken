@@ -5,9 +5,6 @@ const DB_Ticker = require('../../persistence/private/DB_Ticker');
 const DB_Keltner = require('../../persistence/private/DB_Keltner');
 const ALGO_Keltner = require('../../algorithm/Keltner_Algorithm');
 
-let last24 = '';
-let highest = '';
-let lowest = '';
 
 module.exports = {
     CalculateKeltner: function () {
@@ -44,33 +41,33 @@ module.exports = {
             }
         }
 
-        function STEP_DB_getPRevious24hHighestTicker(err, last24) {
+        function STEP_DB_getPRevious24hHighestTicker(err, last24, pair) {
             if (!err) {
-                DB_Ticker.getPRevious24hHighestTicker(STEP_DB_getPRevious24hLowestTicker, last24[0].pair, last24);
+                DB_Ticker.getPRevious24hHighestTicker(STEP_DB_getPRevious24hLowestTicker, pair, last24);
             } else {
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_getPRevious24hLowestTicker(err, highest, last24) {
+        function STEP_DB_getPRevious24hLowestTicker(err, highest, pair, last24) {
             if (!err) {
-                DB_Ticker.getPrevious24hLowestTicker(STEP_DB_getLastTicker, last24[0].pair, last24,  highest);
+                DB_Ticker.getPrevious24hLowestTicker(STEP_DB_getLastTicker, pair, last24,  highest);
             } else {
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_getLastTicker(err, lowest, last24, highest) {
+        function STEP_DB_getLastTicker(err, lowest, pair, last24, highest) {
             if (!err) {
-                DB_Ticker.getLastTicker(STEP_DB_getLastKeltner, last24[0].pair, last24,  highest, lowest);
+                DB_Ticker.getLastTicker(STEP_DB_getLastKeltner, pair, last24,  highest, lowest);
             } else {
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_getLastKeltner(err, lastTicker, last24, highest, lowest) {
+        function STEP_DB_getLastKeltner(err, lastTicker, pair, last24, highest, lowest) {
             if (!err) {
-                DB_Keltner.getLastKeltner(STEP_ALGO_KeltnerCalculation, last24[0].pair, lastTicker, last24,  highest, lowest);
+                DB_Keltner.getLastKeltner(STEP_ALGO_KeltnerCalculation, pair, lastTicker, last24,  highest, lowest);
             } else {
                 STEP_finish(err);
             }
