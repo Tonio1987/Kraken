@@ -115,7 +115,9 @@ module.exports = {
                 if (err){
                     reject(err);
                 } else{
-                    var myquery = {change: false, insert_timestamp : {$lte : twoDaysAgo}};
+                    var myquery = {insert_timestamp : {$lte : twoDaysAgo}};
+                    // Uncomment 03/01/2020 - 00h40
+                    // var myquery = {change: false, insert_timestamp : {$lte : twoDaysAgo}};
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
                     dbo.collection("Balance").deleteMany(myquery, function(err, obj) {
                         if (err){
