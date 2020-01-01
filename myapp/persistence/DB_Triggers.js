@@ -105,5 +105,5 @@ module.exports = {
             console.log(err);
             callback(err, null);
         });
-    },
+    }
 }
