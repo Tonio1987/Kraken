@@ -1,8 +1,8 @@
 const async = require('async');
-const moment = require('moment/moment');
-const DB_Pairs = require('../../persistence/private/DB_Pairs');
-const DB_Ticker = require('../../persistence/private/DB_Ticker');
-const DB_MM = require('../../persistence/private/DB_MobileM');
+const moment = require('moment');
+const DB_Pairs = require('../../persistence/algorithm/mm/DB_Pairs');
+const DB_Ticker = require('../../persistence/algorithm/mm/DB_Ticker');
+const DB_MM = require('../../persistence/algorithm/mm/DB_MobileM');
 const ALGO_MM = require('../../algorithm/MM_Algorithm');
 
 module.exports = {
