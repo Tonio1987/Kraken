@@ -2,6 +2,8 @@ const cron = require('node-cron');
 const moment = require('moment/moment');
 
 // CONTROLLER CALL
+
+// KRAKEN API
 const CTRL_LoadTicker = require('../controller/kraken_controller/CTRL_Ticker');
 const CTRL_TradeBalance = require('../controller/kraken_controller/CTRL_TradeBalance');
 const CTRL_Balance = require('../controller/kraken_controller/CTRL_Balance');
@@ -10,9 +12,16 @@ const CTRL_TradesHistory = require('../controller/kraken_controller/CTRL_TradesH
 const CTRL_ClosedOrders = require('../controller/kraken_controller/CTRL_ClosedOrders');
 const CTRL_OpenOrders = require('../controller/kraken_controller/CTRL_OpenOrders');
 const CTRL_Trades = require('../controller/kraken_controller/CTRL_Trades');
+
+// ALGORITHM
 const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
 const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
 const CTRL_KeltnerCalculation = require('../controller/algotirhm_controller/CTRL_KeltnerCalculation');
+
+// ROBOT
+const CTRL_StopLossOrders = require('../controller/robot_controller/CTRL_StopLossOrder');
+
+// PURGE DATA
 const CTRL_PurgeBalance = require('../controller/db_controller/CTRL_PurgeBalance');
 const CTRL_PurgeTradeBalance = require('../controller/db_controller/CTRL_PurgeTradeBalance');
 const CTRL_PurgeTicker = require('../controller/db_controller/CTRL_PurgeTicker');
@@ -20,20 +29,31 @@ const CTRL_PurgeMobileM = require('../controller/db_controller/CTRL_PurgeMobileM
 const CTRL_PurgeMobileMEvolution = require('../controller/db_controller/CTRL_PurgeMobileMEvolution');
 const CTRL_PurgeKeltner = require('../controller/db_controller/CTRL_PurgeKeltner');
 
-// INIT TASKS ATTRIBUTES
 let server_start_time = moment();
+
+// INIT TASKS ATTRIBUTES
+// SERVER CHECK TASKS
 let task_ServerOk = null;
 let task_KrakenServerOnline = null;
-let task_LoadTicker = null;
-let task_MMCalculation = null;
-let task_MMEvolCalculation = null;
-let task_KeltnerCalculation = null;
+
+// LOAD DATA TASKS
 let task_LoadTradeBalance = null;
 let task_LoadBalance = null;
 let task_LoadTradeHistory = null;
 let task_LoadClosedOrders = null;
 let task_LoadOpenOrders = null;
 let task_LoadMarketTrades = null;
+let task_LoadTicker = null;
+
+// ALGORITHM TASKS
+let task_MMCalculation = null;
+let task_MMEvolCalculation = null;
+let task_KeltnerCalculation = null;
+
+// ROBOT TASK
+let task_Robot_StopLossOrder = null;
+
+// PURGE TASKS
 let task_PurgeData = null;
 
 // HANDLER DYNAMIC FUNCTION
@@ -63,36 +83,6 @@ Handler.init_task_LoadTicker = function(cron_expression){
     task_LoadTicker = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load new Ticker');
         CTRL_LoadTicker.LoadTicker();
-    }, {
-        scheduled: false
-    });
-};
-
-// CALCULATE MOVING AVERAGES - EVERY 1 MINUTES
-Handler.init_task_MMCalculation = function(cron_expression){
-    task_MMCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MM');
-        CTRL_MMCalculation.CalculateMM();
-    }, {
-        scheduled: false
-    });
-};
-
-// CALCULATE MOVING AVERAGES EVOLUTION - EVERY 1 MINUTES AT 30 S
-Handler.init_task_MMEvolCalculation = function(cron_expression){
-    task_MMEvolCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MMEvolution');
-        CTRL_MMEvolCalculation.CalculateMMEvol();
-    }, {
-        scheduled: false
-    });
-};
-
-// CALCULATE KELTNER - EVERY 1 MINUTES AT 40 S
-Handler.init_task_KeltnerCalculation = function(cron_expression){
-    task_KeltnerCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands');
-        CTRL_KeltnerCalculation.CalculateKeltner();
     }, {
         scheduled: false
     });
@@ -159,6 +149,46 @@ Handler.init_task_LoadOpenOrders = function(cron_expression){
     });
 };
 
+// CALCULATE MOVING AVERAGES - EVERY 1 MINUTES
+Handler.init_task_MMCalculation = function(cron_expression){
+    task_MMCalculation = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MM');
+        CTRL_MMCalculation.CalculateMM();
+    }, {
+        scheduled: false
+    });
+};
+
+// CALCULATE MOVING AVERAGES EVOLUTION - EVERY 1 MINUTES AT 30 S
+Handler.init_task_MMEvolCalculation = function(cron_expression){
+    task_MMEvolCalculation = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MMEvolution');
+        CTRL_MMEvolCalculation.CalculateMMEvol();
+    }, {
+        scheduled: false
+    });
+};
+
+// CALCULATE KELTNER - EVERY 1 MINUTES AT 40 S
+Handler.init_task_KeltnerCalculation = function(cron_expression){
+    task_KeltnerCalculation = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands');
+        CTRL_KeltnerCalculation.CalculateKeltner();
+    }, {
+        scheduled: false
+    });
+};
+
+// ROBOT - STOP LOSS ORDER - EVERY 1 MINUTES AT 0
+Handler.init_task_Robot_StopLossOrder = function(cron_expression){
+    task_Robot_StopLossOrder = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > --- ROBOT --- STOP LOSS ORDER');
+        CTRL_StopLossOrders.generateStopLossOrders();
+    }, {
+        scheduled: false
+    });
+};
+
 // PURGE DATA - EVERY 1 HOUR - KEEP LAST 2 DAYS DATA
 Handler.init_task_PurgeData = function(cron_expression){
     task_PurgeData = cron.schedule(cron_expression, () =>  {
@@ -183,15 +213,6 @@ Handler.stop_task_KrakenServerOnline = function(){task_KrakenServerOnline.stop()
 Handler.start_task_LoadTicker = function(){task_LoadTicker.start();};
 Handler.stop_task_LoadTicker = function(){task_LoadTicker.stop();};
 
-Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
-Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
-
-Handler.start_task_MMEvolCalculation = function(){task_MMEvolCalculation.start();};
-Handler.stop_task_MMEvolCalculation = function(){task_MMEvolCalculation.stop();};
-
-Handler.start_task_KeltnerCalculation = function(){task_KeltnerCalculation.start();};
-Handler.stop_task_KeltnerCalculation = function(){task_KeltnerCalculation.stop();};
-
 Handler.start_task_LoadTradeBalance = function(){task_LoadTradeBalance.start();};
 Handler.stop_task_LoadTradeBalance = function(){task_LoadTradeBalance.stop();};
 
@@ -209,6 +230,18 @@ Handler.stop_task_LoadOpenOrders = function(){task_LoadOpenOrders.stop();};
 
 Handler.start_task_LoadMarketTrades = function(){task_LoadMarketTrades.start();};
 Handler.stop_task_LoadMarketTrades = function(){task_LoadMarketTrades.stop();};
+
+Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
+Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
+
+Handler.start_task_MMEvolCalculation = function(){task_MMEvolCalculation.start();};
+Handler.stop_task_MMEvolCalculation = function(){task_MMEvolCalculation.stop();};
+
+Handler.start_task_KeltnerCalculation = function(){task_KeltnerCalculation.start();};
+Handler.stop_task_KeltnerCalculation = function(){task_KeltnerCalculation.stop();};
+
+Handler.start_task_Robot_StopLossOrder = function(){task_Robot_StopLossOrder.start();};
+Handler.stop_task_Robot_StopLossOrder = function(){task_Robot_StopLossOrder.stop();};
 
 Handler.start_task_PurgeData = function(){task_PurgeData.start();};
 Handler.stop_task_PurgeData = function(){task_PurgeData.stop();};

@@ -1,5 +1,5 @@
 const API_AddOrder = require('../../api/kraken/API_AddOrder');
-const CTRL_OpenOrders = require('./CTRL_OpenOrders');
+const CTRL_OpenOrders = require('../kraken_controller/CTRL_OpenOrders');
 const API_OpenOrders = require('../../api/kraken/API_OpenOrders');
 const DB_OpenOrders = require('../../persistence/private/DB_OpenOrders');
 const DB_Keltner = require('../../persistence/private/DB_Keltner');
@@ -7,7 +7,7 @@ const DB_Balance = require('../../persistence/private/DB_Balance');
 const DB_Trigger = require('../../persistence/private/DB_Triggers');
 const ALGO_AddOrder = require('../../algorithm/AddOrder_Algorithm');
 const async = require('async');
-const moment = require('moment');
+const moment = require('moment/moment');
 
 
 module.exports = {
@@ -36,31 +36,32 @@ module.exports = {
 
        function STEP_DB_getLastBalance(err, OpenOrders) {
            if(!err){
-               DB_Balance.getLastBalance(STEP_DB_getLastKeltner, OpenOrders);
+               DB_Balance.getLastBalance(STEP_DB_getKeltnerTrigger, OpenOrders);
            }else{
                STEP_finish(err);
            }
        }
 
-       function STEP_DB_getLastKeltner(err, LastBalance, OpenOrders) {
+       function STEP_DB_getKeltnerTrigger(err, LastBalance, OpenOrders) {
            if(!err){
-               DB_Keltner.getLastKeltner(STEP_DB_getKeltnerTrigger, LastBalance, OpenOrders);
+               DB_Trigger.getActiveTriggersKeltner(STEP_DB_getAutonomousTrigger, LastKeltner, OpenOrders);
            }else{
                STEP_finish(err);
            }
        }
 
-       function STEP_DB_getKeltnerTrigger(err, LastKeltner, LastBalance, OpenOrders) {
+       function STEP_DB_getAutonomousTrigger(err, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
-               DB_Trigger.getActiveTriggersKeltner(STEP_DB_getAutonomousTrigger, LastKeltner, LastBalance, OpenOrders);
+               DB_Trigger.getTriggerAutonomous(STEP_DB_getLastKeltner, ActiveTriggersKeltner, LastBalance, OpenOrders);
            }else{
                STEP_finish(err);
            }
        }
 
-       function STEP_DB_getAutonomousTrigger(err, ActiveTriggersKeltner, LastKeltner, LastBalance, OpenOrders) {
+        // TO DO FOR EACH PAIR HERE + ADD PAIR PARAMETER DB_Keltner.getLastKeltner(STEP_ALGO_PrepareOrder, pair, ActiveTriggersKeltner,  LastBalance, OpenOrders);
+       function STEP_DB_getLastKeltner(err, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
-               DB_Trigger.getTriggerAutonomous(STEP_ALGO_PrepareOrder, ActiveTriggersKeltner, LastKeltner, LastBalance, OpenOrders);
+               DB_Keltner.getLastKeltner(STEP_ALGO_PrepareOrder, ActiveTriggersKeltner,  LastBalance, OpenOrders);
            }else{
                STEP_finish(err);
            }

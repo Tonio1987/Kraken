@@ -70,7 +70,30 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Balance").find().sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
+                    dbo.collection("Balance").find({currency: currency}).sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        } else{
+                            db.close();
+                            resolve(result);
+                        }
+                    });
+                }
+            });
+        }).then(function(res){
+            callback(null, res, ticker, currency, nb_units);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
+    getLastBalanceSpecial: function (callback, ticker, currency, nb_units) {
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("Balance").find({}).sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         } else{

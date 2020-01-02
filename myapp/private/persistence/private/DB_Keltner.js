@@ -22,9 +22,9 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, lastTicker, last24,  highest, lowest);
+            callback(null, data, pair, lastTicker, last24,  highest, lowest);
         }).catch(function(err) {
-            callback(err, null, lastTicker, last24,  highest, lowest);
+            callback(err, null, pair, lastTicker, last24,  highest, lowest);
         });
     },
     insertKEltner: function (callback, data) {

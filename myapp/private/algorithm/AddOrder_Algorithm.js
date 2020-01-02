@@ -4,6 +4,7 @@ moment.locale('fr');
 module.exports = {
     prepareStopLossOrders: function(callback, TriggerAutonomous, ActiveTriggersKeltner, LastKeltner, LastBalance, OpenOrders) {
         new Promise(function (resolve, reject) {
+
             console.log(TriggerAutonomous.length +" TriggerAutonomous");
             console.log(ActiveTriggersKeltner.length +" ActiveTriggersKeltner");
             console.log(LastKeltner.length +" LastKeltner");

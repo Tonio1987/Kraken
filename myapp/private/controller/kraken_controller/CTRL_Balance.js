@@ -44,14 +44,14 @@ module.exports = {
                     DB_Ticker.getLastTicker(STEP_DB_getLastBalance, data[0].kraken_pair_name, currency, nb_units)
                 }else{
                     // Cas de l'EURO ou du DOGE
-                    STEP_DB_getLastBalance(err, data, currency, nb_units);
+                    STEP_DB_getLastBalance(err, data, null, currency, nb_units);
                 }
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_getLastBalance(err, data, currency, nb_units) {
+        function STEP_DB_getLastBalance(err, data, pair, currency, nb_units) {
             if(!err){
                 DB_Balance.getLastBalance(STEP_DB_insertBalance, data, currency, nb_units);
             }else{

@@ -73,7 +73,7 @@ module.exports = {
             }
         }
 
-        function STEP_ALGO_KeltnerCalculation(err, lastKeltner, lastTicker, lowest, last24, highest) {
+        function STEP_ALGO_KeltnerCalculation(err, lastKeltner, pair, lastTicker, lowest, last24, highest) {
             if (!err && lastKeltner && lastKeltner.length > 0) {
                 ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, lastKeltner, date, hour, timestamp);
             } else {

@@ -26,9 +26,4 @@ cron.schedule('*/10 * * * * *', () => {
 
 console.log('-------> Server started !');
 
-/*
-TEST ZONE
- */
 
-// const CTRL_StopLossOrder = require('./controller/kraken_controller/CTRL_StopLossOrder');
-// CTRL_StopLossOrder.generateStopLossOrders();
