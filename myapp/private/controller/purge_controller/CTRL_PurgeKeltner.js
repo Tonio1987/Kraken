@@ -1,10 +1,10 @@
 const async = require('async');
-const moment = require('moment/moment');
+const moment = require('moment');
 
-const DB_MobileM = require('../../persistence/private/DB_MobileM');
+const DB_Keltner = require('../../persistence/purge/DB_Keltner');
 
 module.exports = {
-    purgeMobileMData: function () {
+    purgeKeltnerData: function () {
         async.waterfall([
             STEP_DB_getMaxTimestamp,
             STEP_DB_purgeDate,
@@ -14,7 +14,7 @@ module.exports = {
         });
 
         function STEP_DB_getMaxTimestamp() {
-            DB_MobileM.getMaxInsertTimestamp(STEP_DB_purgeDate);
+            DB_Keltner.getMaxInsertTimestamp(STEP_DB_purgeDate);
         }
 
         function STEP_DB_purgeDate(err, data) {
@@ -22,7 +22,7 @@ module.exports = {
                 if(data.length > 0){
                     var maxInserTimestamp = moment(new Date(data[0].insert_timestamp)).add(-2, 'days').valueOf();
                     let twoDaysAgo = moment(maxInserTimestamp).valueOf();
-                    DB_MobileM.purgeData(STEP_finish, twoDaysAgo);
+                    DB_Keltner.purgeData(STEP_finish, twoDaysAgo);
                 }else{
                     STEP_finish(err, null);
                 }
@@ -34,7 +34,7 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge MobileM Data FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge Keltner Data FAILED');
             }
         }
     }

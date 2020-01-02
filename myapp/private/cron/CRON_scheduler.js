@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const moment = require('moment/moment');
+const moment = require('moment');
 
 // CONTROLLER CALL
 
@@ -22,12 +22,12 @@ const CTRL_KeltnerCalculation = require('../controller/algotirhm_controller/CTRL
 const CTRL_StopLossOrders = require('../controller/robot_controller/CTRL_StopLossOrder');
 
 // PURGE DATA
-const CTRL_PurgeBalance = require('../controller/db_controller/CTRL_PurgeBalance');
-const CTRL_PurgeTradeBalance = require('../controller/db_controller/CTRL_PurgeTradeBalance');
-const CTRL_PurgeTicker = require('../controller/db_controller/CTRL_PurgeTicker');
-const CTRL_PurgeMobileM = require('../controller/db_controller/CTRL_PurgeMobileM');
-const CTRL_PurgeMobileMEvolution = require('../controller/db_controller/CTRL_PurgeMobileMEvolution');
-const CTRL_PurgeKeltner = require('../controller/db_controller/CTRL_PurgeKeltner');
+const CTRL_PurgeBalance = require('../controller/purge_controller/CTRL_PurgeBalance');
+const CTRL_PurgeTradeBalance = require('../controller/purge_controller/CTRL_PurgeTradeBalance');
+const CTRL_PurgeTicker = require('../controller/purge_controller/CTRL_PurgeTicker');
+const CTRL_PurgeMobileM = require('../controller/purge_controller/CTRL_PurgeMobileM');
+const CTRL_PurgeMobileMEvolution = require('../controller/purge_controller/CTRL_PurgeMobileMEvolution');
+const CTRL_PurgeKeltner = require('../controller/purge_controller/CTRL_PurgeKeltner');
 
 let server_start_time = moment();
 

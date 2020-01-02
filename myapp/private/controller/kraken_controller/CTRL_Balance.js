@@ -1,19 +1,29 @@
 const API_Balance = require('../../api/kraken/API_Balance');
-const DB_Balance = require('../../persistence/private/DB_Balance');
-const DB_Ticker = require('../../persistence/private/DB_Ticker');
-const DB_Pairs = require('../../persistence/private/DB_Pairs');
+const DB_Balance = require('../../persistence/kraken/DB_Balance');
+const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
+const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
 const async = require('async');
 const moment = require('moment');
 
 module.exports = {
     LoadBalance: function() {
+        /*
+            CONTROLLER DESCRIPTION
+            1 - We load Last Balance via Kraken API
+            2 - For all currency in Last Balance,
+                2.1 - We take in DB the XXXXEUR pair associated
+                2.2 - We take in DB the ticker por all XXXXEUR pairs except for EUR itself and XXDG which have no EUR pair
+                2.3 - We take in DB the last inserted balance for the pair
+                2.4 - We insert in DB the new balance
+         */
+
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
 
         async.waterfall([
             STEP_API_getBalance,
-            STEP_DB_getPair,
+            STEP_DB_getEurPair,
             STEP_DB_getLastTicker,
             STEP_DB_getLastBalance,
             STEP_DB_insertBalance,
@@ -23,14 +33,14 @@ module.exports = {
         });
 
         function STEP_API_getBalance() {
-            API_Balance.kraken_Balance(STEP_DB_getPair);
+            API_Balance.kraken_Balance(STEP_DB_getEurPair);
         }
 
-        function STEP_DB_getPair(err, data) {
+        function STEP_DB_getEurPair(err, data) {
             if(!err){
                 for (var i in data) {
                     if (data.hasOwnProperty(i)) {
-                        DB_Pairs.getPair(STEP_DB_getLastTicker, i, data[i]);
+                        DB_Pairs.getEurPair(STEP_DB_getLastTicker, i, data[i]);
                     }
                 }
             }else {
@@ -53,13 +63,13 @@ module.exports = {
 
         function STEP_DB_getLastBalance(err, data, pair, currency, nb_units) {
             if(!err){
-                DB_Balance.getLastBalance(STEP_DB_insertBalance, data, currency, nb_units);
+                DB_Balance.getLastBalanceElement(STEP_DB_insertBalance, currency, data, nb_units);
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertBalance(err, lastBalance, ticker, currency, nb_units) {
+        function STEP_DB_insertBalance(err, lastBalance, currency, ticker, nb_units) {
             if(!err){
                 if(ticker.length > 0){
                     DB_Balance.insertBalance(STEP_finish, lastBalance, ticker[0].bid_price, currency, nb_units, date, hour, timestamp);
