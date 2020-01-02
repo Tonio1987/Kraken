@@ -5,6 +5,7 @@ const DB_OpenOrders = require('../../persistence/private/DB_OpenOrders');
 const DB_Keltner = require('../../persistence/private/DB_Keltner');
 const DB_Balance = require('../../persistence/private/DB_Balance');
 const DB_Trigger = require('../../persistence/private/DB_Triggers');
+const DB_Pair = require('../../persistence/private/DB_Pairs');
 const ALGO_AddOrder = require('../../algorithm/AddOrder_Algorithm');
 const async = require('async');
 const moment = require('moment/moment');
@@ -15,10 +16,12 @@ module.exports = {
 
         async.waterfall([
             STEP_DB_getOpenOrders,
+            STEP_DB_getLastBalanceTimestamp,
             STEP_DB_getLastBalance,
-            STEP_DB_getLastKeltner,
             STEP_DB_getKeltnerTrigger,
             STEP_DB_getAutonomousTrigger,
+            STEP_DB_getEurPairs,
+            STEP_DB_getLastKeltners,
             STEP_ALGO_PrepareOrder,
             //STEP_API_cancelOldStopLossOrder,
             //STEP_API_addNewStopLossOrder,
@@ -31,12 +34,20 @@ module.exports = {
         });
 
        function STEP_DB_getOpenOrders() {
-           DB_OpenOrders.getOpenOrders(STEP_DB_getLastBalance);
+           DB_OpenOrders.getOpenOrders(STEP_DB_getLastBalanceTimestamp);
        }
 
-       function STEP_DB_getLastBalance(err, OpenOrders) {
+       function STEP_DB_getLastBalanceTimestamp(err, OpenOrders) {
            if(!err){
-               DB_Balance.getLastBalance(STEP_DB_getKeltnerTrigger, OpenOrders);
+               DB_Balance.getMaxInsertTimestamp(STEP_DB_getLastBalance, OpenOrders);
+           }else{
+               STEP_finish(err);
+           }
+       }
+
+       function STEP_DB_getLastBalance(err, LastBalanceTimestamp, OpenOrders) {
+           if(!err){
+               DB_Balance.getLastBalanceSpecial(STEP_DB_getKeltnerTrigger, LastBalanceTimestamp, OpenOrders);
            }else{
                STEP_finish(err);
            }
@@ -44,7 +55,7 @@ module.exports = {
 
        function STEP_DB_getKeltnerTrigger(err, LastBalance, OpenOrders) {
            if(!err){
-               DB_Trigger.getActiveTriggersKeltner(STEP_DB_getAutonomousTrigger, LastKeltner, OpenOrders);
+               DB_Trigger.getActiveTriggersKeltner(STEP_DB_getAutonomousTrigger, LastBalance, OpenOrders);
            }else{
                STEP_finish(err);
            }
@@ -52,24 +63,43 @@ module.exports = {
 
        function STEP_DB_getAutonomousTrigger(err, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
-               DB_Trigger.getTriggerAutonomous(STEP_DB_getLastKeltner, ActiveTriggersKeltner, LastBalance, OpenOrders);
+               DB_Trigger.getTriggerAutonomous(STEP_DB_getEurPairs, ActiveTriggersKeltner, LastBalance, OpenOrders);
            }else{
                STEP_finish(err);
            }
        }
 
-        // TO DO FOR EACH PAIR HERE + ADD PAIR PARAMETER DB_Keltner.getLastKeltner(STEP_ALGO_PrepareOrder, pair, ActiveTriggersKeltner,  LastBalance, OpenOrders);
-       function STEP_DB_getLastKeltner(err, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
+       function STEP_DB_getEurPairs(err, AutonomousTrigger, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
-               DB_Keltner.getLastKeltner(STEP_ALGO_PrepareOrder, ActiveTriggersKeltner,  LastBalance, OpenOrders);
+               let currencyList = [];
+               for(elem in LastBalance){
+                   if(LastBalance.hasOwnProperty(elem)){
+                       currencyList.push(LastBalance[elem].currency)
+                   }
+               }
+               DB_Pair.getEurPairs(STEP_DB_getLastKeltners, currencyList, AutonomousTrigger, ActiveTriggersKeltner,  LastBalance, OpenOrders)
            }else{
                STEP_finish(err);
            }
        }
 
-        function STEP_ALGO_PrepareOrder(err, TriggerAutonomous, ActiveTriggersKeltner, LastKeltner, LastBalance, OpenOrders) {
+       function STEP_DB_getLastKeltners(err, eurPairs, currencyList, AutonomousTrigger, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
+           if(!err){
+               let pairList = [];
+               for(elem in eurPairs){
+                   if(eurPairs.hasOwnProperty(elem)){
+                       pairList.push(eurPairs[elem].kraken_pair_name);
+                   }
+               }
+               DB_Keltner.getLastKeltners(STEP_ALGO_PrepareOrder, pairList, currencyList, AutonomousTrigger, ActiveTriggersKeltner,  LastBalance, OpenOrders);
+           }else{
+               STEP_finish(err);
+           }
+       }
+
+        function STEP_ALGO_PrepareOrder(err, LastKeltners, pairList, currencyList, AutonomousTrigger, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
             if(!err){
-                ALGO_AddOrder.prepareStopLossOrders(STEP_finish, TriggerAutonomous, ActiveTriggersKeltner, LastKeltner, LastBalance, OpenOrders);
+                ALGO_AddOrder.prepareStopLossOrders(STEP_finish, LastKeltners, pairList, currencyList, AutonomousTrigger, ActiveTriggersKeltner,  LastBalance, OpenOrders);
             }else{
                 STEP_finish(err);
             }
