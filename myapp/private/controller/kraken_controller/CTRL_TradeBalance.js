@@ -1,11 +1,16 @@
 const API_TradeBalance = require('../../api/kraken/API_TradeBalance');
-const DB_TradeBalance = require('../../persistence/private/DB_TradeBalance');
+const DB_TradeBalance = require('../../persistence/kraken/DB_TradeBalance');
 const async = require('async');
-const moment = require('moment/moment');
+const moment = require('moment');
 
 module.exports = {
     LoadTradeBalance: function() {
 
+        /*
+            CONTROLLER DESCRIPTION
+            1 - We load Trade Balance via Kraken API
+            2 - We insert in DB the Trade Balance
+        */
 
         async.waterfall([
             STEP_API_getTradeBalance,

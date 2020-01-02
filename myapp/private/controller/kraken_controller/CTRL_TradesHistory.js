@@ -1,9 +1,14 @@
 const API_TradesHistory = require('../../api/kraken/API_TradesHistory');
-const DB_TradeHistory = require('../../persistence/private/DB_TradesHistory');
+const DB_TradeHistory = require('../../persistence/kraken/DB_TradesHistory');
 const async = require('async');
 const moment = require('moment/moment');
 
 module.exports = {
+    /*
+       CONTROLLER DESCRIPTION
+       1 - We load Trades History via Kraken API
+       2 - We insert in DB the Trades History
+    */
     LoadTradesHistory: function() {
 
         async.waterfall([

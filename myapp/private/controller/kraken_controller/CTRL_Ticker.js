@@ -1,12 +1,21 @@
-const DB_Pairs = require('../../persistence/private/DB_Pairs');
-const DB_Ticker = require('../../persistence/private/DB_Ticker');
+const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
+const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
 const API_Ticker = require('../../api/kraken/API_Ticker');
-const CTRL_MMCalculation = require('../algotirhm_controller/CTRL_MMCalculation');
 const async = require('async');
 const moment = require('moment/moment');
 
 
 module.exports = {
+
+    /*
+        CONTROLLER DESCRIPTION
+        1 - We take in DB all actives pairs
+        2 - For all pairs
+            2.1 - We load Ticker via Kraken API
+            2.2 - We insert in DB the Ticker
+    */
+
+
     LoadTicker: function () {
         let insert_date = moment().format('L');
         let insert_hour = moment().format('LTS');

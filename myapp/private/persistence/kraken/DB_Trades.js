@@ -22,32 +22,6 @@ function prepareData(data, pair, insert_date, insert_hour, timestamp){
 }
 
 module.exports = {
-    dropMarketTrades: function(callback){
-        new Promise(function (resolve, reject) {
-            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
-                if (err){
-                    reject(err);
-                } else{
-                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("MarketTrades").drop(function(err, delOK) {
-                        if (err){
-                            reject(err);
-                        } else{
-                            if(delOK){
-
-                            }
-                            db.close();
-                            resolve(true);
-                        }
-                    });
-                }
-            });
-        }).then(function(res){
-            callback(res);
-        }).catch(function(err) {
-            callback(err);
-        });
-    },
     insertTrades: function (callback, data, pair, insert_date, insert_hour, timestamp) {
         var trades = prepareData(data, pair, insert_date, insert_hour, timestamp);
         new Promise(function (resolve, reject) {
@@ -74,6 +48,32 @@ module.exports = {
             callback(null, res);
         }).catch(function (err) {
             callback(err, null);
+        });
+    },
+    dropMarketTrades: function(callback){
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("MarketTrades").drop(function(err, delOK) {
+                        if (err){
+                            reject(err);
+                        } else{
+                            if(delOK){
+
+                            }
+                            db.close();
+                            resolve(true);
+                        }
+                    });
+                }
+            });
+        }).then(function(res){
+            callback(res);
+        }).catch(function(err) {
+            callback(err);
         });
     }
 }

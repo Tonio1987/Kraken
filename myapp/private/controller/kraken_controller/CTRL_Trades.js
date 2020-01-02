@@ -1,11 +1,18 @@
-const DB_Pairs = require('../../persistence/private/DB_Pairs');
-const DB_Trades = require('../../persistence/private/DB_Trades');
+const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
+const DB_Trades = require('../../persistence/kraken/DB_Trades');
 const API_Trades = require('../../api/kraken/API_Trades');
 const async = require('async');
-const moment = require('moment/moment');
-
+const moment = require('moment');
 
 module.exports = {
+     /*
+        CONTROLLER DESCRIPTION
+        1 - We drop MarketTrades collection in DB
+        2 - We tqke in DB all actives pairs
+        3 - We load Trades via Kraken API
+        4 - We insert in DB the Trades
+     */
+
     LoadTrades: function () {
         let insert_date = moment().format('L');
         let insert_hour = moment().format('LTS');

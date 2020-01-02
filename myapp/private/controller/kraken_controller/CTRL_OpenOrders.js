@@ -1,10 +1,16 @@
 const API_OpenOrders = require('../../api/kraken/API_OpenOrders');
-const DB_OpenOrders = require('../../persistence/private/DB_OpenOrders');
+const DB_OpenOrders = require('../../persistence/kraken/DB_OpenOrders');
 const async = require('async');
 const moment = require('moment');
 
 module.exports = {
     LoadOpenOrders: function() {
+        /*
+            CONTROLLER DESCRIPTION
+            1 - We drop Open Orders collection in DB
+            2 - We load Open Orders via Kraken API
+            3 - We insert in DB the Open Orders
+         */
 
         async.waterfall([
             STEP_DB_dropOpenOrders,
