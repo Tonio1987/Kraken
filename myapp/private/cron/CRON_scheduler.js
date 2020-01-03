@@ -12,6 +12,7 @@ const CTRL_TradesHistory = require('../controller/kraken_controller/CTRL_TradesH
 const CTRL_ClosedOrders = require('../controller/kraken_controller/CTRL_ClosedOrders');
 const CTRL_OpenOrders = require('../controller/kraken_controller/CTRL_OpenOrders');
 const CTRL_Trades = require('../controller/kraken_controller/CTRL_Trades');
+const CTRL_OHLC = require('../controller/kraken_controller/CTRL_OHLC');
 
 // ALGORITHM
 const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
@@ -28,6 +29,7 @@ const CTRL_PurgeTicker = require('../controller/purge_controller/CTRL_PurgeTicke
 const CTRL_PurgeMobileM = require('../controller/purge_controller/CTRL_PurgeMobileM');
 const CTRL_PurgeMobileMEvolution = require('../controller/purge_controller/CTRL_PurgeMobileMEvolution');
 const CTRL_PurgeKeltner = require('../controller/purge_controller/CTRL_PurgeKeltner');
+const CTRL_PurgeOHLC = require('../controller/purge_controller/CTRL_PurgeOHLC');
 
 let server_start_time = moment();
 
@@ -44,6 +46,8 @@ let task_LoadClosedOrders = null;
 let task_LoadOpenOrders = null;
 let task_LoadMarketTrades = null;
 let task_LoadTicker = null;
+let task_LoadOHLC1h = null;
+let task_LoadOHLC1d = null;
 
 // ALGORITHM TASKS
 let task_MMCalculation = null;
@@ -149,6 +153,27 @@ Handler.init_task_LoadOpenOrders = function(cron_expression){
     });
 };
 
+// LOAD OHLC 1H - EVERY 60 MINUTES
+Handler.init_task_LoadOHLC1H = function(cron_expression){
+    task_LoadOHLC1h = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load OHLC 1 HOUR');
+        CTRL_OHLC.LoadOHLC_1h();
+    }, {
+        scheduled: false
+    });
+};
+
+// LOAD OHLC 1H - EVERY 1 DAY
+Handler.init_task_LoadOHLC1D = function(cron_expression){
+    task_LoadOHLC1d = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load OHLC 1 DAY');
+        CTRL_OHLC.LoadOHLC_1d();
+    }, {
+        scheduled: false
+    });
+};
+
+
 // CALCULATE MOVING AVERAGES - EVERY 1 MINUTES
 Handler.init_task_MMCalculation = function(cron_expression){
     task_MMCalculation = cron.schedule(cron_expression, () =>  {
@@ -199,6 +224,8 @@ Handler.init_task_PurgeData = function(cron_expression){
         CTRL_PurgeMobileMEvolution.purgeMobileMEvolutionData();
         CTRL_PurgeTicker.purgeTickerData();
         CTRL_PurgeKeltner.purgeKeltnerData();
+        CTRL_PurgeOHLC.purgeOHLCData1h();
+        CTRL_PurgeOHLC.purgeOHLCData1d();
     }, {
         scheduled: false
     });
@@ -230,6 +257,12 @@ Handler.stop_task_LoadOpenOrders = function(){task_LoadOpenOrders.stop();};
 
 Handler.start_task_LoadMarketTrades = function(){task_LoadMarketTrades.start();};
 Handler.stop_task_LoadMarketTrades = function(){task_LoadMarketTrades.stop();};
+
+Handler.start_task_LoadOHLC1H = function(){task_LoadOHLC1h.start();};
+Handler.stop_task_LoadOHLC1H = function(){task_LoadOHLC1h.stop();};
+
+Handler.start_task_LoadOHLC1D = function(){task_LoadOHLC1d.start();};
+Handler.stop_task_LoadOHLC1D = function(){task_LoadOHLC1d.stop();};
 
 Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
 Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};

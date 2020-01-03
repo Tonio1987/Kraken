@@ -60,7 +60,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Ticker").find({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:+1}).limit(1).toArray(function(err, result) {
+                    dbo.collection("Ticker").find({ pair: pair, insert_timestamp: {$gte: yesterday, $lte: now}}).sort({ask_price:1}).limit(1).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }
@@ -75,7 +75,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getLastTicker: function (callback, pair, param_fw1,  param_fw2, param_fw3) {
+    getLastTicker: function (callback, pair, param_fw1, param_fw2, param_fw3) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){

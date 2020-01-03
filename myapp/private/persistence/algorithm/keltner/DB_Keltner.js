@@ -5,7 +5,7 @@ moment.locale('fr');
 
 
 module.exports = {
-    insertKEltner: function (callback, data) {
+    insertKeltner: function (callback, data) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){

@@ -36,7 +36,7 @@ module.exports = {
                 low_minus_l24: low_minus_l24,
                 true_range: true_range,
                 last_ATR: last_atr,
-                lastTicker:  lastTicker[0].ask_price,
+                lastTicker: lastTicker[0].ask_price,
                 last24: last24[0].ask_price,
                 highest: highest[0].ask_price,
                 lowest: lowest[0].ask_price,

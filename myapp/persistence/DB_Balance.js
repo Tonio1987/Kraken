@@ -57,20 +57,21 @@ module.exports = {
     // Get Balance changes
     getBalanceChanges: function (callback, lastBalance) {
         new Promise(function (resolve, reject) {
-            let lim = lastBalance.length;
+
             let arrayOfCurrency = [];
             for(elem in lastBalance){
                 if(lastBalance.hasOwnProperty(elem)){
-                    arrayOfCurrency.push(lastBalance[elem].currency);
+                    if(lastBalance[elem].currency != 'ZEUR'){
+                        arrayOfCurrency.push(lastBalance[elem].currency);
+                    }
                 }
             }
-
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Balance").find({change: true, units: { $gt: 0 }, eur_value: { $gt: 0.01 }, currency: { $in : arrayOfCurrency}}).sort({insert_timestamp: -1}).limit(lim).toArray(function(err, result) {
+                    dbo.collection("Balance").find({change: true, units: { $gt: 0 }, eur_value: { $gt: 0.01 }, currency: { $in : arrayOfCurrency}}).sort({insert_timestamp: -1}).limit(arrayOfCurrency.length).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         } else{
