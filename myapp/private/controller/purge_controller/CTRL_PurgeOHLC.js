@@ -13,16 +13,8 @@ module.exports = {
         });
 
         function STEP_DB_purgeDate() {
-            if (!err) {
-                if(data.length > 0){
-                    let twoDaysAgo = moment().add(-2, 'days').valueOf();
-                    DB_OHLC.purgeData_1hour(STEP_finish, twoDaysAgo);
-                }else{
-                    STEP_finish(err, null);
-                }
-            }else{
-                STEP_finish(err, null);
-            }
+                let twoDaysAgo = moment().add(-2, 'days').valueOf();
+                DB_OHLC.purgeData_1hour(STEP_finish, twoDaysAgo);
         }
 
         function STEP_finish(err, data) {
@@ -41,16 +33,8 @@ module.exports = {
         });
 
         function STEP_DB_purgeDate() {
-            if (!err) {
-                if(data.length > 0){
-                    let longTimeAgo = moment().add(-688, 'days').valueOf();
-                    DB_OHLC.purgeData_1day(STEP_finish, longTimeAgo);
-                }else{
-                    STEP_finish(err, null);
-                }
-            }else{
-                STEP_finish(err, null);
-            }
+            let longTimeAgo = moment().add(-688, 'days').valueOf();
+            DB_OHLC.purgeData_1day(STEP_finish, longTimeAgo);
         }
 
         function STEP_finish(err, data) {
