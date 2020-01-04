@@ -21,7 +21,7 @@ module.exports = {
         });
 
         function STEP_DB_dropClosedOrders() {
-            DB_ClosedOrders.dropClosedOrders();
+            DB_ClosedOrders.dropClosedOrders(STEP_API_getClosedOrders);
         }
 
         function STEP_API_getClosedOrders() {

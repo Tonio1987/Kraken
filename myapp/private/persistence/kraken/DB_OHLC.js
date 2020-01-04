@@ -5,15 +5,33 @@ moment.locale('fr');
 
 function prepareData(data, pair, interval, count, insert_date, insert_hour, timestamp){
     let ohlcs = [];
+    let time = 0;
+    let time_date = 0;
+    let time_hour = 0;
     if(count > 0){
         let i = data[pair].length-1;
+        if(interval === "1_HOUR"){
+            time = data[pair][i][0];
+            time_date = moment(data[pair][i][0]).format('L');
+            time_hour = moment(data[pair][i][0]).format('LTS');
+            console.log(time);
+            console.log(time_date);
+            console.log(time_hour);
+        }else{
+            time = data[pair][i][0]*1000;
+            time_date = moment(data[pair][i][0]*1000).format('L');
+            time_hour = moment(data[pair][i][0]*1000).format('LTS');
+        }
+
         var ohlc = {
             insert_date: insert_date,
             insert_hour: insert_hour,
             insert_timestamp: timestamp,
             pair: pair,
             interval: interval,
-            time: data[pair][i][0],
+            time: time,
+            time_date: time_date,
+            time_hour: time_hour,
             open: data[pair][i][1],
             high: data[pair][i][2],
             low: data[pair][i][3],
@@ -26,13 +44,24 @@ function prepareData(data, pair, interval, count, insert_date, insert_hour, time
     }else{
         // FIRST LOAD
         for(let i=0; i<data[pair].length; i++){
+            if(interval === "1_HOUR"){
+                time = data[pair][i][0];
+                time_date = moment(data[pair][i][0]).format('L');
+                time_hour = moment(data[pair][i][0]).format('LTS');
+            }else{
+                time = data[pair][i][0]*1000;
+                time_date = moment(data[pair][i][0]*1000).format('L');
+                time_hour = moment(data[pair][i][0]*1000).format('LTS');
+            }
             var ohlc = {
                 insert_date: insert_date,
                 insert_hour: insert_hour,
                 insert_timestamp: timestamp,
                 pair: pair,
                 interval: interval,
-                time: data[pair][i][0],
+                time: time,
+                time_date: time_date,
+                time_hour: time_hour,
                 open: data[pair][i][1],
                 high: data[pair][i][2],
                 low: data[pair][i][3],
@@ -95,8 +124,51 @@ module.exports = {
         }).catch(function(err) {
             callback(err, null);
         });
+    },
+    getLast14OHLC_1h: function (callback, pair) {
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("OHLC").find({pair: pair, interval: '1_HOUR'}).sort({time: -1}).limit(14).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data, pair);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
+    getLast14OHLC_1d: function (callback, pair) {
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("OHLC").find({pair: pair, interval: '1_DAY'}).sort({time: -1}).limit(14).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data, pair);
+        }).catch(function(err) {
+            callback(err, null);
+        });
     }
-
 
 };
 

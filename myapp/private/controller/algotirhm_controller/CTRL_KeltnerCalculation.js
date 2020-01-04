@@ -1,5 +1,5 @@
 const async = require('async');
-const moment = require('moment');
+const moment = require('moment/moment');
 const DB_Pairs = require('../../persistence/algorithm/keltner/DB_Pairs');
 const DB_Ticker = require('../../persistence/algorithm/keltner/DB_Ticker');
 const DB_Keltner = require('../../persistence/algorithm/keltner/DB_Keltner');
@@ -18,8 +18,8 @@ module.exports = {
             STEP_DB_getPRevious24hTicker,
             STEP_DB_getPRevious24hHighestTicker,
             STEP_DB_getPRevious24hLowestTicker,
-            STEP_DB_getLastTicker,
             STEP_DB_getLastKeltner,
+            STEP_DB_getLastTicker,
             STEP_ALGO_KeltnerCalculation,
             STEP_DB_insertKeltner,
             STEP_finish
@@ -28,7 +28,6 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-
             DB_Pairs.getAllPairs(STEP_DB_getPRevious24hTicker);
         }
 
@@ -74,18 +73,18 @@ module.exports = {
             }
         }
 
-        function STEP_ALGO_KeltnerCalculation(err, lastKeltner, pair, lastTicker, last24,  highest, lowest) {
+        function STEP_ALGO_KeltnerCalculation(err, lastKeltner, pair, lastTicker, lowest, last24, highest) {
             if (!err && lastKeltner && lastKeltner.length > 0) {
                 ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, lastKeltner, date, hour, timestamp);
             } else {
                 ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, lastTicker, last24, highest, lowest, null, date, hour, timestamp);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate Keltner Pair  : '+ pair +' - WARNING - FIRST EXECUTION');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate Keltner - WARNING - FIRST EXECUTION');
             }
         }
 
         function STEP_DB_insertKeltner(err, data) {
             if (!err) {
-                DB_Keltner.insertKeltner(STEP_finish, data);
+                DB_Keltner.insertKEltner(STEP_finish, data);
             } else {
                 STEP_finish(null, data);
             }

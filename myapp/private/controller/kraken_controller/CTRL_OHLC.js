@@ -85,7 +85,7 @@ module.exports = {
         function STEP_API_loadOHLC(err, count, allPairs) {
             if (!err) {
                 allPairs.forEach(function (pair) {
-                    API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, pair.kraken_pair_name, count);
+                    API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, pair.kraken_pair_name, count);
                 });
             } else {
                 STEP_finish(err);
