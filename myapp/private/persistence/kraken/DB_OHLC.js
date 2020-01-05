@@ -12,15 +12,17 @@ function prepareData(data, pair, interval, count, insert_date, insert_hour, time
         let i = data[pair].length-1;
         if(interval === "1_HOUR"){
             time = data[pair][i][0];
-            time_date = moment(data[pair][i][0]).format('L');
-            time_hour = moment(data[pair][i][0]).format('LTS');
-            console.log(time);
-            console.log(time_date);
-            console.log(time_hour);
+            time_date = moment(time).format('L');
+            time_hour = moment(time).format('LTS');
         }else{
-            time = data[pair][i][0]*1000;
-            time_date = moment(data[pair][i][0]*1000).format('L');
-            time_hour = moment(data[pair][i][0]*1000).format('LTS');
+            var len = Math.ceil(Math.log(data[pair][i][0] + 1) / Math.LN10);
+            if(len === 13){
+                time = data[pair][i][0];
+            }else{
+                time = data[pair][i][0]*1000;
+            }
+            time_date = moment(time).format('L');
+            time_hour = moment(time).format('LTS');
         }
 
         var ohlc = {
@@ -46,12 +48,17 @@ function prepareData(data, pair, interval, count, insert_date, insert_hour, time
         for(let i=0; i<data[pair].length; i++){
             if(interval === "1_HOUR"){
                 time = data[pair][i][0];
-                time_date = moment(data[pair][i][0]).format('L');
-                time_hour = moment(data[pair][i][0]).format('LTS');
+                time_date = moment(time).format('L');
+                time_hour = moment(time).format('LTS');
             }else{
-                time = data[pair][i][0]*1000;
-                time_date = moment(data[pair][i][0]*1000).format('L');
-                time_hour = moment(data[pair][i][0]*1000).format('LTS');
+                var len = Math.ceil(Math.log(data[pair][i][0] + 1) / Math.LN10);
+                if(len === 13){
+                    time = data[pair][i][0];
+                }else{
+                    time = data[pair][i][0]*1000;
+                }
+                time_date = moment(time).format('L');
+                time_hour = moment(time).format('LTS');
             }
             var ohlc = {
                 insert_date: insert_date,
@@ -125,14 +132,14 @@ module.exports = {
             callback(err, null);
         });
     },
-    getLast14OHLC_1h: function (callback, pair) {
+    getLast14OHLC_1h: function (callback, pair, param_fw1) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("OHLC").find({pair: pair, interval: '1_HOUR'}).sort({time: -1}).limit(14).toArray(function(err, result) {
+                    dbo.collection("OHLC").find({pair: pair, interval: "1_HOUR"}).sort({time: -1}).limit(14).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }
@@ -142,12 +149,12 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair);
+            callback(null, data, pair, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });
     },
-    getLast14OHLC_1d: function (callback, pair) {
+    getLast14OHLC_1d: function (callback, pair, param_fw1) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -164,7 +171,7 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair);
+            callback(null, data, pair, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });

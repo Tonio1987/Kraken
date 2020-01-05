@@ -13,6 +13,7 @@ const CTRL_ClosedOrders = require('../controller/kraken_controller/CTRL_ClosedOr
 const CTRL_OpenOrders = require('../controller/kraken_controller/CTRL_OpenOrders');
 const CTRL_Trades = require('../controller/kraken_controller/CTRL_Trades');
 const CTRL_OHLC = require('../controller/kraken_controller/CTRL_OHLC');
+const CTRL_ATR = require('../controller/kraken_controller/CTRL_ATR');
 
 // ALGORITHM
 const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
@@ -48,6 +49,8 @@ let task_LoadMarketTrades = null;
 let task_LoadTicker = null;
 let task_LoadOHLC1h = null;
 let task_LoadOHLC1d = null;
+let task_LoadATR1h = null;
+let task_LoadATR1d = null;
 
 // ALGORITHM TASKS
 let task_MMCalculation = null;
@@ -173,6 +176,25 @@ Handler.init_task_LoadOHLC1D = function(cron_expression){
     });
 };
 
+// LOAD ATR 1H - EVERY 60 MINUTES
+Handler.init_task_LoadATR1H = function(cron_expression){
+    task_LoadATR1h = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load ATR 1 HOUR');
+        CTRL_ATR.LoadATR_1h();
+    }, {
+        scheduled: false
+    });
+};
+
+// LOAD ATR 1H - EVERY 1 DAY
+Handler.init_task_LoadATR1D = function(cron_expression){
+    task_LoadATR1d = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load ATR 1 DAY');
+        CTRL_ATR.LoadATR_1d();
+    }, {
+        scheduled: false
+    });
+};
 
 // CALCULATE MOVING AVERAGES - EVERY 1 MINUTES
 Handler.init_task_MMCalculation = function(cron_expression){
@@ -263,6 +285,12 @@ Handler.stop_task_LoadOHLC1H = function(){task_LoadOHLC1h.stop();};
 
 Handler.start_task_LoadOHLC1D = function(){task_LoadOHLC1d.start();};
 Handler.stop_task_LoadOHLC1D = function(){task_LoadOHLC1d.stop();};
+
+Handler.start_task_LoadATR1H = function(){task_LoadATR1h.start();};
+Handler.stop_task_LoadATR1H = function(){task_LoadATR1h.stop();};
+
+Handler.start_task_LoadATR1D = function(){task_LoadATR1d.start();};
+Handler.stop_task_LoadATR1D = function(){task_LoadATR1d.stop();};
 
 Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
 Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
