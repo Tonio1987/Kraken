@@ -3,7 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
-    getActiveTriggersKeltner: function (callback, LastBalance, OpenOrders) {
+    getActiveTriggersKeltner: function (callback, param_fw1, param_fw2) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
                 if (err) {
@@ -21,13 +21,13 @@ module.exports = {
                 }
             });
         }).then(function (result) {
-            callback(null, result, LastBalance, OpenOrders);
+            callback(null, result, param_fw1, param_fw2);
         }).catch(function (err) {
             console.log(err);
             callback(err, null);
         });
     },
-    getTriggerAutonomous: function (callback, ActiveTriggersKeltner, LastBalance, OpenOrders) {
+    getTriggerAutonomous: function (callback) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
                 if (err) {
@@ -45,7 +45,7 @@ module.exports = {
                 }
             });
         }).then(function (result) {
-            callback(null, result, ActiveTriggersKeltner, LastBalance, OpenOrders);
+            callback(null, result);
         }).catch(function (err) {
             console.log(err);
             callback(err, null);

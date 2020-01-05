@@ -8,7 +8,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Keltner").find().sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
+                    dbo.collection("Keltner").find({interval:"1_HOUR"}).sort({insert_timestamp: -1}).limit(1).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         } else{

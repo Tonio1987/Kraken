@@ -75,11 +75,11 @@ module.exports = {
                                 let volat = 0;
                                 if (pair === keltners[elem2].pair || pairx === keltners[elem2].pair) {
                                     atr = keltners[elem2].last_ATR;
-                                    volat = (atr / lastBalance[elem].price)*100;
-                                    hypSellPrice = lastBalance[elem].price - keltners[elem2].last_ATR;
+                                    keltner_inf = keltners[elem2].keltner_inf;
+                                    keltner_inf_2x = keltners[elem2].keltner_inf_2x;
                                     myBalance[elem].atr = atr;
-                                    myBalance[elem].volat = volat;
-                                    myBalance[elem].hyp_sell_price = hypSellPrice;
+                                    myBalance[elem].hyp_sell_price = keltner_inf;
+                                    myBalance[elem].hyp_sell_price2x = keltner_inf_2x;
                                 }
                             }
                         }

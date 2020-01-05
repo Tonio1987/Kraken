@@ -27,7 +27,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getLastBalanceSpecial: function (callback,  LastBalanceTimestamp, param_fw1) {
+    getLastBalance: function (callback,  LastBalanceTimestamp, param_fw1) {
         new Promise(function (resolve, reject) {
             let timestamp = LastBalanceTimestamp[0].insert_timestamp;
 
