@@ -55,7 +55,8 @@ let task_LoadATR1d = null;
 // ALGORITHM TASKS
 let task_MMCalculation = null;
 let task_MMEvolCalculation = null;
-let task_KeltnerCalculation = null;
+let task_KeltnerCalculation_1H = null;
+let task_KeltnerCalculation_1D = null;
 
 // ROBOT TASK
 let task_Robot_StopLossOrder = null;
@@ -166,7 +167,7 @@ Handler.init_task_LoadOHLC1H = function(cron_expression){
     });
 };
 
-// LOAD OHLC 1H - EVERY 1 DAY
+// LOAD OHLC 1D - EVERY 1 DAY
 Handler.init_task_LoadOHLC1D = function(cron_expression){
     task_LoadOHLC1d = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load OHLC 1 DAY');
@@ -186,7 +187,7 @@ Handler.init_task_LoadATR1H = function(cron_expression){
     });
 };
 
-// LOAD ATR 1H - EVERY 1 DAY
+// LOAD ATR 1D - EVERY 1 DAY
 Handler.init_task_LoadATR1D = function(cron_expression){
     task_LoadATR1d = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load ATR 1 DAY');
@@ -216,11 +217,21 @@ Handler.init_task_MMEvolCalculation = function(cron_expression){
     });
 };
 
-// CALCULATE KELTNER - EVERY 1 MINUTES AT 40 S
-Handler.init_task_KeltnerCalculation = function(cron_expression){
-    task_KeltnerCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands');
-        CTRL_KeltnerCalculation.CalculateKeltner();
+// CALCULATE KELTNER 1H - EVERY 1 HOUR
+Handler.init_task_KeltnerCalculation1H = function(cron_expression){
+    task_KeltnerCalculation_1H = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands 1 HOUR');
+        CTRL_KeltnerCalculation.CalculateKeltner_1h();
+    }, {
+        scheduled: false
+    });
+};
+
+// CALCULATE KELTNER 1D - EVERY 1 DAY
+Handler.init_task_KeltnerCalculation1D = function(cron_expression){
+    task_KeltnerCalculation_1D = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands 1 DAY');
+        CTRL_KeltnerCalculation.CalculateKeltner_1d();
     }, {
         scheduled: false
     });
@@ -298,8 +309,11 @@ Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
 Handler.start_task_MMEvolCalculation = function(){task_MMEvolCalculation.start();};
 Handler.stop_task_MMEvolCalculation = function(){task_MMEvolCalculation.stop();};
 
-Handler.start_task_KeltnerCalculation = function(){task_KeltnerCalculation.start();};
-Handler.stop_task_KeltnerCalculation = function(){task_KeltnerCalculation.stop();};
+Handler.start_task_KeltnerCalculation1H = function(){task_KeltnerCalculation_1H.start();};
+Handler.stop_task_KeltnerCalculation1H = function(){task_KeltnerCalculation_1H.stop();};
+
+Handler.start_task_KeltnerCalculation1D = function(){task_KeltnerCalculation_1D.start();};
+Handler.stop_task_KeltnerCalculation1D = function(){task_KeltnerCalculation_1D.stop();};
 
 Handler.start_task_Robot_StopLossOrder = function(){task_Robot_StopLossOrder.start();};
 Handler.stop_task_Robot_StopLossOrder = function(){task_Robot_StopLossOrder.stop();};
