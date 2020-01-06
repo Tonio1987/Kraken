@@ -34,6 +34,7 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
         }
 
         ATR = ((ohlcs[ohlcs.length-2].ATR * 13) + TR) / 14;
+        
         var new_atr = {
             insert_date: insert_date,
             insert_hour: insert_hour,
@@ -81,7 +82,6 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
                     TR: TR,
                     ATR: 0
                 }
-
                 atrs.push(new_atr);
             }else if(i>0){
                 High = ohlcs[i].high;
@@ -143,7 +143,6 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
                     sumOfTR = sumOfTR+listTR[j];
                 }
                 ATR = sumOfTR / 14;
-
                 var new_atr = {
                     insert_date: insert_date,
                     insert_hour: insert_hour,
@@ -166,7 +165,6 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
             }
         }
     }
-
     return atrs;
 }
 
