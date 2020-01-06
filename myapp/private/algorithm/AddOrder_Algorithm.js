@@ -158,7 +158,8 @@ function handleNewPairConvention() {
         XXLM: {value:"XXLMZEUR"},
         XXMR: {value:"XXMRZEUR"},
         XXRP: {value:"XXRPZEUR"},
-        XZEC: {value:"XZECZEUR"}
+        XZEC: {value:"XZECZEUR"},
+        ZEUR: {value:"ZEURZEUR"}
     };
     return pairsConvertion;
 }
@@ -266,7 +267,11 @@ module.exports = {
                          // NO OLD OPEN ORDER CASE - FIRST POSITION
                          for(bal in LastBalance) {
                              if (LastBalance.hasOwnProperty(bal)) {
-                                 if(pairsConvertion[LastBalance[bal].currency].value === pairsConvertion[LastKeltners[elem].pair].value){
+                                 console.log(pairsConvertion[LastBalance[bal].currency].value);
+                                 console.log(pairsConvertion[LastKeltners[elem].pair].value);
+                                 console.log(LastKeltners[elem].pair);
+                                 if(pairsConvertion[LastBalance[bal].currency].value === LastKeltners[elem].pair){
+                                     console.log("equality");
                                     if(coefKeltnerTrigger === 1){
                                         let ord =
                                             {
@@ -340,12 +345,16 @@ module.exports = {
                      console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+ orders[elem].type+' '+orders[elem].ordertype+' '+orders[elem].volume+' '+orders[elem].pair+' '+orders[elem].price);
                  }
              }
-             let preparedOrders = {
+
+            let preparedOrders = {
                  ordersToCancel: ordersToCancel,
                  orders: orders
              }
 
-             resolve(preparedOrders);
+            // preparedOrders.ordersToCancel.push(ordersToCancel);
+            // preparedOrders.orders.push(orders);
+            console.log(preparedOrders);
+            resolve(preparedOrders);
         }).then(function(preparedOrders){
             callback(null, preparedOrders);
         }).catch(function(err) {

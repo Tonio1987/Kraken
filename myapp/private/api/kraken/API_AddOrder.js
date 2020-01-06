@@ -29,6 +29,7 @@ module.exports = {
                         resolve(data);
                     });
             }).then(function(data){
+                console.log(data);
                 if(i === orders.length-1){
                     callback(null, data);
                 }else{
