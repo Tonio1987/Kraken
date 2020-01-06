@@ -128,7 +128,37 @@ function handleNewPairConvention() {
         XZECXXBT: {value: "ZECXBT"},
         XZECZEUR: {value: "ZECEUR"},
         XZECZJPY: {value: "ZECJPY"},
-        XZECZUSD: {value: "ZECUSD"}
+        XZECZUSD: {value: "ZECUSD"},
+        ADA: {value:"ADAEUR"},
+        ATOM: {value:"ATOMEUR"},
+        BAT: {value:"BATEUR"},
+        BCH: {value:"BCHEUR"},
+        DAI: {value:"DAIEUR"},
+        DASH: {value:"DASHEUR"},
+        EOS: {value:"EOSEUR"},
+        GNO: {value:"GNOEUR"},
+        ICX: {value:"ICXEUR"},
+        LINK: {value:"LINKEUR"},
+        LSK: {value:"LSKEUR"},
+        NANO: {value:"NANOEUR"},
+        OMG: {value:"OMGEUR"},
+        PAXG: {value:"PAXGEUR"},
+        QTUM: {value:"QTUMEUR"},
+        SC: {value:"SCEUR"},
+        USDT: {value:"USDTEUR"},
+        WAVES: {value:"WAVESEUR"},
+        XETC: {value:"XETCZEUR"},
+        XETH: {value:"XETHZEUR"},
+        XLTC: {value:"XLTCZEUR"},
+        XMLN: {value:"XMLNZEUR"},
+        XREP: {value:"XREPZEUR"},
+        XTZ: {value:"XTZEUR"},
+        XXBT: {value:"XXBTZEUR"},
+        XXDG: {value:"XXDGZEUR"},
+        XXLM: {value:"XXLMZEUR"},
+        XXMR: {value:"XXMRZEUR"},
+        XXRP: {value:"XXRPZEUR"},
+        XZEC: {value:"XZECZEUR"}
     };
     return pairsConvertion;
 }
@@ -143,92 +173,162 @@ module.exports = {
             let coefKeltnerTrigger = ActiveTriggersKeltner[0].value;
              for(elem in LastKeltners) {
                  if(LastKeltners.hasOwnProperty(elem)){
-                     for(order in OpenOrders){
-                         // HERE WE HAVE TO HANDLE THE CASE NO OPEN ORDERS + RESOLVE ONE ELEMENT NOT TWO
-
-                         if(OpenOrders.hasOwnProperty(order)){
-                             if(OpenOrders[order].pair === LastKeltners[elem].pair || OpenOrders[order].pair === pairsConvertion[LastKeltners[elem].pair].value){
-                                 if(coefKeltnerTrigger === 1){
-                                     if(OpenOrders[order].price < LastKeltners[elem].keltner_inf){
-                                         let order_id = OpenOrders[order].orderid;
-                                         let ord =
-                                             {
-                                                 pair: LastKeltners[elem].pair,
-                                                 type:  'sell',
-                                                 ordertype: 'stop-loss',
-                                                 price:  LastKeltners[elem].keltner_inf,
-                                                 volume:  OpenOrders[order].vol,
-                                                 starttm:  0,
-                                                 expiretm: 0
-                                             };
-                                         ordersToCancel.push(order_id);
-                                         orders.push(ord);
-                                     }
-                                 }else if(coefKeltnerTrigger === 1.5){
-                                     if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_1_5x) {
-                                         let order_id = OpenOrders[order].orderid;
-                                         let ord =
-                                             {
-                                                 pair: LastKeltners[elem].pair,
-                                                 type: 'sell',
-                                                 ordertype: 'stop-loss',
-                                                 price: LastKeltners[elem].keltner_inf_1_5x,
-                                                 volume: OpenOrders[order].vol,
-                                                 starttm: 0,
-                                                 expiretm: 0
-                                             };
-                                         ordersToCancel.push(order_id);
-                                         orders.push(ord);
-                                     }
-                                 }else if(coefKeltnerTrigger === 2){
-                                     if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_2x) {
-                                         let order_id = OpenOrders[order].orderid;
-                                         let ord =
-                                             {
-                                                 pair: LastKeltners[elem].pair,
-                                                 type: 'sell',
-                                                 ordertype: 'stop-loss',
-                                                 price: LastKeltners[elem].keltner_inf_2x,
-                                                 volume: OpenOrders[order].vol,
-                                                 starttm: 0,
-                                                 expiretm: 0
-                                             };
-                                         ordersToCancel.push(order_id);
-                                         orders.push(ord);
-                                     }
-                                 }else if(coefKeltnerTrigger === 2.5){
-                                     if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_2_5x){
-                                         let order_id = OpenOrders[order].orderid;
-                                         let ord =
-                                             {
-                                                 pair: LastKeltners[elem].pair,
-                                                 type:  'sell',
-                                                 ordertype: 'stop-loss',
-                                                 price:  LastKeltners[elem].keltner_inf_2_5x,
-                                                 volume:  OpenOrders[order].vol,
-                                                 starttm:  0,
-                                                 expiretm: 0
-                                             };
-                                        ordersToCancel.push(order_id);
-                                        orders.push(ord);
-                                    }
-                                 }else if(coefKeltnerTrigger === 3){
-                                     if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_3x) {
-                                         let order_id = OpenOrders[order].orderid;
-                                         let order =
-                                             {
-                                                 pair: LastKeltners[elem].pair,
-                                                 type: 'sell',
-                                                 ordertype: 'stop-loss',
-                                                 price: LastKeltners[elem].keltner_inf_3x,
-                                                 volume: OpenOrders[order].vol,
-                                                 starttm: 0,
-                                                 expiretm: 0
-                                             };
-                                         ordersToCancel.push(order_id);
-                                         orders.push(order);
+                     // HERE WE HAVE TO HANDLE THE CASE NO OPEN ORDERS
+                     if(OpenOrders.length > 0){
+                         for(order in OpenOrders){
+                             if(OpenOrders.hasOwnProperty(order)){
+                                 if(OpenOrders[order].pair === LastKeltners[elem].pair || OpenOrders[order].pair === pairsConvertion[LastKeltners[elem].pair].value){
+                                     if(coefKeltnerTrigger === 1){
+                                         if(OpenOrders[order].price < LastKeltners[elem].keltner_inf){
+                                             let order_id = OpenOrders[order].orderid;
+                                             let ord =
+                                                 {
+                                                     pair: LastKeltners[elem].pair,
+                                                     type:  'sell',
+                                                     ordertype: 'stop-loss',
+                                                     price:  LastKeltners[elem].keltner_inf,
+                                                     volume:  OpenOrders[order].vol,
+                                                     starttm:  0,
+                                                     expiretm: 0
+                                                 };
+                                             ordersToCancel.push(order_id);
+                                             orders.push(ord);
+                                         }
+                                     }else if(coefKeltnerTrigger === 1.5){
+                                         if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_1_5x) {
+                                             let order_id = OpenOrders[order].orderid;
+                                             let ord =
+                                                 {
+                                                     pair: LastKeltners[elem].pair,
+                                                     type: 'sell',
+                                                     ordertype: 'stop-loss',
+                                                     price: LastKeltners[elem].keltner_inf_1_5x,
+                                                     volume: OpenOrders[order].vol,
+                                                     starttm: 0,
+                                                     expiretm: 0
+                                                 };
+                                             ordersToCancel.push(order_id);
+                                             orders.push(ord);
+                                         }
+                                     }else if(coefKeltnerTrigger === 2){
+                                         if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_2x) {
+                                             let order_id = OpenOrders[order].orderid;
+                                             let ord =
+                                                 {
+                                                     pair: LastKeltners[elem].pair,
+                                                     type: 'sell',
+                                                     ordertype: 'stop-loss',
+                                                     price: LastKeltners[elem].keltner_inf_2x,
+                                                     volume: OpenOrders[order].vol,
+                                                     starttm: 0,
+                                                     expiretm: 0
+                                                 };
+                                             ordersToCancel.push(order_id);
+                                             orders.push(ord);
+                                         }
+                                     }else if(coefKeltnerTrigger === 2.5){
+                                         if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_2_5x){
+                                             let order_id = OpenOrders[order].orderid;
+                                             let ord =
+                                                 {
+                                                     pair: LastKeltners[elem].pair,
+                                                     type:  'sell',
+                                                     ordertype: 'stop-loss',
+                                                     price:  LastKeltners[elem].keltner_inf_2_5x,
+                                                     volume:  OpenOrders[order].vol,
+                                                     starttm:  0,
+                                                     expiretm: 0
+                                                 };
+                                             ordersToCancel.push(order_id);
+                                             orders.push(ord);
+                                         }
+                                     }else if(coefKeltnerTrigger === 3){
+                                         if(OpenOrders[order].price < LastKeltners[elem].keltner_inf_3x) {
+                                             let order_id = OpenOrders[order].orderid;
+                                             let order =
+                                                 {
+                                                     pair: LastKeltners[elem].pair,
+                                                     type: 'sell',
+                                                     ordertype: 'stop-loss',
+                                                     price: LastKeltners[elem].keltner_inf_3x,
+                                                     volume: OpenOrders[order].vol,
+                                                     starttm: 0,
+                                                     expiretm: 0
+                                                 };
+                                             ordersToCancel.push(order_id);
+                                             orders.push(order);
+                                         }
                                      }
                                  }
+                             }
+                         }
+                     }else{
+                         // NO OLD OPEN ORDER CASE - FIRST POSITION
+                         for(bal in LastBalance) {
+                             if (LastBalance.hasOwnProperty(bal)) {
+                                 if(pairsConvertion[LastBalance[bal].currency].value === pairsConvertion[LastKeltners[elem].pair].value){
+                                    if(coefKeltnerTrigger === 1){
+                                        let ord =
+                                            {
+                                                pair: LastKeltners[elem].pair,
+                                                type:  'sell',
+                                                ordertype: 'stop-loss',
+                                                price:  LastKeltners[elem].keltner_inf,
+                                                volume: LastBalance[bal].units,
+                                                starttm:  0,
+                                            expiretm: 0
+                                        };
+                                        orders.push(ord);
+                                    }else if(coefKeltnerTrigger === 1.5){
+                                        let ord =
+                                            {
+                                                pair: LastKeltners[elem].pair,
+                                                type: 'sell',
+                                                ordertype: 'stop-loss',
+                                                price: LastKeltners[elem].keltner_inf_1_5x,
+                                                volume: LastBalance[bal].units,
+                                                starttm: 0,
+                                                expiretm: 0
+                                            };
+                                        orders.push(ord);
+                                    }else if(coefKeltnerTrigger === 2){
+                                        let ord =
+                                            {
+                                                pair: LastKeltners[elem].pair,
+                                                type: 'sell',
+                                                ordertype: 'stop-loss',
+                                                price: LastKeltners[elem].keltner_inf_2x,
+                                                volume: LastBalance[bal].units,
+                                                starttm: 0,
+                                                expiretm: 0
+                                            };
+                                        orders.push(ord);
+                                    }else if(coefKeltnerTrigger === 2.5){
+                                        let ord =
+                                            {
+                                                pair: LastKeltners[elem].pair,
+                                                type:  'sell',
+                                                ordertype: 'stop-loss',
+                                                price:  LastKeltners[elem].keltner_inf_2_5x,
+                                                volume: LastBalance[bal].units,
+                                                starttm:  0,
+                                                expiretm: 0
+                                            };
+                                        orders.push(ord);
+                                    }else if(coefKeltnerTrigger === 3){
+                                        let order =
+                                            {
+                                                pair: LastKeltners[elem].pair,
+                                                type: 'sell',
+                                                ordertype: 'stop-loss',
+                                                price: LastKeltners[elem].keltner_inf_3x,
+                                                volume: LastBalance[bal].units,
+                                                starttm: 0,
+                                                expiretm: 0
+                                            };
+                                        orders.push(order);
+                                    }
+                                }
                              }
                          }
                      }
@@ -240,9 +340,14 @@ module.exports = {
                      console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+ orders[elem].type+' '+orders[elem].ordertype+' '+orders[elem].volume+' '+orders[elem].pair+' '+orders[elem].price);
                  }
              }
-             resolve(ordersToCancel, orders);
-        }).then(function(ordersToCancel, orders){
-            callback(null, ordersToCancel, orders);
+             let preparedOrders = {
+                 ordersToCancel: ordersToCancel,
+                 orders: orders
+             }
+
+             resolve(preparedOrders);
+        }).then(function(preparedOrders){
+            callback(null, preparedOrders);
         }).catch(function(err) {
             callback(err, null);
         });

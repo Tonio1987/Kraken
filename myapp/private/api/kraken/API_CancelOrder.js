@@ -9,7 +9,7 @@ const api = kraken({
 function waitEndOfLoop(i, length){}
 
 module.exports = {
-    kraken_CancelOrder: function(callback, ordersToCancel, orders) {
+    kraken_CancelOrder: function(callback, ordersToCancel, preparedOrders) {
         for(let i=0; i<ordersToCancel.length; i++){
             return new Promise(function (resolve, reject) {
                 api.call('CancelOrder',
@@ -23,7 +23,7 @@ module.exports = {
                     });
             }).then(function(data){
                 if(i === ordersToCancel.length-1){
-                    callback(null, data, ordersToCancel, orders);
+                    callback(null, data, preparedOrders);
                 }else{
                     waitEndOfLoop(i, ordersToCancel.length);
                 }

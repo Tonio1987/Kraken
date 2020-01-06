@@ -119,15 +119,16 @@ module.exports = {
         }
 
         // CANCEL OLD STOP LOSS
-        function STEP_API_cancelOldStopLossOrder(err, ordersToCancel, orders) {
+        function STEP_API_cancelOldStopLossOrder(err, preparedOrders) {
+            console.log(preparedOrders);
            if(!err){
                console.log("here");
-               if(ordersToCancel.length>0){
+               if(preparedOrders.ordersToCancel.length>0){
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL THE CANCEL ORDER API');
-                   API_CancelOrder.kraken_CancelOrder(STEP_API_addNewStopLossOrder, ordersToCancel, orders);
+                   API_CancelOrder.kraken_CancelOrder(STEP_API_addNewStopLossOrder, preparedOrders.ordersToCancel, preparedOrders);
                }else{
                    console.log("here2");
-                   STEP_API_addNewStopLossOrder(err, null, ordersToCancel, orders);
+                   STEP_API_addNewStopLossOrder(err, null, preparedOrders);
                }
            }else{
                STEP_finish(err);
@@ -135,13 +136,12 @@ module.exports = {
        }
 
        // POSITION NEW STOP LOSS
-       function STEP_API_addNewStopLossOrder(err, data, ordersToCancel, orders) {
+       function STEP_API_addNewStopLossOrder(err, data, preparedOrders) {
            if(!err){
                console.log("here3");
-               console.log(orders);
-               if(orders.length>0){
+               if(preparedOrders.orders.length>0){
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL THE ADD ORDER API');
-                   API_AddOrder.kraken_AddOrder(STEP_DB_dropOpenOrders, orders);
+                   API_AddOrder.kraken_AddOrder(STEP_DB_dropOpenOrders, preparedOrders.orders);
                }else{
                    console.log("here4");
                    STEP_DB_dropOpenOrders();
