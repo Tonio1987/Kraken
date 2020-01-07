@@ -77,9 +77,11 @@ module.exports = {
                                     atr = keltners[elem2].last_ATR;
                                     keltner_inf = keltners[elem2].keltner_inf;
                                     keltner_inf_2x = keltners[elem2].keltner_inf_2x;
+                                    keltner_inf_3x = keltners[elem2].keltner_inf_3x;
                                     myBalance[elem].atr = atr;
                                     myBalance[elem].hyp_sell_price = keltner_inf;
                                     myBalance[elem].hyp_sell_price2x = keltner_inf_2x;
+                                    myBalance[elem].hyp_sell_price3x = keltner_inf_3x;
                                 }
                             }
                         }

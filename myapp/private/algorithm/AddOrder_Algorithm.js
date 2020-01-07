@@ -175,7 +175,7 @@ module.exports = {
                                          let pair = LastKeltners[elem].pair;
                                          let keltnerPrice = LastKeltners[elem].keltner_inf.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
                                          let openOrderPrice = OpenOrders[order].price.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
-                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- KELTNER PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
+                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
                                          if(openOrderPrice < keltnerPrice){
                                              let order =
                                                  {
@@ -196,7 +196,7 @@ module.exports = {
                                          let pair = LastKeltners[elem].pair;
                                          let keltnerPrice = LastKeltners[elem].keltner_inf_1_5x.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
                                          let openOrderPrice = OpenOrders[order].price.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
-                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- KELTNER 1.5X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
+                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER 1.5X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
                                          if(openOrderPrice < keltnerPrice){
                                              let order =
                                                  {
@@ -217,7 +217,7 @@ module.exports = {
                                          let pair = LastKeltners[elem].pair;
                                          let keltnerPrice = LastKeltners[elem].keltner_inf_2x.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
                                          let openOrderPrice = OpenOrders[order].price.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
-                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- KELTNER 2X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
+                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER 2X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
                                          if(openOrderPrice < keltnerPrice){
                                              let order =
                                                  {
@@ -238,7 +238,7 @@ module.exports = {
                                          let pair = LastKeltners[elem].pair;
                                          let keltnerPrice = LastKeltners[elem].keltner_inf_2_5x.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
                                          let openOrderPrice = OpenOrders[order].price.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
-                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- KELTNER 2.5X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
+                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER 2.5X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
                                          if(openOrderPrice < keltnerPrice){
                                              let order =
                                                  {
@@ -259,7 +259,7 @@ module.exports = {
                                          let pair = LastKeltners[elem].pair;
                                          let keltnerPrice = LastKeltners[elem].keltner_inf_3x.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
                                          let openOrderPrice = OpenOrders[order].price.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
-                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- KELTNER 3X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
+                                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER 3X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice);
                                          if(openOrderPrice < keltnerPrice){
                                              let order =
                                                  {
@@ -280,7 +280,7 @@ module.exports = {
                          }
                      }else{
                          // NO OLD OPEN ORDER CASE - FIRST POSITION
-                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- NO OLD OPEN ORDER CASE - FIRST POSITION');
+                         console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO OLD OPEN ORDER CASE - FIRST POSITION');
                          for(bal in LastBalance) {
                              if (LastBalance.hasOwnProperty(bal)) {
                                  if(pairsConvertion[LastBalance[bal].currency].value === LastKeltners[elem].pair){
@@ -351,10 +351,11 @@ module.exports = {
                      }
                  }
              }
-             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+ordersToCancel.length+' ORDER(S) TO CANCEL');
+             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL');
+             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+orders.length+' PREPARED ORDER(S) TO POSITION');
              for(elem in orders){
                  if(orders.hasOwnProperty(elem)){
-                     console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+ orders[elem].type+' '+orders[elem].ordertype+' '+orders[elem].volume+' '+orders[elem].pair+' '+orders[elem].price);
+                     console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ orders[elem].type+' '+orders[elem].ordertype+' '+orders[elem].volume+' '+orders[elem].pair+' '+orders[elem].price);
                  }
              }
 

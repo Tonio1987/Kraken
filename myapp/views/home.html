@@ -90,9 +90,9 @@
                             <th scope="col">Current Price</th>
                             <th scope="col">EUR value</th>
                             <th scope="col">Inv Evol</th>
-                            <th scope="col">ATR</th>
                             <th scope="col">SLoss Price</th>
                             <th scope="col">SLoss Price 2x</th>
+                            <th scope="col">SLoss Price 3x</th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="asset in myBalance">
@@ -103,9 +103,9 @@
                             <td>{{asset.price.toFixed(4)}} &euro;</td>
                             <td>{{asset.eur_value.toFixed(2)}} &euro;</td>
                             <td ng-class="{'text-red': asset.evolution < 0,'text-green': asset.evolution >= 0}">{{asset.evolution.toFixed(3)}} &percnt;</td>
-                            <td>{{asset.atr.toFixed(4)}} &euro;</td>
                             <td ng-class="{'text-yellow': asset.hyp_sell_price < asset.buy_price,'text-green': asset.hyp_sell_price >= asset.buy_price}">{{asset.hyp_sell_price.toFixed(4)}} &euro;</td>
                             <td ng-class="{'text-yellow': asset.hyp_sell_price2x < asset.buy_price,'text-green': asset.hyp_sell_price2x >= asset.buy_price}">{{asset.hyp_sell_price2x.toFixed(4)}} &euro;</td>
+                            <td ng-class="{'text-yellow': asset.hyp_sell_price3x < asset.buy_price,'text-green': asset.hyp_sell_price3x >= asset.buy_price}">{{asset.hyp_sell_price3x.toFixed(4)}} &euro;</td>
                         </tr>
                         </tbody>
                     </table>
