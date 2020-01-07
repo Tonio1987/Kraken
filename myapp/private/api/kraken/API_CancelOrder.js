@@ -1,5 +1,5 @@
 const kraken = require('node-kraken-api');
-
+const moment = require('moment');
 const api = kraken({
     key: process.env.KRAKEN_KEY,
     secret: process.env.KRAKEN_SECRET,
@@ -11,6 +11,7 @@ function waitEndOfLoop(i, length){}
 module.exports = {
     kraken_CancelOrder: function(callback, ordersToCancel, preparedOrders) {
         for(let i=0; i<ordersToCancel.length; i++){
+            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- API --- CANCEL ORDER : '+ordersToCancel[i]);
             return new Promise(function (resolve, reject) {
                 api.call('CancelOrder',
                     {

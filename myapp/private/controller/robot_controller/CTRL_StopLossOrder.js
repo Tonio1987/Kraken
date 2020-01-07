@@ -120,7 +120,6 @@ module.exports = {
 
         // CANCEL OLD STOP LOSS
         function STEP_API_cancelOldStopLossOrder(err, preparedOrders) {
-            console.log(preparedOrders);
            if(!err){
                if(preparedOrders.ordersToCancel.length>0){
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL THE CANCEL ORDER API');
@@ -149,24 +148,27 @@ module.exports = {
            }
        }
 
-       function STEP_DB_dropOpenOrders() {
+       function STEP_DB_dropOpenOrders(err, data) {
+           if(err){
+              console.log(err);
+           }
            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- DROP OPEN ORDERS');
            DB_OpenOrders.dropOpenOrders(STEP_API_getOpenOrders);
        }
 
        function STEP_API_getOpenOrders(err, data) {
-           console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL OPEN ORDERS API');
+            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL OPEN ORDERS API');
             API_OpenOrders.kraken_OpenOrders(STEP_DB_insertOpenOrders);
        }
 
        function STEP_DB_insertOpenOrders(err, data) {
            if(!err){
-               if(data.length>0){
-                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+data.length+' NEW OPEN ORDERS');
+               if(Object.keys(data).length > 0){
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- OPEN ORDERS ARE IN POSITION');
                    DB_OpenOrders.upsertOpenOrders(STEP_finish, data);
                }else{
-                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- NO NEW OPEN ORDERS');
-                   STEP_finish(err);
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- NO OPEN ORDERS');
+                   STEP_finish(false);
                }
            }else{
                STEP_finish(false);

@@ -1,5 +1,5 @@
 const kraken = require('node-kraken-api');
-
+const moment = require('moment');
 
 const api = kraken({
     key: process.env.KRAKEN_KEY,
@@ -12,16 +12,18 @@ function waitEndOfLoop(i, length){}
 module.exports = {
     kraken_AddOrder: function(callback, orders) {
         for(let i=0; i<orders.length; i++){
+            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- API --- ADD ORDER : '
+                +orders[i].type+' '+orders[i].ordertype+' '+orders[i].volume+' '+orders[i].pair+' price : '+orders[i].price);
             return new Promise(function (resolve, reject) {
                 api.call('AddOrder',
                     {
-                        pair: orders[order].pair,
-                        type:  orders[order].type,
-                        ordertype:  orders[order].ordertype,
-                        price:  orders[order].price,
-                        volume:  orders[order].volume,
-                        starttm:  orders[order].starttm,
-                        expiretm:  orders[order].expiretm
+                        pair: orders[i].pair,
+                        type:  orders[i].type,
+                        ordertype:  orders[i].ordertype,
+                        price:  orders[i].price,
+                        volume:  orders[i].volume,
+                        starttm:  orders[i].starttm,
+                        expiretm:  orders[i].expiretm
                     }, (err, data) => {
                         if (err) {
                             reject(err);
