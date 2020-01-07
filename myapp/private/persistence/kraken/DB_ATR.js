@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 moment.locale('fr');
 
-function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, timestamp){
+function prepareData(ohlcs, atr, pair, interval, count, insert_date, insert_hour, timestamp){
     let atrs = [];
     let length = 0;
     let High = 0;
@@ -16,9 +16,9 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
     let ATR = 0;
 
     if(count > 0){
-        let High = ohlcs[ohlcs.length-1].high;
-        let Low = ohlcs[ohlcs.length-1].low;
-        let Close = ohlcs[ohlcs.length-2].close;
+        let High = ohlcs[0].high;
+        let Low = ohlcs[0].low;
+        let Close = ohlcs[1].close;
 
         H_minus_L = Math.abs(High-Low);
         H_minus_CL = Math.abs(High-Close);
@@ -33,7 +33,7 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
             TR = L_minus_CL;
         }
 
-        ATR = ((ohlcs[ohlcs.length-2].ATR * 13) + TR) / 14;
+        ATR = ((atr[0].ATR * 13) + TR) / 14;
         
         var new_atr = {
             insert_date: insert_date,
@@ -41,9 +41,9 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
             insert_timestamp: timestamp,
             pair: pair,
             interval: interval,
-            time: ohlcs[ohlcs.length-1].time,
-            time_date: ohlcs[ohlcs.length-1].time_date,
-            time_hour: ohlcs[ohlcs.length-1].time_hour,
+            time: ohlcs[0].time,
+            time_date: ohlcs[0].time_date,
+            time_hour: ohlcs[0].time_hour,
             high: High,
             Low: Low,
             Close: Close,
@@ -169,8 +169,8 @@ function prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, tim
 }
 
 module.exports = {
-    insertATR: function (callback, ohlcs, pair, interval, count, insert_date, insert_hour, timestamp) {
-        var atr = prepareData(ohlcs, pair, interval, count, insert_date, insert_hour, timestamp);
+    insertATR: function (callback, ohlcs, atr, pair, interval, count, insert_date, insert_hour, timestamp) {
+        var atr = prepareData(ohlcs, atr, pair, interval, count, insert_date, insert_hour, timestamp);
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
                 if (err) {
@@ -217,4 +217,48 @@ module.exports = {
             callback(err, null);
         });
     },
+    getLastATR_1h: function (callback, pair, param_fw1, param_fw2) {
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("ATR").find({pair: pair, interval: "1_HOUR"}).sort({time: -1}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data, pair, param_fw1, param_fw2);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    },
+    getLastATR_1d: function (callback, pair, param_fw1, param_fw2) {
+        new Promise(function (resolve, reject) {
+            MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
+                if (err){
+                    reject(err);
+                } else{
+                    var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
+                    dbo.collection("ATR").find({pair: pair, interval: "1_DAY"}).sort({time: -1}).limit(1).toArray(function(err, result) {
+                        if (err){
+                            reject(err);
+                        }
+                        db.close();
+                        resolve(result);
+                    });
+                }
+            });
+        }).then(function(data){
+            callback(null, data, pair, param_fw1, param_fw2);
+        }).catch(function(err) {
+            callback(err, null);
+        });
+    }
 };

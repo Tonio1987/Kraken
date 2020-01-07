@@ -21,6 +21,7 @@ module.exports = {
             STEP_DB_getAllPairs,
             STEP_DB_countATR,
             STEP_DB_loadLast14OHLC,
+            STEP_DB_load_LastATR1H,
             STEP_DB_insertATR,
             STEP_finish
         ], function (err, result) {
@@ -38,16 +39,24 @@ module.exports = {
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if(!err){
                 allPairs.forEach(function(pair){
-                    DB_OHLC.getLast14OHLC_1h(STEP_DB_insertATR, pair.kraken_pair_name, count);
+                    DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, pair.kraken_pair_name, count);
                 });
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertATR(err, ohlcs, pair, count) {
+        function STEP_DB_load_LastATR1H(err, ohlcs, pair, count) {
             if(!err){
-                DB_ATR.insertATR(STEP_finish, ohlcs, pair, "1_HOUR", count, insert_date, insert_hour, timestamp);
+                DB_ATR.getLastATR_1h(STEP_DB_insertATR, pair, ohlcs, count)
+            }else{
+                STEP_finish(err);
+            }
+        }
+
+        function STEP_DB_insertATR(err, atr, pair, ohlcs, count) {
+            if(!err){
+                DB_ATR.insertATR(STEP_finish, ohlcs, atr, pair, "1_HOUR", count, insert_date, insert_hour, timestamp);
             }else{
                 console.log('Erreur with pair : '+pair);
                 STEP_finish(err);
@@ -70,6 +79,7 @@ module.exports = {
             STEP_DB_getAllPairs,
             STEP_DB_countATR,
             STEP_DB_loadLast14OHLC,
+            STEP_DB_load_LastATR1D,
             STEP_DB_insertATR,
             STEP_finish
         ], function (err, result) {
@@ -87,16 +97,24 @@ module.exports = {
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if (!err) {
                 allPairs.forEach(function (pair) {
-                    DB_OHLC.getLast14OHLC_1d(STEP_DB_insertATR, pair.kraken_pair_name, count);
+                    DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1D, pair.kraken_pair_name, count);
                 });
             } else {
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertATR(err, ohlcs, pair, count) {
+        function STEP_DB_load_LastATR1D(err, ohlcs, pair, count) {
+            if(!err){
+                DB_ATR.getLastATR_1d(STEP_DB_insertATR, pair, ohlcs, count)
+            }else{
+                STEP_finish(err);
+            }
+        }
+
+        function STEP_DB_insertATR(err, atr, pair, ohlcs, count) {
             if (!err) {
-                DB_ATR.insertATR(STEP_finish, ohlcs, pair, "1_DAY", count, insert_date, insert_hour, timestamp);
+                DB_ATR.insertATR(STEP_finish, ohlcs, atr, pair, "1_DAY", count, insert_date, insert_hour, timestamp);
             } else {
                 console.log('Erreur with pair : ' + pair);
                 STEP_finish(err);

@@ -1,10 +1,10 @@
 const async = require('async');
 const moment = require('moment');
 
-const DB_OHLC = require('../../persistence/purge/DB_OHLC');
+const DB_ATR = require('../../persistence/purge/DB_ATR');
 
 module.exports = {
-    purgeOHLCData1h: function () {
+    purgeATRData1h: function () {
         async.waterfall([
             STEP_DB_purgeDate,
             STEP_finish
@@ -13,18 +13,18 @@ module.exports = {
         });
 
         function STEP_DB_purgeDate() {
-                let twoDaysAgo = moment().add(-2, 'days').valueOf();
-                DB_OHLC.purgeData_1hour(STEP_finish, twoDaysAgo);
+            let twoDaysAgo = moment().add(-2, 'days').valueOf();
+            DB_ATR.purgeData_1hour(STEP_finish, twoDaysAgo);
         }
 
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge OHLC Data 1 hour FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge ATR Data 1 hour FAILED');
             }
         }
     },
-    purgeOHLCData1d: function () {
+    purgeATRData1d: function () {
         async.waterfall([
             STEP_DB_purgeDate,
             STEP_finish
@@ -33,14 +33,14 @@ module.exports = {
         });
 
         function STEP_DB_purgeDate() {
-            let longTimeAgo = moment().add(-688, 'days').valueOf();
-            DB_OHLC.purgeData_1day(STEP_finish, longTimeAgo);
+            let longTimeAgo = moment().add(-15, 'days').valueOf();
+            DB_ATR.purgeData_1day(STEP_finish, longTimeAgo);
         }
 
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge OHLC Data 1 day FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge ATR Data 1 day FAILED');
             }
         }
     }

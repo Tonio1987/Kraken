@@ -267,9 +267,6 @@ module.exports = {
                          // NO OLD OPEN ORDER CASE - FIRST POSITION
                          for(bal in LastBalance) {
                              if (LastBalance.hasOwnProperty(bal)) {
-                                 console.log(pairsConvertion[LastBalance[bal].currency].value);
-                                 console.log(pairsConvertion[LastKeltners[elem].pair].value);
-                                 console.log(LastKeltners[elem].pair);
                                  if(pairsConvertion[LastBalance[bal].currency].value === LastKeltners[elem].pair){
                                      console.log("equality");
                                     if(coefKeltnerTrigger === 1){
@@ -339,7 +336,7 @@ module.exports = {
                      }
                  }
              }
-             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- Orders to cancel '+ordersToCancel.length);
+             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+ordersToCancel.length+' Orders to cancel ');
              for(elem in orders){
                  if(orders.hasOwnProperty(elem)){
                      console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+ orders[elem].type+' '+orders[elem].ordertype+' '+orders[elem].volume+' '+orders[elem].pair+' '+orders[elem].price);
@@ -351,8 +348,6 @@ module.exports = {
                  orders: orders
              }
 
-            // preparedOrders.ordersToCancel.push(ordersToCancel);
-            // preparedOrders.orders.push(orders);
             console.log(preparedOrders);
             resolve(preparedOrders);
         }).then(function(preparedOrders){

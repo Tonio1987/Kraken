@@ -122,12 +122,11 @@ module.exports = {
         function STEP_API_cancelOldStopLossOrder(err, preparedOrders) {
             console.log(preparedOrders);
            if(!err){
-               console.log("here");
                if(preparedOrders.ordersToCancel.length>0){
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL THE CANCEL ORDER API');
                    API_CancelOrder.kraken_CancelOrder(STEP_API_addNewStopLossOrder, preparedOrders.ordersToCancel, preparedOrders);
                }else{
-                   console.log("here2");
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- NO ORDERS TO CANCEL');
                    STEP_API_addNewStopLossOrder(err, null, preparedOrders);
                }
            }else{
@@ -138,12 +137,11 @@ module.exports = {
        // POSITION NEW STOP LOSS
        function STEP_API_addNewStopLossOrder(err, data, preparedOrders) {
            if(!err){
-               console.log("here3");
                if(preparedOrders.orders.length>0){
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL THE ADD ORDER API');
                    API_AddOrder.kraken_AddOrder(STEP_DB_dropOpenOrders, preparedOrders.orders);
                }else{
-                   console.log("here4");
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- NO NEW ORDERS');
                    STEP_DB_dropOpenOrders();
                }
            }else{
@@ -157,15 +155,17 @@ module.exports = {
        }
 
        function STEP_API_getOpenOrders(err, data) {
+           console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- CALL OPEN ORDERS API');
             API_OpenOrders.kraken_OpenOrders(STEP_DB_insertOpenOrders);
        }
 
        function STEP_DB_insertOpenOrders(err, data) {
            if(!err){
-               console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+data.length+'NEW OPEN ORDERS');
                if(data.length>0){
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- '+data.length+' NEW OPEN ORDERS');
                    DB_OpenOrders.upsertOpenOrders(STEP_finish, data);
                }else{
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- NO NEW OPEN ORDERS');
                    STEP_finish(err);
                }
            }else{
@@ -179,7 +179,7 @@ module.exports = {
                 console.log(error);
                 console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Add Stop Loss Order FAILED');
             }
-            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- END STOP LOSS ORDER');
+            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT --- END --- STOP LOSS ORDER');
         }
     }
 };

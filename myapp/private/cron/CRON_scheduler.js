@@ -31,6 +31,7 @@ const CTRL_PurgeMobileM = require('../controller/purge_controller/CTRL_PurgeMobi
 const CTRL_PurgeMobileMEvolution = require('../controller/purge_controller/CTRL_PurgeMobileMEvolution');
 const CTRL_PurgeKeltner = require('../controller/purge_controller/CTRL_PurgeKeltner');
 const CTRL_PurgeOHLC = require('../controller/purge_controller/CTRL_PurgeOHLC');
+const CTRL_PurgeATR = require('../controller/purge_controller/CTRL_PurgeATR');
 
 let server_start_time = moment();
 
@@ -247,7 +248,7 @@ Handler.init_task_Robot_StopLossOrder = function(cron_expression){
     });
 };
 
-// PURGE DATA - EVERY 1 HOUR - KEEP LAST 2 DAYS DATA
+// PURGE DATA - EVERY 1 HOUR
 Handler.init_task_PurgeData = function(cron_expression){
     task_PurgeData = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Purge Data');
@@ -259,6 +260,8 @@ Handler.init_task_PurgeData = function(cron_expression){
         CTRL_PurgeKeltner.purgeKeltnerData();
         CTRL_PurgeOHLC.purgeOHLCData1h();
         CTRL_PurgeOHLC.purgeOHLCData1d();
+        CTRL_PurgeATR.purgeATRData1h();
+        CTRL_PurgeATR.purgeATRData1d();
     }, {
         scheduled: false
     });
