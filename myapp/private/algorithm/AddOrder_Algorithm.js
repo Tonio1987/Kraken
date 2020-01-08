@@ -182,7 +182,7 @@ module.exports = {
                                                      pair: pair,
                                                      type: 'sell',
                                                      ordertype: 'stop-loss',
-                                                     price: price,
+                                                     price: keltnerPrice,
                                                      volume: volume,
                                                      starttm: 0,
                                                      expiretm: 0
@@ -203,7 +203,7 @@ module.exports = {
                                                      pair: pair,
                                                      type: 'sell',
                                                      ordertype: 'stop-loss',
-                                                     price: price,
+                                                     price: keltnerPrice,
                                                      volume: volume,
                                                      starttm: 0,
                                                      expiretm: 0
@@ -224,7 +224,7 @@ module.exports = {
                                                      pair: pair,
                                                      type: 'sell',
                                                      ordertype: 'stop-loss',
-                                                     price: price,
+                                                     price: keltnerPrice,
                                                      volume: volume,
                                                      starttm: 0,
                                                      expiretm: 0
@@ -245,7 +245,7 @@ module.exports = {
                                                      pair: pair,
                                                      type: 'sell',
                                                      ordertype: 'stop-loss',
-                                                     price: price,
+                                                     price: keltnerPrice,
                                                      volume: volume,
                                                      starttm: 0,
                                                      expiretm: 0
@@ -266,7 +266,7 @@ module.exports = {
                                                      pair: pair,
                                                      type: 'sell',
                                                      ordertype: 'stop-loss',
-                                                     price: price,
+                                                     price: keltnerPrice,
                                                      volume: volume,
                                                      starttm: 0,
                                                      expiretm: 0
