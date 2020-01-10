@@ -40,7 +40,7 @@ module.exports = {
                         if (err) {
                             reject(err);
                         } else {
-                            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - DATABASE - > OHLC 1 HOUR- ' + obj.result.n + ' document(s) deleted');
+                            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - DATABASE - > ATR 1 HOUR- ' + obj.result.n + ' document(s) deleted');
                             db.close();
                             resolve(true);
                         }
@@ -65,7 +65,7 @@ module.exports = {
                         if (err) {
                             reject(err);
                         } else {
-                            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - DATABASE - > OHLC 1 DAY - ' + obj.result.n + ' document(s) deleted');
+                            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - DATABASE - > ATR 1 DAY - ' + obj.result.n + ' document(s) deleted');
                             db.close();
                             resolve(true);
                         }

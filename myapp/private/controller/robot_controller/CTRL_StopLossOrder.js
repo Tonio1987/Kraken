@@ -7,6 +7,7 @@ const DB_Keltner = require('../../persistence/robot/stop_loss_order/DB_Keltner')
 const DB_Balance = require('../../persistence/robot/stop_loss_order/DB_Balance');
 const DB_Trigger = require('../../persistence/robot/stop_loss_order/DB_Triggers');
 const DB_Pair = require('../../persistence/robot/stop_loss_order/DB_Pairs');
+const DB_Ticker = require('../../persistence/robot/stop_loss_order/DB_Tickers');
 
 const ALGO_AddOrder = require('../../algorithm/AddOrder_Algorithm');
 
@@ -26,6 +27,8 @@ module.exports = {
             STEP_DB_getKeltnerTrigger,
             STEP_DB_getEurPairs,
             STEP_DB_getLastKeltner,
+            STEP_DB_getLastTickerTimestamp,
+            STEP_DB_getLastTicker,
             STEP_ALGO_PrepareOrder,
             STEP_API_cancelOldStopLossOrder,
             STEP_API_addNewStopLossOrder,
@@ -103,16 +106,32 @@ module.exports = {
                        pairList.push(eurPairs[elem].kraken_pair_name);
                    }
                }
-               DB_Keltner.getLastKeltner(STEP_ALGO_PrepareOrder, pairList, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders);
+               DB_Keltner.getLastKeltner(STEP_DB_getLastTickerTimestamp, pairList, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders);
            }else{
                STEP_finish(err);
            }
        }
 
-        function STEP_ALGO_PrepareOrder(err, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders) {
+       function STEP_DB_getLastTickerTimestamp(err, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders) {
+           if(!err){
+               DB_Ticker.getMaxInsertTimestamp(STEP_DB_getLastTicker, pairList, LastKeltners, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders);
+           }else{
+               STEP_finish(err);
+           }
+       }
+
+       function STEP_DB_getLastTicker(err, lastTickerTimestamp, pairList, LastKeltners, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders) {
+           if(!err){
+               DB_Ticker.getLastTicker(STEP_ALGO_PrepareOrder, lastTickerTimestamp[0].insert_timestamp, pairList, LastKeltners, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders);
+           }else{
+               STEP_finish(err);
+           }
+       }
+
+        function STEP_ALGO_PrepareOrder(err, LastTicker, pairList, LastKeltners, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders) {
            if(!err){
                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- PREPARE ORDER');
-                ALGO_AddOrder.prepareStopLossOrders(STEP_API_cancelOldStopLossOrder, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders);
+                ALGO_AddOrder.prepareStopLossOrders(STEP_API_cancelOldStopLossOrder, LastTicker, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders);
             }else{
                 STEP_finish(err);
             }
