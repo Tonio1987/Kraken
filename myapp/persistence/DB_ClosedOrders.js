@@ -8,7 +8,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("ClosedOrders").find({status: "closed"}).sort({opentm: -1}).limit(10).toArray(function(err, result) {
+                    dbo.collection("ClosedOrders").find({status: "closed"}).sort({closetm: -1}).limit(10).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         } else{
