@@ -80,7 +80,7 @@ Handler.init_task_ServerOk = function (cron_expression){
 // KRAKEN SERVER IS ALIVE - EVERY 30 SECONDS
 Handler.init_task_KrakenServerOnline = function (cron_expression){
     task_KrakenServerOnline = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Check Kraken Server Time');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Check Kraken Server Time');
         CTRL_Time.LoadTime();
     }, {
         scheduled: false
@@ -90,7 +90,7 @@ Handler.init_task_KrakenServerOnline = function (cron_expression){
 // LOAD TICKER - EVERY 1 MINUTES
 Handler.init_task_LoadTicker = function(cron_expression){
     task_LoadTicker = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load new Ticker');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load new Ticker');
         CTRL_LoadTicker.LoadTicker();
     }, {
         scheduled: false
@@ -100,7 +100,7 @@ Handler.init_task_LoadTicker = function(cron_expression){
 // LOAD TRADE BALANCE - EVERY 5 MINUTES
 Handler.init_task_LoadTradeBalance = function(cron_expression){
     task_LoadTradeBalance = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load Trade Balance');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load Trade Balance');
         CTRL_TradeBalance.LoadTradeBalance();
     }, {
         scheduled: false
@@ -110,7 +110,7 @@ Handler.init_task_LoadTradeBalance = function(cron_expression){
 // LOAD BALANCE - EVERY 1 MINUTE
 Handler.init_task_LoadBalance = function(cron_expression){
     task_LoadBalance = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  - > Load Balance');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  -> Load Balance');
         CTRL_Balance.LoadBalance();
     }, {
         scheduled: false
@@ -120,7 +120,7 @@ Handler.init_task_LoadBalance = function(cron_expression){
 // LOAD MARKET TRADES - EVERY 30 MINUTE
 Handler.init_task_LoadMarketTrades = function(cron_expression){
     task_LoadMarketTrades = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  - > Load Market trades');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  -> Load Market trades');
         CTRL_Trades.LoadTrades();
     }, {
         scheduled: false
@@ -130,7 +130,7 @@ Handler.init_task_LoadMarketTrades = function(cron_expression){
 // LOAD TRADE HISTORY - EVERY 1 HOURS
 Handler.init_task_LoadTradeHistory = function(cron_expression){
     task_LoadTradeHistory = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load Trades History');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load Trades History');
         CTRL_TradesHistory.LoadTradesHistory();
     }, {
         scheduled: false
@@ -141,7 +141,7 @@ Handler.init_task_LoadTradeHistory = function(cron_expression){
 // LOAD CLOSED ORDERS - EVERY 1 HOURS
 Handler.init_task_LoadClosedOrders = function(cron_expression){
     task_LoadClosedOrders = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load Closed Orders');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load Closed Orders');
         CTRL_ClosedOrders.LoadClosedOrders();
     }, {
         scheduled: false
@@ -151,7 +151,7 @@ Handler.init_task_LoadClosedOrders = function(cron_expression){
 // LOAD OPEN ORDERS - EVERY 1 MINUTES
 Handler.init_task_LoadOpenOrders = function(cron_expression){
     task_LoadOpenOrders = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load Open Orders');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load Open Orders');
         CTRL_OpenOrders.LoadOpenOrders();
     }, {
         scheduled: false
@@ -161,7 +161,7 @@ Handler.init_task_LoadOpenOrders = function(cron_expression){
 // LOAD OHLC 1H - EVERY 60 MINUTES
 Handler.init_task_LoadOHLC1H = function(cron_expression){
     task_LoadOHLC1h = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load OHLC 1 HOUR');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load OHLC 1 HOUR');
         CTRL_OHLC.LoadOHLC_1h();
     }, {
         scheduled: false
@@ -171,7 +171,7 @@ Handler.init_task_LoadOHLC1H = function(cron_expression){
 // LOAD OHLC 1D - EVERY 1 DAY
 Handler.init_task_LoadOHLC1D = function(cron_expression){
     task_LoadOHLC1d = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load OHLC 1 DAY');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load OHLC 1 DAY');
         CTRL_OHLC.LoadOHLC_1d();
     }, {
         scheduled: false
@@ -181,7 +181,7 @@ Handler.init_task_LoadOHLC1D = function(cron_expression){
 // LOAD ATR 1H - EVERY 60 MINUTES
 Handler.init_task_LoadATR1H = function(cron_expression){
     task_LoadATR1h = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load ATR 1 HOUR');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load ATR 1 HOUR');
         CTRL_ATR.LoadATR_1h();
     }, {
         scheduled: false
@@ -191,7 +191,7 @@ Handler.init_task_LoadATR1H = function(cron_expression){
 // LOAD ATR 1D - EVERY 1 DAY
 Handler.init_task_LoadATR1D = function(cron_expression){
     task_LoadATR1d = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Load ATR 1 DAY');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load ATR 1 DAY');
         CTRL_ATR.LoadATR_1d();
     }, {
         scheduled: false
@@ -201,7 +201,7 @@ Handler.init_task_LoadATR1D = function(cron_expression){
 // CALCULATE MOVING AVERAGES - EVERY 1 MINUTES
 Handler.init_task_MMCalculation = function(cron_expression){
     task_MMCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MM');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Calculate MM');
         CTRL_MMCalculation.CalculateMM();
     }, {
         scheduled: false
@@ -211,7 +211,7 @@ Handler.init_task_MMCalculation = function(cron_expression){
 // CALCULATE MOVING AVERAGES EVOLUTION - EVERY 1 MINUTES AT 30 S
 Handler.init_task_MMEvolCalculation = function(cron_expression){
     task_MMEvolCalculation = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate MMEvolution');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Calculate MMEvolution');
         CTRL_MMEvolCalculation.CalculateMMEvol();
     }, {
         scheduled: false
@@ -221,7 +221,7 @@ Handler.init_task_MMEvolCalculation = function(cron_expression){
 // CALCULATE KELTNER 1H - EVERY 1 HOUR
 Handler.init_task_KeltnerCalculation1H = function(cron_expression){
     task_KeltnerCalculation_1H = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands 1 HOUR');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Calculate Keltner bands 1 HOUR');
         CTRL_KeltnerCalculation.CalculateKeltner_1h();
     }, {
         scheduled: false
@@ -231,7 +231,7 @@ Handler.init_task_KeltnerCalculation1H = function(cron_expression){
 // CALCULATE KELTNER 1D - EVERY 1 DAY
 Handler.init_task_KeltnerCalculation1D = function(cron_expression){
     task_KeltnerCalculation_1D = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Calculate Keltner bands 1 DAY');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Calculate Keltner bands 1 DAY');
         CTRL_KeltnerCalculation.CalculateKeltner_1d();
     }, {
         scheduled: false
@@ -241,7 +241,7 @@ Handler.init_task_KeltnerCalculation1D = function(cron_expression){
 // ROBOT - STOP LOSS ORDER - EVERY 1 MINUTES AT 0
 Handler.init_task_Robot_StopLossOrder = function(cron_expression){
     task_Robot_StopLossOrder = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > --- ROBOT --- STOP LOSS ORDER');
+        console.log('\x1b[36m', moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> --- ROBOT --- STOP LOSS ORDER', '\x1b[0m');
         CTRL_StopLossOrders.generateStopLossOrders();
     }, {
         scheduled: false
@@ -251,7 +251,7 @@ Handler.init_task_Robot_StopLossOrder = function(cron_expression){
 // PURGE DATA - EVERY 1 HOUR
 Handler.init_task_PurgeData = function(cron_expression){
     task_PurgeData = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON - > Purge Data');
+        console.log('\x1b[31m', moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Purge Data', '\x1b[0m');
         CTRL_PurgeBalance.purgeBalanceData();
         CTRL_PurgeTradeBalance.purgeTradeBalanceData();
         CTRL_PurgeMobileM.purgeMobileMData();

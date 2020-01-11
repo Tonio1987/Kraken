@@ -46,7 +46,7 @@
         </div>
 
         <div class="row justify-content-md-center">
-            <div class="col-5">
+            <div class="col-4">
                 <div ng-controller="Ctrl_tradeBalance">
                     <br />
                     <h4>Current Trade Balance : {{myTradeBalance}} &euro;</h4>
@@ -77,15 +77,14 @@
                     <canvas id="TradeBalanceLineChart" width="200" height="200"></canvas>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <br />
                 <div>
                     <h4>Balance details</h4>
                     <table ng-controller="Ctrl_Balance" class="table table-striped table-dark">
                         <thead>
                         <tr>
-                            <th scope="col">Currency</th>
-                            <th scope="col">Units</th>
+                            <th scope="col">Units - Asset</th>
                             <th scope="col">Buy Price</th>
                             <th scope="col">Current Price</th>
                             <th scope="col">EUR value</th>
@@ -95,11 +94,10 @@
                         </thead>
                         <tbody ng-repeat="asset in myBalance">
                         <tr>
-                            <td>{{asset.currency}}</td>
-                            <td>{{asset.units}}</td>
+                            <td>{{asset.units}} - {{asset.currency}}</td>
                             <td>{{asset.buy_price.toFixed(3)}} &euro;</td>
                             <td>{{asset.price.toFixed(3)}} &euro;</td>
-                            <td>{{asset.eur_value.toFixed(3)}} &euro;</td>
+                            <td>{{asset.eur_value.toFixed(2)}} &euro;</td>
                             <td ng-class="{'text-red': asset.evolution < 0,'text-green': asset.evolution >= 0}">{{asset.evolution.toFixed(3)}} &percnt;</td>
                             <td>
                                 ATR 1X <label ng-class="{'text-yellow': asset.hyp_sell_price < asset.buy_price,'text-green': asset.hyp_sell_price >= asset.buy_price}">{{asset.hyp_sell_price.toFixed(3)}} &euro; </label><br/>

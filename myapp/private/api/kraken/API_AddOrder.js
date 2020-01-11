@@ -12,8 +12,8 @@ function waitEndOfLoop(i, length){}
 module.exports = {
     kraken_AddOrder: function(callback, orders) {
         for(let i=0; i<orders.length; i++){
-            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- API --- ADD ORDER : '
-                +orders[i].type+' '+orders[i].ordertype+' '+orders[i].volume+' '+orders[i].pair+' price : '+orders[i].price);
+            console.log('\x1b[32m', moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- API --- ADD ORDER : '
+                +orders[i].type+' '+orders[i].ordertype+' '+orders[i].volume+' '+orders[i].pair+' price : '+orders[i].price, '\x1b[0m');
             return new Promise(function (resolve, reject) {
                 api.call('AddOrder',
                     {
@@ -31,7 +31,6 @@ module.exports = {
                         resolve(data);
                     });
             }).then(function(data){
-                console.log(data);
                 if(i === orders.length-1){
                     callback(null, data);
                 }else{
