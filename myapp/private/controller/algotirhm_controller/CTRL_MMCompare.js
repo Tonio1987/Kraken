@@ -1,20 +1,20 @@
 const async = require('async');
 const moment = require('moment');
-const DB_Pairs = require('../../persistence/algorithm/mm_evol/DB_Pairs');
-const DB_MM = require('../../persistence/algorithm/mm_evol/DB_MobileM');
-const DB_MMEvol = require('../../persistence/algorithm/mm_evol/DB_MobileMEvolution');
-const ALGO_MMEvol = require('../../algorithm/MMEvol_Algorithm');
+const DB_Pairs = require('../../persistence/algorithm/mm_compare/DB_Pairs');
+const DB_MM = require('../../persistence/algorithm/mm_compare/DB_MobileM');
+const DB_MMCompare = require('../../persistence/algorithm/mm_compare/DB_MobileMCompare');
+const ALGO_MMCompare = require('../../algorithm/MM_Compare_Algorithm');
 
 module.exports = {
-    CalculateMMEvol: function () {
+    CalculateMMCompare: function () {
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_DB_getLast1440MM,
-            STEP_ALGO_calculateMMEvol,
-            STEP_DB_insertMMEvol,
+            STEP_ALGO_compareMM,
+            // STEP_DB_insertMMCompare,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
@@ -27,33 +27,34 @@ module.exports = {
         function STEP_DB_getLast1440MM(err, data) {
             if(!err) {
                 data.forEach(function (pair) {
-                    DB_MM.getLast1440MM(STEP_ALGO_calculateMMEvol, pair.kraken_pair_name);
+                    DB_MM.getLast1440MM(STEP_ALGO_compareMM, pair.kraken_pair_name);
                 });
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_ALGO_calculateMMEvol(err, data) {
+        function STEP_ALGO_compareMM(err, MM) {
             if(!err) {
-                ALGO_MMEvol.calculateMMEvol(STEP_DB_insertMMEvol, data, date, hour, timestamp);
+                ALGO_MMCompare.calculateMMCompare(STEP_finish, MM, date, hour, timestamp);
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertMMEvol(err, data) {
+        /*
+        function STEP_DB_insertMMCompare(err, MMC) {
             if(!err) {
-                DB_MMEvol.insertMMEvolution(STEP_finish, data);
+                DB_MMCompare.insertMMCompare(STEP_finish, MMC);
             }else{
                 STEP_finish(err);
             }
         }
-
+*/
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MMEvol FAILED');
+                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process MM Comparaison FAILED');
             }
         }
     }
