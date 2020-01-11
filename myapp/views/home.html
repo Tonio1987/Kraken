@@ -175,7 +175,7 @@
 
             /* TRADE BALANCE CONTROLLER */
             app.controller('Ctrl_tradeBalance', function($scope, $http, $interval) {
-                $http.get("tradeBalance")
+                $http.get("home_tradeBalance")
                     .then(function(response) {
                         let resp =  response.data;
                         let arrayOfTradeBalances = [];
@@ -270,7 +270,7 @@
 
                     });
                 $interval(function() {
-                    $http.get("tradeBalance")
+                    $http.get("home_tradeBalance")
                         .then(function(response) {
                             let resp =  response.data;
                             let arrayOfTradeBalances = [];
@@ -391,14 +391,14 @@
 
             // BALANCE CONTROLLER
             app.controller('Ctrl_Balance', function($scope, $http, $interval) {
-                $http.get("balance")
+                $http.get("home_balance")
                     .then(function(response) {
                         $scope.myBalance = response.data;
                     }).catch(function(response) {
                     $scope.myBalance = 'Erreur';
                 });
                 $interval(function() {
-                    $http.get("balance")
+                    $http.get("home_balance")
                         .then(function(response) {
                             $scope.myBalance = response.data;
                         })
@@ -410,7 +410,7 @@
 
             /* OPEN ORDERS CONTROLLER */
             app.controller('Ctrl_OpenOrders', function($scope, $http, $interval) {
-                $http.get("OpenOrders")
+                $http.get("home_openOrders")
                     .then(function(response) {
                         $scope.myOpenOrders = response.data;
                         let openOrders = response.data;
@@ -427,7 +427,7 @@
                     $scope.myMinTradeBalance = 0;
                 });
                 $interval(function() {
-                    $http.get("OpenOrders")
+                    $http.get("home_openOrders")
                         .then(function(response) {
                             $scope.myOpenOrders = response.data;
                             let openOrders = response.data;
@@ -448,7 +448,7 @@
 
             /* CLOSED ORDERS CONTROLLER */
             app.controller('Ctrl_ClosedOrders', function($scope, $http) {
-                $http.get("last5ClosedOrders")
+                $http.get("home_last5ClosedOrders")
                     .then(function(response) {
                         $scope.myClosedOrders = response.data;
                     }).catch(function(response) {

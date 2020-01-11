@@ -83,14 +83,14 @@
 
             // MARKET Controller
             app.controller('Ctrl_Market', function($scope, $http, $interval) {
-                $http.get("marketInfo")
+                $http.get("market_marketInfo")
                     .then(function(response) {
                         $scope.tickers = response.data;
                     }).catch(function(response) {
                     $scope.tickers = 'Erreur';
                 });
                 $interval(function() {
-                    $http.get("marketInfo")
+                    $http.get("market_marketInfo")
                         .then(function(response) {
                             $scope.tickers = response.data;
                         })
@@ -102,7 +102,7 @@
                 let data = {pair: 'XXBTZEUR'};
                 $http({
                     method: 'POST',
-                    url: 'tickerData',
+                    url: 'market_tickerData',
                     headers: {'Content-Type': 'application/json'},
                     data: data
                 }).then(function (response) {
@@ -143,7 +143,7 @@
 
                 $http({
                     method: 'POST',
-                    url: 'marketTradesData',
+                    url: 'market_marketTradesData',
                     headers: {'Content-Type': 'application/json'},
                     data: data
                 }).then(function (response) {
@@ -195,7 +195,7 @@
 
                     $http({
                         method: 'POST',
-                        url: 'tickerData',
+                        url: 'market_tickerData',
                         headers: {'Content-Type': 'application/json'},
                         data: data
                     }).then(function (response) {
@@ -235,7 +235,7 @@
 
                     $http({
                         method: 'POST',
-                        url: 'marketTradesData',
+                        url: 'market_marketTradesData',
                         headers: {'Content-Type': 'application/json'},
                         data: data
                     }).then(function (response) {

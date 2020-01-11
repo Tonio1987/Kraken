@@ -154,7 +154,7 @@
 
         // CRON TASKS CONTROLLER
         app.controller('Ctrl_CronTasks', function($scope, $http) {
-            $http.get("cronTasks")
+            $http.get("settings_cronTasks")
                 .then(function(response) {
                     $scope.myCronTasks = response.data;
                 }).catch(function(response) {
@@ -165,11 +165,11 @@
                 let data = {task_id: id, active_task: active};
                 $http({
                     method: 'POST',
-                    url: 'changeCronTaskStatus',
+                    url: 'settings_changeCronTaskStatus',
                     headers: {'Content-Type': 'application/json'},
                     data: data
                 }).then(function (response) {
-                    $http.get("cronTasks")
+                    $http.get("settings_cronTasks")
                         .then(function(response) {
                             $scope.myCronTasks = response.data;
                         }).catch(function(response) {
@@ -181,7 +181,7 @@
 
         // AUTONOMOUS MODE Controller
         app.controller('Ctrl_AutonomousMode', function($scope, $http) {
-            $http.get("autonomousModeTrigger")
+            $http.get("settings_autonomousModeTrigger")
                 .then(function(response) {
                     $scope.trigAutonomous = response.data[0];
                 }).catch(function(response) {
@@ -192,11 +192,11 @@
                 let data = {trig_id: id, active_trig: active};
                 $http({
                     method: 'POST',
-                    url: 'changeAutonomousModeTriggerStatus',
+                    url: 'settings_changeAutonomousModeTriggerStatus',
                     headers: {'Content-Type': 'application/json'},
                     data: data
                 }).then(function (response) {
-                    $http.get("autonomousModeTrigger")
+                    $http.get("settings_autonomousModeTrigger")
                         .then(function(response) {
                             $scope.trigAutonomous = response.data[0];
                         }).catch(function(response) {
@@ -208,7 +208,7 @@
 
         // KELTNER TRIGGERS CONTROLLER
         app.controller('Ctrl_KeltnerTriggers', function($scope, $http) {
-            $http.get("keltnerTriggers")
+            $http.get("settings_keltnerTriggers")
                 .then(function(response) {
                     $scope.myKeltnerTriggers = response.data;
                 }).catch(function(response) {
@@ -219,11 +219,11 @@
                 let data = {trig_id: id, active_trig: active};
                 $http({
                     method: 'POST',
-                    url: 'changeKeltnerTriggersStatus',
+                    url: 'settings_changeKeltnerTriggersStatus',
                     headers: {'Content-Type': 'application/json'},
                     data: data
                 }).then(function (response) {
-                    $http.get("keltnerTriggers")
+                    $http.get("settings_keltnerTriggers")
                         .then(function(response) {
                             $scope.myKeltnerTriggers = response.data;
                         }).catch(function(response) {
@@ -235,7 +235,7 @@
 
         // MM EVOL TRIGGERS CONTROLLER
         app.controller('Ctrl_MMEvolTriggers', function($scope, $http) {
-            $http.get("mmEvolTriggers")
+            $http.get("settings_mmEvolTriggers")
                 .then(function(response) {
                     let triggers = response.data;
                     let tableTriggers = [];
@@ -264,11 +264,11 @@
                 let data = {trig_id: id, active_trig: active};
                 $http({
                     method: 'POST',
-                    url: 'changeMMEvolTriggerStatus',
+                    url: 'settings_changeMMEvolTriggerStatus',
                     headers: {'Content-Type': 'application/json'},
                     data: data
                 }).then(function (response) {
-                    $http.get("mmEvolTriggers")
+                    $http.get("settings_mmEvolTriggers")
                         .then(function(response) {
                             let triggers = response.data;
                             let tableTriggers = [];

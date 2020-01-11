@@ -359,7 +359,7 @@
 
              // PAIR Controller
              app.controller('Ctrl_MMEvolPairSelection', function($scope, $http, Fact) {
-                 $http.get("pairsList")
+                 $http.get("analyse_pairsList")
                      .then(function(response) {
                          $scope.pairs = response.data;
                      }).catch(function(response) {
@@ -370,7 +370,7 @@
                      let data = {pair: pairSelected};
                      $http({
                          method: 'POST',
-                         url: '/MMEvolPairData',
+                         url: '/analyse_MMEvolPairData',
                          headers: {'Content-Type': 'application/json'},
                          data: data
                      }).then(function (response) {
@@ -379,7 +379,7 @@
 
                      $http({
                          method: 'POST',
-                         url: '/MMPairData',
+                         url: '/analyse_MMPairData',
                          headers: {'Content-Type': 'application/json'},
                          data: data
                      }).then(function (response) {

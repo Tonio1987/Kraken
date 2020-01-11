@@ -31,43 +31,53 @@ app.use('/analyse', analysesRouter);
 app.use('/settings', settingsRouter);
 
 // CALL API REST ROUTES
-var tradeBalanceRouter = require('./routes/rest_api/TradeBalance');
-var balanceRouter = require('./routes/rest_api/Balance');
-var openOrdersRouter = require('./routes/rest_api/OpenOrders');
-var last5ClosedOrdersRouter = require('./routes/rest_api/Last5ClosedOrders');
-var cronTasksRouter = require('./routes/rest_api/CronTasks');
-var changeCronTaskStatusRouter = require('./routes/rest_api/ChangeCronTaskStatus');
-var triggersMMEvolRouter = require('./routes/rest_api/TriggersMMEvol');
-var changeMMEvolTriggerStatusRouter = require('./routes/rest_api/ChangeMMEvolTriggerStatus');
-var triggersKeltnerRouter = require('./routes/rest_api/TriggersKeltner');
-var changeKeltnerTriggerStatusRouter = require('./routes/rest_api/ChangeKeltnerTriggerStatus');
-var triggerAutonomousModeRouter = require('./routes/rest_api/TriggerAutonomousMode');
-var changeAutonomousModeTriggerStatusRouter = require('./routes/rest_api/ChangeAutonomousModeTriggerStatus');
-var marketInfoRouter = require('./routes/rest_api/MarketInfo');
-var tickerDataRouter = require('./routes/rest_api/TickerData');
-var marketTradesDataRouter = require('./routes/rest_api/MarketTradesData');
-var pairsListRouter = require('./routes/rest_api/PairsList');
-var MMPairDataRouter = require('./routes/rest_api/MMPairData');
-var MMEvolPairDataRouter = require('./routes/rest_api/MMEvolPairData');
+// HOME
+var tradeBalanceRouter = require('./routes/rest_api/home/TradeBalance');
+var balanceRouter = require('./routes/rest_api/home/Balance');
+var openOrdersRouter = require('./routes/rest_api/home/OpenOrders');
+var last5ClosedOrdersRouter = require('./routes/rest_api/home/Last5ClosedOrders');
 
-app.use('/tradeBalance', tradeBalanceRouter);
-app.use('/balance', balanceRouter);
-app.use('/openOrders', openOrdersRouter);
-app.use('/last5ClosedOrders', last5ClosedOrdersRouter);
-app.use('/cronTasks', cronTasksRouter);
-app.use('/changeCronTaskStatus', changeCronTaskStatusRouter);
-app.use('/mmEvolTriggers', triggersMMEvolRouter);
-app.use('/changeMMEvolTriggerStatus', changeMMEvolTriggerStatusRouter);
-app.use('/keltnerTriggers', triggersKeltnerRouter);
-app.use('/changeKeltnerTriggersStatus', changeKeltnerTriggerStatusRouter);
-app.use('/autonomousModeTrigger', triggerAutonomousModeRouter);
-app.use('/changeAutonomousModeTriggerStatus', changeAutonomousModeTriggerStatusRouter);
-app.use('/marketInfo', marketInfoRouter);
-app.use('/tickerData', tickerDataRouter);
-app.use('/marketTradesData', marketTradesDataRouter);
-app.use('/pairsList', pairsListRouter);
-app.use('/MMPairData', MMPairDataRouter);
-app.use('/MMEvolPairData', MMEvolPairDataRouter);
+app.use('/home_tradeBalance', tradeBalanceRouter);
+app.use('/home_balance', balanceRouter);
+app.use('/home_openOrders', openOrdersRouter);
+app.use('/home_last5ClosedOrders', last5ClosedOrdersRouter);
+
+// MARKET
+var marketInfoRouter = require('./routes/rest_api/market/MarketInfo');
+var tickerDataRouter = require('./routes/rest_api/market/TickerData');
+var marketTradesDataRouter = require('./routes/rest_api/market/MarketTradesData');
+
+app.use('/market_marketInfo', marketInfoRouter);
+app.use('/market_tickerData', tickerDataRouter);
+app.use('/market_marketTradesData', marketTradesDataRouter);
+
+// ANALYSE
+var pairsListRouter = require('./routes/rest_api/analyse/PairsList');
+var MMPairDataRouter = require('./routes/rest_api/analyse/MMPairData');
+var MMEvolPairDataRouter = require('./routes/rest_api/analyse/MMEvolPairData');
+
+app.use('/analyse_pairsList', pairsListRouter);
+app.use('/analyse_MMPairData', MMPairDataRouter);
+app.use('/analyse_MMEvolPairData', MMEvolPairDataRouter);
+
+// SETTINGS
+var cronTasksRouter = require('./routes/rest_api/settings/CronTasks');
+var changeCronTaskStatusRouter = require('./routes/rest_api/settings/ChangeCronTaskStatus');
+var triggersMMEvolRouter = require('./routes/rest_api/settings/TriggersMMEvol');
+var changeMMEvolTriggerStatusRouter = require('./routes/rest_api/settings/ChangeMMEvolTriggerStatus');
+var triggersKeltnerRouter = require('./routes/rest_api/settings/TriggersKeltner');
+var changeKeltnerTriggerStatusRouter = require('./routes/rest_api/settings/ChangeKeltnerTriggerStatus');
+var triggerAutonomousModeRouter = require('./routes/rest_api/settings/TriggerAutonomousMode');
+var changeAutonomousModeTriggerStatusRouter = require('./routes/rest_api/settings/ChangeAutonomousModeTriggerStatus');
+
+app.use('/settings_cronTasks', cronTasksRouter);
+app.use('/settings_changeCronTaskStatus', changeCronTaskStatusRouter);
+app.use('/settings_mmEvolTriggers', triggersMMEvolRouter);
+app.use('/settings_changeMMEvolTriggerStatus', changeMMEvolTriggerStatusRouter);
+app.use('/settings_keltnerTriggers', triggersKeltnerRouter);
+app.use('/settings_changeKeltnerTriggersStatus', changeKeltnerTriggerStatusRouter);
+app.use('/settings_autonomousModeTrigger', triggerAutonomousModeRouter);
+app.use('/settings_changeAutonomousModeTriggerStatus', changeAutonomousModeTriggerStatusRouter);
 
 // INIT APP
 module.exports = app;
