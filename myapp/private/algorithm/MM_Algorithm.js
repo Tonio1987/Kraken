@@ -7,6 +7,37 @@ module.exports = {
 
             let count = 0;
             let sum = 0;
+            let mm5_upto_60 = false;
+            let mm5_upto_180 = false;
+            let mm5_upto_360 = false;
+            let mm5_upto_720 = false;
+            let mm5_upto_1440 = false;
+            let mm60_upto_180 = false;
+            let mm60_upto_360 = false;
+            let mm60_upto_720 = false;
+            let mm60_upto_1440 = false;
+            let mm180_upto_360 = false;
+            let mm180_upto_720 = false;
+            let mm180_upto_1440 = false;
+            let mm360_upto_720 = false;
+            let mm360_upto_1440 = false;
+            let mm720_upto_1440 = false;
+            let since_mm5_upto_60 = 0;
+            let since_mm5_upto_180 = 0;
+            let since_mm5_upto_360 = 0;
+            let since_mm5_upto_720 = 0;
+            let since_mm5_upto_1440 = 0;
+            let since_mm60_upto_180 = 0;
+            let since_mm60_upto_360 = 0;
+            let since_mm60_upto_720 = 0;
+            let since_mm60_upto_1440 = 0;
+            let since_mm180_upto_360 = 0;
+            let since_mm180_upto_720 = 0;
+            let since_mm180_upto_1440 = 0;
+            let since_mm360_upto_720 = 0;
+            let since_mm360_upto_1440 = 0;
+            let since_mm720_upto_1440 = 0;
+
             let  mm = {
                 insert_date: date,
                 insert_hour: hour,
@@ -26,6 +57,21 @@ module.exports = {
                 mm540: 0,
                 mm720: 0,
                 mm1440: 0,
+                mm5_upto_60: false,
+                mm5_upto_180: false,
+                mm5_upto_360: false,
+                mm5_upto_720: false,
+                mm5_upto_1440: false,
+                mm60_upto_180: false,
+                mm60_upto_360: false,
+                mm60_upto_720: false,
+                mm60_upto_1440: false,
+                mm180_upto_360: false,
+                mm180_upto_720: false,
+                mm180_upto_1440: false,
+                mm360_upto_720: false,
+                mm360_upto_1440: false,
+                mm720_upto_1440: false
             };
             for(let ticker in data){
                 if (data.hasOwnProperty(ticker)) {
@@ -57,6 +103,22 @@ module.exports = {
                     reject();
                 }
             }
+            if(mm.mm5 >= mm.mm60){mm.mm5_upto_60 = true;}
+            if(mm.mm5 >= mm.mm180){mm.mm5_upto_180 = true;}
+            if(mm.mm5 >= mm.mm360){mm.mm5_upto_360 = true;}
+            if(mm.mm5 >= mm.mm720){mm.mm5_upto_720 = true;}
+            if(mm.mm5 >= mm.mm1440){mm.mm5_upto_1440 = true;}
+            if(mm.mm60 >= mm.mm180){mm.mm60_upto_180 = true;}
+            if(mm.mm60 >= mm.mm360){mm.mm60_upto_360 = true;}
+            if(mm.mm60 >= mm.mm720){mm.mm60_upto_720 = true;}
+            if(mm.mm60 >= mm.mm1440){mm.mm60_upto_1440 = true;}
+            if(mm.mm180 >= mm.mm360){mm.mm180_upto_360 = true;}
+            if(mm.mm180 >= mm.mm720){mm.mm180_upto_720 = true;}
+            if(mm.mm180 >= mm.mm1440){mm.mm180_upto_1440 = true;}
+            if(mm.mm360 >= mm.mm720){mm.mm360_upto_720 = true;}
+            if(mm.mm360 >= mm.mm1440){mm.mm360_upto_1440 = true;}
+            if(mm.mm720 >= mm.mm1440){mm.mm720_upto_1440 = true;}
+
             resolve(mm);
         }).then(function(res){
             callback(null, res);
