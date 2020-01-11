@@ -176,6 +176,7 @@ module.exports = {
                 if(LastKeltners.hasOwnProperty(elem)){
                     // HERE WE HAVE TO HANDLE THE CASE NO OPEN ORDERS
                     if(OpenOrders.length > 0){
+                        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- OLD OPEN ORDER DETECTED');
                         for(order in OpenOrders){
                             if(OpenOrders.hasOwnProperty(order)){
                                 if(OpenOrders[order].pair === LastKeltners[elem].pair || OpenOrders[order].pair === pairsConvertion[LastKeltners[elem].pair].value){
@@ -187,7 +188,7 @@ module.exports = {
                                     let openOrderPrice = OpenOrders[order].price.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
                                     console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER '+coefKeltnerTrigger+'X PRICE : '+keltnerPrice+' - OPEN ORDER PRICE : '+openOrderPrice+' LAST TICKER PRICE : '+LastKeltners[elem].last_ticker+' LAST ATR : '+LastKeltners[elem].last_ATR);
                                     if(openOrderPrice < keltnerPrice){
-                                        let order =
+                                        let ord =
                                             {
                                                 pair: pair,
                                                 type: 'sell',
@@ -205,7 +206,7 @@ module.exports = {
                         }
                     }else{
                         // NO OLD OPEN ORDER CASE - FIRST POSITION
-                        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO OLD OPEN ORDER CASE - FIRST POSITION');
+                        console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO OLD OPEN ORDER DETECTED');
                         for(bal in LastBalance) {
                             if (LastBalance.hasOwnProperty(bal)) {
                                 if(pairsConvertion[LastBalance[bal].currency].value === LastKeltners[elem].pair){
