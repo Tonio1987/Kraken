@@ -396,6 +396,7 @@
                      if(Fact.MMGraph.length > 0){
                          $scope.p = Fact.MMGraph[0].pair;
                          let MMData = Fact.MMGraph;
+                         let arrayOfMM5 = [];
                          let arrayOfMM15 = [];
                          let arrayOfMM60 = [];
                          let arrayOfMM180 = [];
@@ -407,6 +408,7 @@
                          for(let MM in MMData){
                              if(MMData.hasOwnProperty(MM)){
                                  datetimeOfTMM.unshift(MMData[MM].insert_date+' '+MMData[MM].insert_hour);
+                                 arrayOfMM5.unshift(MMData[MM].mm5);
                                  arrayOfMM15.unshift(MMData[MM].mm15);
                                  arrayOfMM60.unshift(MMData[MM].mm60);
                                  arrayOfMM180.unshift(MMData[MM].mm180);
@@ -419,6 +421,13 @@
                          let graphData =  {
                              labels: datetimeOfTMM,
                              datasets: [
+                                 {
+                                     data: arrayOfMM5,
+                                     label: "MM5",
+                                     borderColor: "#66b3ff",
+                                     borderWidth: 1,
+                                     fill: false
+                                 },
                                  {
                                      data: arrayOfMM15,
                                      label: "MM15",
