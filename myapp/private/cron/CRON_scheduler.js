@@ -113,7 +113,7 @@ Handler.init_task_LoadTradeBalance = function(cron_expression){
 // LOAD BALANCE
 Handler.init_task_LoadBalance = function(cron_expression){
     task_LoadBalance = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  -> Load Balance');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load Balance');
         CTRL_Balance.LoadBalance();
     }, {
         scheduled: false
@@ -123,7 +123,7 @@ Handler.init_task_LoadBalance = function(cron_expression){
 // LOAD MARKET TRADES
 Handler.init_task_LoadMarketTrades = function(cron_expression){
     task_LoadMarketTrades = cron.schedule(cron_expression, () =>  {
-        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON  -> Load Market trades');
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load Market trades');
         CTRL_Trades.LoadTrades();
     }, {
         scheduled: false

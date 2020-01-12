@@ -34,8 +34,9 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge TradeBalance Data FAILED');
+                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge TradeBalance Data FAILED', '\x1b[0m');
             }
+            console.log('\x1b[31m', moment().format('L') + ' - '+ moment().format('LTS') + ' - CONTROLER -> END - Purge TRADE BALANCE Data', '\x1b[0m');
         }
     }
 };

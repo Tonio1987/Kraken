@@ -473,7 +473,6 @@ module.exports = {
         }).then(function(res){
             callback(null, res);
         }).catch(function(err) {
-            err = 'Error during MMEvol calculation';
             callback(err, null);
         });
     }

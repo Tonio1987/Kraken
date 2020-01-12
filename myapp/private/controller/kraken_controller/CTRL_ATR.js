@@ -66,7 +66,7 @@ module.exports = {
         function STEP_finish(err, data, pair) {
             if(err){
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 HOUR FAILED');
+                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 HOUR FAILED', '\x1b[0m');
             }
         }
     },
@@ -124,7 +124,7 @@ module.exports = {
         function STEP_finish(err, data, pair) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 DAY FAILED');
+                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 DAY FAILED', '\x1b[0m');
             }
         }
     }

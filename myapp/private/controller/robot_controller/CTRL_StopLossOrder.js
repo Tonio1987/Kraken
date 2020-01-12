@@ -198,7 +198,7 @@ module.exports = {
             if(err){
                 var error = ''+err;
                 console.log(error);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > ROBOT STOP LOSS FAILED');
+                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > ROBOT STOP LOSS FAILED', '\x1b[0m');
             }
             console.log('\x1b[36m', moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- END --- STOP LOSS ORDER', '\x1b[0m');
         }

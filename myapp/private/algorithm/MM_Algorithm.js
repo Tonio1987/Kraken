@@ -123,7 +123,6 @@ module.exports = {
         }).then(function(res){
             callback(null, res);
         }).catch(function(err) {
-            err = 'Error during MM calculation';
             callback(err, null);
         });
     }

@@ -11,7 +11,7 @@ function waitEndOfLoop(i, length){}
 module.exports = {
     kraken_CancelOrder: function(callback, ordersToCancel, preparedOrders) {
         for(let i=0; i<ordersToCancel.length; i++){
-            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- API --- CANCEL ORDER : '+ordersToCancel[i]);
+            console.log('\x1b[33m', moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- API --- CANCEL ORDER : '+ordersToCancel[i], '\x1b[0m');
             return new Promise(function (resolve, reject) {
                 api.call('CancelOrder',
                     {
