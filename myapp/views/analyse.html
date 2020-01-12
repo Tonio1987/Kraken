@@ -373,7 +373,7 @@
 
              // SHARE DATA BETWEEN CONTROLLERS WITH FACTORY
              app.factory('Fact', function(){
-                 return { MMEVolTable: '', MMGraph: ''};
+                 return { MMEVolTable: '', MMGraph: '', MMCompareTable: ''};
              });
 
              // PAIR Controller
@@ -403,6 +403,15 @@
                          data: data
                      }).then(function (response) {
                          Fact.MMGraph = response.data;
+                     });
+
+                     $http({
+                         method: 'POST',
+                         url: '/analyse_MMComparePairData',
+                         headers: {'Content-Type': 'application/json'},
+                         data: data
+                     }).then(function (response) {
+                         Fact.MMCompareTable = response.data;
                      });
                  }
              });
@@ -757,6 +766,17 @@
                      }
                  });
              });
+
+             app.controller('Ctrl_MMCompare', function($scope, Fact) {
+                 $scope.$watch(function(){
+                     return Fact.MMCompareTable;
+                 }, function(){
+                     if(Fact.MMCompareTable.length > 0){
+                         console.log('Data is there');
+                     }
+                });
+             });
+
 
              // DATE Controller
              app.controller('Ctrl_Date', function($scope, $interval) {

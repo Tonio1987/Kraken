@@ -55,10 +55,13 @@ app.use('/market_marketTradesData', marketTradesDataRouter);
 var pairsListRouter = require('./routes/rest_api/analyse/PairsList');
 var MMPairDataRouter = require('./routes/rest_api/analyse/MMPairData');
 var MMEvolPairDataRouter = require('./routes/rest_api/analyse/MMEvolPairData');
+var MMComparePairDataRouter = require('./routes/rest_api/analyse/MMComparePairData');
 
 app.use('/analyse_pairsList', pairsListRouter);
 app.use('/analyse_MMPairData', MMPairDataRouter);
 app.use('/analyse_MMEvolPairData', MMEvolPairDataRouter);
+app.use('/analyse_MMComparePairData', MMComparePairDataRouter);
+
 
 // SETTINGS
 var cronTasksRouter = require('./routes/rest_api/settings/CronTasks');
