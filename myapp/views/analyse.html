@@ -1,797 +1,943 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>--- Trading Robot interface ---</title>
-        <!-- favicon -->
-        <link rel="icon" type="image/x-icon" href="images/favicon.jpg" />
-        <!-- Angular JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-        <script src="/lib/angular/angular.js"></script>
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <!--- Chart -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css">
-        <link rel="stylesheet" href="/stylesheets/style.css">
-    </head>
-    <body ng-app="myApp">
+<head>
+    <title>--- Trading Robot interface ---</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.jpg" />
+    <!-- Angular JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="/lib/angular/angular.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!--- Chart -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body ng-app="myApp">
 
-        <!-- Navigation bar -->
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/market">Market</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" active href="/analyse">Analyses</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/settings">Settings</a>
-            </li>
-        </ul>
-        <div class="container-fluid">
-            <div class="row justify-content-md-center">
-                <div class="col">
-                    <div ng-controller="Ctrl_Date" class="text-center">
-                        {{ today | date }}
-                    </div>
-                </div>
+<!-- Navigation bar -->
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/market">Market</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" active href="/analyse">Analyses</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/settings">Settings</a>
+    </li>
+</ul>
+<div class="container-fluid">
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <div ng-controller="Ctrl_Date" class="text-center">
+                {{ today | date }}
             </div>
-            <div ng-controller="Ctrl_MMEvolPairSelection" class="row justify-content-md-center">
-                <div class="col-auto my-1">
-                    <br />
-                     Select pair :
-                    <select  ng-model="pairSelected" ng-change="loadPairData(pairSelected)" class="custom-select mr-sm-2">
-                        <option ng-repeat="pair in pairs" value="{{pair.kraken_pair_name}}">{{pair.kraken_pair_name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div ng-controller="Ctrl_MMEvolData" class="row justify-content-md-center">
-                <div class="col-10">
-                    <br />
-                    <h4>Mobile Average Evolution for pair {{p}}</h4>
-                    <table class="table table-striped table-dark table-sm">
-                        <thead class="thead-dark">
-                            <tr class="table-center-text">
-                                <th scope="col" class="table-primary table-center-text">Nb Period</th>
-                                <th scope="col" class="table-primary table-center-text">MA 5</th>
-                                <th scope="col" class="table-primary table-center-text">MA 15</th>
-                                <th scope="col" class="table-primary table-center-text">MA 30</th>
-                                <th scope="col" class="table-primary table-center-text">MA 45</th>
-                                <th scope="col" class="table-primary table-center-text">MA 60</th>
-                                <th scope="col" class="table-primary table-center-text">MA 75</th>
-                                <th scope="col" class="table-primary table-center-text">MA 90</th>
-                                <th scope="col" class="table-primary table-center-text">MA 105</th>
-                                <th scope="col" class="table-primary table-center-text">MA 120</th>
-                                <th scope="col" class="table-primary table-center-text">MA 180</th>
-                                <th scope="col" class="table-primary table-center-text">MA 360</th>
-                                <th scope="col" class="table-primary table-center-text">MA 540</th>
-                                <th scope="col" class="table-primary table-center-text">MA 720</th>
-                                <th scope="col" class="table-primary table-center-text">MA 1440</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="table-center-text">
-                                <td>1</td>
-                                <td ng-class="{'text-red': evol_1p_mm5 < 0,'text-green': evol_1p_mm5 >= 0}" class="table-black-backg">{{evol_1p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm15 < 0,'text-green': evol_1p_mm15 >= 0}">{{evol_1p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm30 < 0,'text-green': evol_1p_mm30 >= 0}">{{evol_1p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm45 < 0,'text-green': evol_1p_mm45 >= 0}">{{evol_1p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm60 < 0,'text-green': evol_1p_mm60 >= 0}">{{evol_1p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm75 < 0,'text-green': evol_1p_mm75 >= 0}">{{evol_1p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm90 < 0,'text-green': evol_1p_mm90 >= 0}">{{evol_1p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm105 < 0,'text-green': evol_1p_mm105 >= 0}">{{evol_1p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm120 < 0,'text-green': evol_1p_mm120 >= 0}">{{evol_1p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm180 < 0,'text-green': evol_1p_mm180 >= 0}">{{evol_1p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm360 < 0,'text-green': evol_1p_mm360 >= 0}">{{evol_1p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm540 < 0,'text-green': evol_1p_mm540 >= 0}">{{evol_1p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm720 < 0,'text-green': evol_1p_mm720 >= 0}">{{evol_1p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1p_mm1440 < 0,'text-green': evol_1p_mm1440 >= 0}">{{evol_1p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>5</td>
-                                <td ng-class="{'text-red': evol_5p_mm5 < 0,'text-green': evol_5p_mm5 >= 0}" class="table-black-backg">{{evol_5p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm15 < 0,'text-green': evol_5p_mm15 >= 0}">{{evol_5p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm30 < 0,'text-green': evol_5p_mm30 >= 0}">{{evol_5p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm45 < 0,'text-green': evol_5p_mm45 >= 0}">{{evol_5p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm60 < 0,'text-green': evol_5p_mm60 >= 0}">{{evol_5p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm75 < 0,'text-green': evol_5p_mm75 >= 0}">{{evol_5p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm90 < 0,'text-green': evol_5p_mm90 >= 0}">{{evol_5p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm105 < 0,'text-green': evol_5p_mm105 >= 0}">{{evol_5p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm120 < 0,'text-green': evol_5p_mm120 >= 0}">{{evol_5p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm180 < 0,'text-green': evol_5p_mm180 >= 0}">{{evol_5p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm360 < 0,'text-green': evol_5p_mm360 >= 0}">{{evol_5p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm540 < 0,'text-green': evol_5p_mm540 >= 0}">{{evol_5p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm720 < 0,'text-green': evol_5p_mm720 >= 0}">{{evol_5p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_5p_mm1440 < 0,'text-green': evol_5p_mm1440 >= 0}">{{evol_5p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>15</td>
-                                <td ng-class="{'text-red': evol_15p_mm5 < 0,'text-green': evol_15p_mm5 >= 0}">{{evol_15p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm15 < 0,'text-green': evol_15p_mm15 >= 0}" class="table-black-backg">{{evol_15p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm30 < 0,'text-green': evol_15p_mm30 >= 0}">{{evol_15p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm45 < 0,'text-green': evol_15p_mm45 >= 0}">{{evol_15p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm60 < 0,'text-green': evol_15p_mm60 >= 0}">{{evol_15p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm75 < 0,'text-green': evol_15p_mm75 >= 0}">{{evol_15p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm90 < 0,'text-green': evol_15p_mm90 >= 0}">{{evol_15p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm105 < 0,'text-green': evol_15p_mm105 >= 0}">{{evol_15p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm120 < 0,'text-green': evol_15p_mm120 >= 0}">{{evol_15p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm180 < 0,'text-green': evol_15p_mm180 >= 0}">{{evol_15p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm360 < 0,'text-green': evol_15p_mm360 >= 0}">{{evol_15p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm540 < 0,'text-green': evol_15p_mm540 >= 0}">{{evol_15p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm720 < 0,'text-green': evol_15p_mm720 >= 0}">{{evol_15p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_15p_mm1440 < 0,'text-green': evol_15p_mm1440 >= 0}">{{evol_15p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>30</td>
-                                <td ng-class="{'text-red': evol_30p_mm5 < 0,'text-green': evol_30p_mm5 >= 0}">{{evol_30p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm15 < 0,'text-green': evol_30p_mm15 >= 0}">{{evol_30p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm30 < 0,'text-green': evol_30p_mm30 >= 0}" class="table-black-backg">{{evol_30p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm45 < 0,'text-green': evol_30p_mm45 >= 0}">{{evol_30p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm60 < 0,'text-green': evol_30p_mm60 >= 0}">{{evol_30p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm75 < 0,'text-green': evol_30p_mm75 >= 0}">{{evol_30p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm90 < 0,'text-green': evol_30p_mm90 >= 0}">{{evol_30p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm105 < 0,'text-green': evol_30p_mm105 >= 0}">{{evol_30p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm120 < 0,'text-green': evol_30p_mm120 >= 0}">{{evol_30p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm180 < 0,'text-green': evol_30p_mm180 >= 0}">{{evol_30p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm360 < 0,'text-green': evol_30p_mm360 >= 0}">{{evol_30p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm540 < 0,'text-green': evol_30p_mm540 >= 0}">{{evol_30p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm720 < 0,'text-green': evol_30p_mm720 >= 0}">{{evol_30p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_30p_mm1440 < 0,'text-green': evol_30p_mm1440 >= 0}">{{evol_30p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>45</td>
-                                <td ng-class="{'text-red': evol_45p_mm5 < 0,'text-green': evol_45p_mm5 >= 0}">{{evol_45p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm15 < 0,'text-green': evol_45p_mm15 >= 0}">{{evol_45p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm30 < 0,'text-green': evol_45p_mm30 >= 0}" >{{evol_45p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm45 < 0,'text-green': evol_45p_mm45 >= 0}" class="table-black-backg">{{evol_45p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm60 < 0,'text-green': evol_45p_mm60 >= 0}">{{evol_45p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm75 < 0,'text-green': evol_45p_mm75 >= 0}">{{evol_45p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm90 < 0,'text-green': evol_45p_mm90 >= 0}">{{evol_45p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm105 < 0,'text-green': evol_45p_mm105 >= 0}">{{evol_45p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm120 < 0,'text-green': evol_45p_mm120 >= 0}">{{evol_45p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm180 < 0,'text-green': evol_45p_mm180 >= 0}">{{evol_45p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm360 < 0,'text-green': evol_45p_mm360 >= 0}">{{evol_45p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm540 < 0,'text-green': evol_45p_mm540 >= 0}">{{evol_45p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm720 < 0,'text-green': evol_45p_mm720 >= 0}">{{evol_45p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_45p_mm1440 < 0,'text-green': evol_45p_mm1440 >= 0}">{{evol_45p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>60</td>
-                                <td ng-class="{'text-red': evol_60p_mm5 < 0,'text-green': evol_60p_mm5 >= 0}">{{evol_60p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm15 < 0,'text-green': evol_60p_mm15 >= 0}">{{evol_60p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm30 < 0,'text-green': evol_60p_mm30 >= 0}">{{evol_60p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm45 < 0,'text-green': evol_60p_mm45 >= 0}">{{evol_60p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm60 < 0,'text-green': evol_60p_mm60 >= 0}" class="table-black-backg">{{evol_60p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm75 < 0,'text-green': evol_60p_mm75 >= 0}">{{evol_60p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm90 < 0,'text-green': evol_60p_mm90 >= 0}">{{evol_60p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm105 < 0,'text-green': evol_60p_mm105 >= 0}">{{evol_60p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm120 < 0,'text-green': evol_60p_mm120 >= 0}">{{evol_60p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm180 < 0,'text-green': evol_60p_mm180 >= 0}">{{evol_60p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm360 < 0,'text-green': evol_60p_mm360 >= 0}">{{evol_60p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm540 < 0,'text-green': evol_60p_mm540 >= 0}">{{evol_60p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm720 < 0,'text-green': evol_60p_mm720 >= 0}">{{evol_60p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_60p_mm1440 < 0,'text-green': evol_60p_mm1440 >= 0}">{{evol_60p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>75</td>
-                                <td ng-class="{'text-red': evol_75p_mm5 < 0,'text-green': evol_75p_mm5 >= 0}">{{evol_75p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm15 < 0,'text-green': evol_75p_mm15 >= 0}">{{evol_75p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm30 < 0,'text-green': evol_75p_mm30 >= 0}">{{evol_75p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm45 < 0,'text-green': evol_75p_mm45 >= 0}">{{evol_75p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm60 < 0,'text-green': evol_75p_mm60 >= 0}">{{evol_75p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm75 < 0,'text-green': evol_75p_mm75 >= 0}" class="table-black-backg">{{evol_75p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm90 < 0,'text-green': evol_75p_mm90 >= 0}">{{evol_75p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm105 < 0,'text-green': evol_75p_mm105 >= 0}">{{evol_75p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm120 < 0,'text-green': evol_75p_mm120 >= 0}">{{evol_75p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm180 < 0,'text-green': evol_75p_mm180 >= 0}">{{evol_75p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm360 < 0,'text-green': evol_75p_mm360 >= 0}">{{evol_75p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm540 < 0,'text-green': evol_75p_mm540 >= 0}">{{evol_75p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm720 < 0,'text-green': evol_75p_mm720 >= 0}">{{evol_75p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_75p_mm1440 < 0,'text-green': evol_75p_mm1440 >= 0}">{{evol_75p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>90</td>
-                                <td ng-class="{'text-red': evol_90p_mm5 < 0,'text-green': evol_90p_mm5 >= 0}">{{evol_90p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm15 < 0,'text-green': evol_90p_mm15 >= 0}">{{evol_90p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm30 < 0,'text-green': evol_90p_mm30 >= 0}">{{evol_90p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm45 < 0,'text-green': evol_90p_mm45 >= 0}">{{evol_90p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm60 < 0,'text-green': evol_90p_mm60 >= 0}">{{evol_90p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm75 < 0,'text-green': evol_90p_mm75 >= 0}">{{evol_90p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm90 < 0,'text-green': evol_90p_mm90 >= 0}" class="table-black-backg">{{evol_90p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm105 < 0,'text-green': evol_90p_mm105 >= 0}">{{evol_90p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm120 < 0,'text-green': evol_90p_mm120 >= 0}">{{evol_90p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm180 < 0,'text-green': evol_90p_mm180 >= 0}">{{evol_90p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm360 < 0,'text-green': evol_90p_mm360 >= 0}">{{evol_90p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm540 < 0,'text-green': evol_90p_mm540 >= 0}">{{evol_90p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm720 < 0,'text-green': evol_90p_mm720 >= 0}">{{evol_90p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_90p_mm1440 < 0,'text-green': evol_90p_mm1440 >= 0}">{{evol_90p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>105</td>
-                                <td ng-class="{'text-red': evol_105p_mm5 < 0,'text-green': evol_105p_mm5 >= 0}">{{evol_105p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm15 < 0,'text-green': evol_105p_mm15 >= 0}">{{evol_105p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm30 < 0,'text-green': evol_105p_mm30 >= 0}">{{evol_105p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm45 < 0,'text-green': evol_105p_mm45 >= 0}">{{evol_105p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm60 < 0,'text-green': evol_105p_mm60 >= 0}">{{evol_105p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm75 < 0,'text-green': evol_105p_mm75 >= 0}">{{evol_105p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm90 < 0,'text-green': evol_105p_mm90 >= 0}">{{evol_105p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm105 < 0,'text-green': evol_105p_mm105 >= 0}" class="table-black-backg">{{evol_105p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm120 < 0,'text-green': evol_105p_mm120 >= 0}">{{evol_105p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm180 < 0,'text-green': evol_105p_mm180 >= 0}">{{evol_105p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm360 < 0,'text-green': evol_105p_mm360 >= 0}">{{evol_105p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm540 < 0,'text-green': evol_105p_mm540 >= 0}">{{evol_105p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm720 < 0,'text-green': evol_105p_mm720 >= 0}">{{evol_105p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_105p_mm1440 < 0,'text-green': evol_105p_mm1440 >= 0}">{{evol_105p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>120</td>
-                                <td ng-class="{'text-red': evol_120p_mm5 < 0,'text-green': evol_120p_mm5 >= 0}">{{evol_120p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm15 < 0,'text-green': evol_120p_mm15 >= 0}">{{evol_120p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm30 < 0,'text-green': evol_120p_mm30 >= 0}">{{evol_120p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm45 < 0,'text-green': evol_120p_mm45 >= 0}">{{evol_120p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm60 < 0,'text-green': evol_120p_mm60 >= 0}">{{evol_120p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm75 < 0,'text-green': evol_120p_mm75 >= 0}">{{evol_120p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm90 < 0,'text-green': evol_120p_mm90 >= 0}">{{evol_120p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm105 < 0,'text-green': evol_120p_mm105 >= 0}">{{evol_120p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm120 < 0,'text-green': evol_120p_mm120 >= 0}" class="table-black-backg">{{evol_120p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm180 < 0,'text-green': evol_120p_mm180 >= 0}">{{evol_120p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm360 < 0,'text-green': evol_120p_mm360 >= 0}">{{evol_120p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm540 < 0,'text-green': evol_120p_mm540 >= 0}">{{evol_120p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm720 < 0,'text-green': evol_120p_mm720 >= 0}">{{evol_120p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_120p_mm1440 < 0,'text-green': evol_120p_mm1440 >= 0}">{{evol_120p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>180</td>
-                                <td ng-class="{'text-red': evol_180p_mm5 < 0,'text-green': evol_180p_mm5 >= 0}">{{evol_180p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm15 < 0,'text-green': evol_180p_mm15 >= 0}">{{evol_180p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm30 < 0,'text-green': evol_180p_mm30 >= 0}">{{evol_180p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm45 < 0,'text-green': evol_180p_mm45 >= 0}">{{evol_180p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm60 < 0,'text-green': evol_180p_mm60 >= 0}">{{evol_180p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm75 < 0,'text-green': evol_180p_mm75 >= 0}">{{evol_180p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm90 < 0,'text-green': evol_180p_mm90 >= 0}">{{evol_180p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm105 < 0,'text-green': evol_180p_mm105 >= 0}">{{evol_180p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm120 < 0,'text-green': evol_180p_mm120 >= 0}">{{evol_180p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm180 < 0,'text-green': evol_180p_mm180 >= 0}" class="table-black-backg">{{evol_180p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm360 < 0,'text-green': evol_180p_mm360 >= 0}">{{evol_180p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm540 < 0,'text-green': evol_180p_mm540 >= 0}">{{evol_180p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm720 < 0,'text-green': evol_180p_mm720 >= 0}">{{evol_180p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_180p_mm1440 < 0,'text-green': evol_180p_mm1440 >= 0}">{{evol_180p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>360</td>
-                                <td ng-class="{'text-red': evol_360p_mm5 < 0,'text-green': evol_360p_mm5 >= 0}">{{evol_360p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm15 < 0,'text-green': evol_360p_mm15 >= 0}">{{evol_360p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm30 < 0,'text-green': evol_360p_mm30 >= 0}">{{evol_360p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm45 < 0,'text-green': evol_360p_mm45 >= 0}">{{evol_360p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm60 < 0,'text-green': evol_360p_mm60 >= 0}">{{evol_360p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm75 < 0,'text-green': evol_360p_mm75 >= 0}">{{evol_360p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm90 < 0,'text-green': evol_360p_mm90 >= 0}">{{evol_360p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm105 < 0,'text-green': evol_360p_mm105 >= 0}">{{evol_360p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm120 < 0,'text-green': evol_360p_mm120 >= 0}">{{evol_360p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm180 < 0,'text-green': evol_360p_mm180 >= 0}">{{evol_360p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm360 < 0,'text-green': evol_360p_mm360 >= 0}" class="table-black-backg">{{evol_360p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm540 < 0,'text-green': evol_360p_mm540 >= 0}">{{evol_360p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm720 < 0,'text-green': evol_360p_mm720 >= 0}">{{evol_360p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_360p_mm1440 < 0,'text-green': evol_360p_mm1440 >= 0}">{{evol_360p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>540</td>
-                                <td ng-class="{'text-red': evol_540p_mm5 < 0,'text-green': evol_540p_mm5 >= 0}">{{evol_540p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm15 < 0,'text-green': evol_540p_mm15 >= 0}">{{evol_540p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm30 < 0,'text-green': evol_540p_mm30 >= 0}">{{evol_540p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm45 < 0,'text-green': evol_540p_mm45 >= 0}">{{evol_540p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm60 < 0,'text-green': evol_540p_mm60 >= 0}">{{evol_540p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm75 < 0,'text-green': evol_540p_mm75 >= 0}">{{evol_540p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm90 < 0,'text-green': evol_540p_mm90 >= 0}">{{evol_540p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm105 < 0,'text-green': evol_540p_mm105 >= 0}">{{evol_540p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm120 < 0,'text-green': evol_540p_mm120 >= 0}">{{evol_540p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm180 < 0,'text-green': evol_540p_mm180 >= 0}">{{evol_540p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm360 < 0,'text-green': evol_540p_mm360 >= 0}">{{evol_540p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm540 < 0,'text-green': evol_540p_mm540 >= 0}" class="table-black-backg">{{evol_540p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm720 < 0,'text-green': evol_540p_mm720 >= 0}">{{evol_540p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_540p_mm1440 < 0,'text-green': evol_540p_mm1440 >= 0}">{{evol_540p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>720</td>
-                                <td ng-class="{'text-red': evol_720p_mm5 < 0,'text-green': evol_720p_mm5 >= 0}">{{evol_720p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm15 < 0,'text-green': evol_720p_mm15 >= 0}">{{evol_720p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm30 < 0,'text-green': evol_720p_mm30 >= 0}">{{evol_720p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm45 < 0,'text-green': evol_720p_mm45 >= 0}">{{evol_720p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm60 < 0,'text-green': evol_720p_mm60 >= 0}">{{evol_720p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm75 < 0,'text-green': evol_720p_mm75 >= 0}">{{evol_720p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm90 < 0,'text-green': evol_720p_mm90 >= 0}">{{evol_720p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm105 < 0,'text-green': evol_720p_mm105 >= 0}">{{evol_720p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm120 < 0,'text-green': evol_720p_mm120 >= 0}">{{evol_720p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm180 < 0,'text-green': evol_720p_mm180 >= 0}">{{evol_720p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm360 < 0,'text-green': evol_720p_mm360 >= 0}">{{evol_720p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm540 < 0,'text-green': evol_720p_mm540 >= 0}">{{evol_720p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm720 < 0,'text-green': evol_720p_mm720 >= 0}" class="table-black-backg">{{evol_720p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_720p_mm1440 < 0,'text-green': evol_720p_mm1440 >= 0}">{{evol_720p_mm1440}} &percnt;</td>
-                            </tr>
-                            <tr class="table-center-text">
-                                <td>1440</td>
-                                <td ng-class="{'text-red': evol_1440p_mm5 < 0,'text-green': evol_1440p_mm5 >= 0}">{{evol_1440p_mm5}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm15 < 0,'text-green': evol_1440p_mm15 >= 0}">{{evol_1440p_mm15}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm30 < 0,'text-green': evol_1440p_mm30 >= 0}">{{evol_1440p_mm30}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm45 < 0,'text-green': evol_1440p_mm45 >= 0}">{{evol_1440p_mm45}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm60 < 0,'text-green': evol_1440p_mm60 >= 0}">{{evol_1440p_mm60}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm75 < 0,'text-green': evol_1440p_mm75 >= 0}">{{evol_1440p_mm75}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm90 < 0,'text-green': evol_1440p_mm90 >= 0}">{{evol_1440p_mm90}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm105 < 0,'text-green': evol_1440p_mm105 >= 0}">{{evol_1440p_mm105}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm120 < 0,'text-green': evol_1440p_mm120 >= 0}">{{evol_1440p_mm120}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm180 < 0,'text-green': evol_1440p_mm180 >= 0}">{{evol_1440p_mm180}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm360 < 0,'text-green': evol_1440p_mm360 >= 0}">{{evol_1440p_mm360}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm540 < 0,'text-green': evol_1440p_mm540 >= 0}">{{evol_1440p_mm540}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm720 < 0,'text-green': evol_1440p_mm720 >= 0}">{{evol_1440p_mm720}} &percnt;</td>
-                                <td ng-class="{'text-red': evol_1440p_mm1440 < 0,'text-green': evol_1440p_mm1440 >= 0}" class="table-black-backg">{{evol_1440p_mm1440}} &percnt;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div ng-controller="Ctrl_MMGraph" class="row justify-content-md-center">
-                <div class="col-10">
-                    <br />
-                    <h4>Mobile Averages Graph for pair {{p}}</h4>
-                    <div class="card">
-                        <div class="card-body">
-                            <canvas id="MobileAverageLineChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div ng-controller="Ctrl_MMCompare" class="row justify-content-md-center">
-                <div class="col-10">
-                    <br />
-                    <h4>Mobile Averages Comparaison for pair {{p}}</h4>
-                    <table class="table table-striped table-dark table-sm">
-                        <thead class="thead-dark">
-                        <tr class="table-center-text">
-                            <th scope="col" class="table-primary table-center-text">MM A</th>
-                            <th scope="col" class="table-primary table-center-text">MM B</th>
-                            <th scope="col" class="table-primary table-center-text">MM A on MM B Position</th>
-                            <th scope="col" class="table-primary table-center-text">MM A on MM B LAst Trend</th>
-                            <th scope="col" class="table-primary table-center-text">Nb Period Since Trend</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
         </div>
-         <script>
-             var app = angular.module('myApp', []);
+    </div>
+    <div ng-controller="Ctrl_MMEvolPairSelection" class="row justify-content-md-center">
+        <div class="col-auto my-1">
+            <br />
+            Select pair :
+            <select  ng-model="pairSelected" ng-change="loadPairData(pairSelected)" class="custom-select mr-sm-2">
+                <option ng-repeat="pair in pairs" value="{{pair.kraken_pair_name}}">{{pair.kraken_pair_name}}</option>
+            </select>
+        </div>
+    </div>
+    <div ng-controller="Ctrl_MMEvolData" class="row justify-content-md-center">
+        <div class="col-10">
+            <br />
+            <h4>Mobile Average Evolution for pair {{p}}</h4>
+            <table class="table table-striped table-dark table-sm">
+                <thead class="thead-dark">
+                <tr class="table-center-text">
+                    <th scope="col" class="table-primary table-center-text">Nb Period</th>
+                    <th scope="col" class="table-primary table-center-text">MA 5</th>
+                    <th scope="col" class="table-primary table-center-text">MA 15</th>
+                    <th scope="col" class="table-primary table-center-text">MA 30</th>
+                    <th scope="col" class="table-primary table-center-text">MA 45</th>
+                    <th scope="col" class="table-primary table-center-text">MA 60</th>
+                    <th scope="col" class="table-primary table-center-text">MA 75</th>
+                    <th scope="col" class="table-primary table-center-text">MA 90</th>
+                    <th scope="col" class="table-primary table-center-text">MA 105</th>
+                    <th scope="col" class="table-primary table-center-text">MA 120</th>
+                    <th scope="col" class="table-primary table-center-text">MA 180</th>
+                    <th scope="col" class="table-primary table-center-text">MA 360</th>
+                    <th scope="col" class="table-primary table-center-text">MA 540</th>
+                    <th scope="col" class="table-primary table-center-text">MA 720</th>
+                    <th scope="col" class="table-primary table-center-text">MA 1440</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-center-text">
+                    <td>1</td>
+                    <td ng-class="{'text-red': evol_1p_mm5 < 0,'text-green': evol_1p_mm5 >= 0}" class="table-black-backg">{{evol_1p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm15 < 0,'text-green': evol_1p_mm15 >= 0}">{{evol_1p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm30 < 0,'text-green': evol_1p_mm30 >= 0}">{{evol_1p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm45 < 0,'text-green': evol_1p_mm45 >= 0}">{{evol_1p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm60 < 0,'text-green': evol_1p_mm60 >= 0}">{{evol_1p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm75 < 0,'text-green': evol_1p_mm75 >= 0}">{{evol_1p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm90 < 0,'text-green': evol_1p_mm90 >= 0}">{{evol_1p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm105 < 0,'text-green': evol_1p_mm105 >= 0}">{{evol_1p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm120 < 0,'text-green': evol_1p_mm120 >= 0}">{{evol_1p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm180 < 0,'text-green': evol_1p_mm180 >= 0}">{{evol_1p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm360 < 0,'text-green': evol_1p_mm360 >= 0}">{{evol_1p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm540 < 0,'text-green': evol_1p_mm540 >= 0}">{{evol_1p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm720 < 0,'text-green': evol_1p_mm720 >= 0}">{{evol_1p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1p_mm1440 < 0,'text-green': evol_1p_mm1440 >= 0}">{{evol_1p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>5</td>
+                    <td ng-class="{'text-red': evol_5p_mm5 < 0,'text-green': evol_5p_mm5 >= 0}" class="table-black-backg">{{evol_5p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm15 < 0,'text-green': evol_5p_mm15 >= 0}">{{evol_5p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm30 < 0,'text-green': evol_5p_mm30 >= 0}">{{evol_5p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm45 < 0,'text-green': evol_5p_mm45 >= 0}">{{evol_5p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm60 < 0,'text-green': evol_5p_mm60 >= 0}">{{evol_5p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm75 < 0,'text-green': evol_5p_mm75 >= 0}">{{evol_5p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm90 < 0,'text-green': evol_5p_mm90 >= 0}">{{evol_5p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm105 < 0,'text-green': evol_5p_mm105 >= 0}">{{evol_5p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm120 < 0,'text-green': evol_5p_mm120 >= 0}">{{evol_5p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm180 < 0,'text-green': evol_5p_mm180 >= 0}">{{evol_5p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm360 < 0,'text-green': evol_5p_mm360 >= 0}">{{evol_5p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm540 < 0,'text-green': evol_5p_mm540 >= 0}">{{evol_5p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm720 < 0,'text-green': evol_5p_mm720 >= 0}">{{evol_5p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_5p_mm1440 < 0,'text-green': evol_5p_mm1440 >= 0}">{{evol_5p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>15</td>
+                    <td ng-class="{'text-red': evol_15p_mm5 < 0,'text-green': evol_15p_mm5 >= 0}">{{evol_15p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm15 < 0,'text-green': evol_15p_mm15 >= 0}" class="table-black-backg">{{evol_15p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm30 < 0,'text-green': evol_15p_mm30 >= 0}">{{evol_15p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm45 < 0,'text-green': evol_15p_mm45 >= 0}">{{evol_15p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm60 < 0,'text-green': evol_15p_mm60 >= 0}">{{evol_15p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm75 < 0,'text-green': evol_15p_mm75 >= 0}">{{evol_15p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm90 < 0,'text-green': evol_15p_mm90 >= 0}">{{evol_15p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm105 < 0,'text-green': evol_15p_mm105 >= 0}">{{evol_15p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm120 < 0,'text-green': evol_15p_mm120 >= 0}">{{evol_15p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm180 < 0,'text-green': evol_15p_mm180 >= 0}">{{evol_15p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm360 < 0,'text-green': evol_15p_mm360 >= 0}">{{evol_15p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm540 < 0,'text-green': evol_15p_mm540 >= 0}">{{evol_15p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm720 < 0,'text-green': evol_15p_mm720 >= 0}">{{evol_15p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_15p_mm1440 < 0,'text-green': evol_15p_mm1440 >= 0}">{{evol_15p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>30</td>
+                    <td ng-class="{'text-red': evol_30p_mm5 < 0,'text-green': evol_30p_mm5 >= 0}">{{evol_30p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm15 < 0,'text-green': evol_30p_mm15 >= 0}">{{evol_30p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm30 < 0,'text-green': evol_30p_mm30 >= 0}" class="table-black-backg">{{evol_30p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm45 < 0,'text-green': evol_30p_mm45 >= 0}">{{evol_30p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm60 < 0,'text-green': evol_30p_mm60 >= 0}">{{evol_30p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm75 < 0,'text-green': evol_30p_mm75 >= 0}">{{evol_30p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm90 < 0,'text-green': evol_30p_mm90 >= 0}">{{evol_30p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm105 < 0,'text-green': evol_30p_mm105 >= 0}">{{evol_30p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm120 < 0,'text-green': evol_30p_mm120 >= 0}">{{evol_30p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm180 < 0,'text-green': evol_30p_mm180 >= 0}">{{evol_30p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm360 < 0,'text-green': evol_30p_mm360 >= 0}">{{evol_30p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm540 < 0,'text-green': evol_30p_mm540 >= 0}">{{evol_30p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm720 < 0,'text-green': evol_30p_mm720 >= 0}">{{evol_30p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_30p_mm1440 < 0,'text-green': evol_30p_mm1440 >= 0}">{{evol_30p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>45</td>
+                    <td ng-class="{'text-red': evol_45p_mm5 < 0,'text-green': evol_45p_mm5 >= 0}">{{evol_45p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm15 < 0,'text-green': evol_45p_mm15 >= 0}">{{evol_45p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm30 < 0,'text-green': evol_45p_mm30 >= 0}" >{{evol_45p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm45 < 0,'text-green': evol_45p_mm45 >= 0}" class="table-black-backg">{{evol_45p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm60 < 0,'text-green': evol_45p_mm60 >= 0}">{{evol_45p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm75 < 0,'text-green': evol_45p_mm75 >= 0}">{{evol_45p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm90 < 0,'text-green': evol_45p_mm90 >= 0}">{{evol_45p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm105 < 0,'text-green': evol_45p_mm105 >= 0}">{{evol_45p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm120 < 0,'text-green': evol_45p_mm120 >= 0}">{{evol_45p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm180 < 0,'text-green': evol_45p_mm180 >= 0}">{{evol_45p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm360 < 0,'text-green': evol_45p_mm360 >= 0}">{{evol_45p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm540 < 0,'text-green': evol_45p_mm540 >= 0}">{{evol_45p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm720 < 0,'text-green': evol_45p_mm720 >= 0}">{{evol_45p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_45p_mm1440 < 0,'text-green': evol_45p_mm1440 >= 0}">{{evol_45p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>60</td>
+                    <td ng-class="{'text-red': evol_60p_mm5 < 0,'text-green': evol_60p_mm5 >= 0}">{{evol_60p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm15 < 0,'text-green': evol_60p_mm15 >= 0}">{{evol_60p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm30 < 0,'text-green': evol_60p_mm30 >= 0}">{{evol_60p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm45 < 0,'text-green': evol_60p_mm45 >= 0}">{{evol_60p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm60 < 0,'text-green': evol_60p_mm60 >= 0}" class="table-black-backg">{{evol_60p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm75 < 0,'text-green': evol_60p_mm75 >= 0}">{{evol_60p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm90 < 0,'text-green': evol_60p_mm90 >= 0}">{{evol_60p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm105 < 0,'text-green': evol_60p_mm105 >= 0}">{{evol_60p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm120 < 0,'text-green': evol_60p_mm120 >= 0}">{{evol_60p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm180 < 0,'text-green': evol_60p_mm180 >= 0}">{{evol_60p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm360 < 0,'text-green': evol_60p_mm360 >= 0}">{{evol_60p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm540 < 0,'text-green': evol_60p_mm540 >= 0}">{{evol_60p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm720 < 0,'text-green': evol_60p_mm720 >= 0}">{{evol_60p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_60p_mm1440 < 0,'text-green': evol_60p_mm1440 >= 0}">{{evol_60p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>75</td>
+                    <td ng-class="{'text-red': evol_75p_mm5 < 0,'text-green': evol_75p_mm5 >= 0}">{{evol_75p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm15 < 0,'text-green': evol_75p_mm15 >= 0}">{{evol_75p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm30 < 0,'text-green': evol_75p_mm30 >= 0}">{{evol_75p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm45 < 0,'text-green': evol_75p_mm45 >= 0}">{{evol_75p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm60 < 0,'text-green': evol_75p_mm60 >= 0}">{{evol_75p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm75 < 0,'text-green': evol_75p_mm75 >= 0}" class="table-black-backg">{{evol_75p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm90 < 0,'text-green': evol_75p_mm90 >= 0}">{{evol_75p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm105 < 0,'text-green': evol_75p_mm105 >= 0}">{{evol_75p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm120 < 0,'text-green': evol_75p_mm120 >= 0}">{{evol_75p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm180 < 0,'text-green': evol_75p_mm180 >= 0}">{{evol_75p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm360 < 0,'text-green': evol_75p_mm360 >= 0}">{{evol_75p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm540 < 0,'text-green': evol_75p_mm540 >= 0}">{{evol_75p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm720 < 0,'text-green': evol_75p_mm720 >= 0}">{{evol_75p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_75p_mm1440 < 0,'text-green': evol_75p_mm1440 >= 0}">{{evol_75p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>90</td>
+                    <td ng-class="{'text-red': evol_90p_mm5 < 0,'text-green': evol_90p_mm5 >= 0}">{{evol_90p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm15 < 0,'text-green': evol_90p_mm15 >= 0}">{{evol_90p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm30 < 0,'text-green': evol_90p_mm30 >= 0}">{{evol_90p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm45 < 0,'text-green': evol_90p_mm45 >= 0}">{{evol_90p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm60 < 0,'text-green': evol_90p_mm60 >= 0}">{{evol_90p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm75 < 0,'text-green': evol_90p_mm75 >= 0}">{{evol_90p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm90 < 0,'text-green': evol_90p_mm90 >= 0}" class="table-black-backg">{{evol_90p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm105 < 0,'text-green': evol_90p_mm105 >= 0}">{{evol_90p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm120 < 0,'text-green': evol_90p_mm120 >= 0}">{{evol_90p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm180 < 0,'text-green': evol_90p_mm180 >= 0}">{{evol_90p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm360 < 0,'text-green': evol_90p_mm360 >= 0}">{{evol_90p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm540 < 0,'text-green': evol_90p_mm540 >= 0}">{{evol_90p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm720 < 0,'text-green': evol_90p_mm720 >= 0}">{{evol_90p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_90p_mm1440 < 0,'text-green': evol_90p_mm1440 >= 0}">{{evol_90p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>105</td>
+                    <td ng-class="{'text-red': evol_105p_mm5 < 0,'text-green': evol_105p_mm5 >= 0}">{{evol_105p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm15 < 0,'text-green': evol_105p_mm15 >= 0}">{{evol_105p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm30 < 0,'text-green': evol_105p_mm30 >= 0}">{{evol_105p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm45 < 0,'text-green': evol_105p_mm45 >= 0}">{{evol_105p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm60 < 0,'text-green': evol_105p_mm60 >= 0}">{{evol_105p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm75 < 0,'text-green': evol_105p_mm75 >= 0}">{{evol_105p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm90 < 0,'text-green': evol_105p_mm90 >= 0}">{{evol_105p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm105 < 0,'text-green': evol_105p_mm105 >= 0}" class="table-black-backg">{{evol_105p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm120 < 0,'text-green': evol_105p_mm120 >= 0}">{{evol_105p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm180 < 0,'text-green': evol_105p_mm180 >= 0}">{{evol_105p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm360 < 0,'text-green': evol_105p_mm360 >= 0}">{{evol_105p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm540 < 0,'text-green': evol_105p_mm540 >= 0}">{{evol_105p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm720 < 0,'text-green': evol_105p_mm720 >= 0}">{{evol_105p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_105p_mm1440 < 0,'text-green': evol_105p_mm1440 >= 0}">{{evol_105p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>120</td>
+                    <td ng-class="{'text-red': evol_120p_mm5 < 0,'text-green': evol_120p_mm5 >= 0}">{{evol_120p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm15 < 0,'text-green': evol_120p_mm15 >= 0}">{{evol_120p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm30 < 0,'text-green': evol_120p_mm30 >= 0}">{{evol_120p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm45 < 0,'text-green': evol_120p_mm45 >= 0}">{{evol_120p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm60 < 0,'text-green': evol_120p_mm60 >= 0}">{{evol_120p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm75 < 0,'text-green': evol_120p_mm75 >= 0}">{{evol_120p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm90 < 0,'text-green': evol_120p_mm90 >= 0}">{{evol_120p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm105 < 0,'text-green': evol_120p_mm105 >= 0}">{{evol_120p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm120 < 0,'text-green': evol_120p_mm120 >= 0}" class="table-black-backg">{{evol_120p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm180 < 0,'text-green': evol_120p_mm180 >= 0}">{{evol_120p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm360 < 0,'text-green': evol_120p_mm360 >= 0}">{{evol_120p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm540 < 0,'text-green': evol_120p_mm540 >= 0}">{{evol_120p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm720 < 0,'text-green': evol_120p_mm720 >= 0}">{{evol_120p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_120p_mm1440 < 0,'text-green': evol_120p_mm1440 >= 0}">{{evol_120p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>180</td>
+                    <td ng-class="{'text-red': evol_180p_mm5 < 0,'text-green': evol_180p_mm5 >= 0}">{{evol_180p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm15 < 0,'text-green': evol_180p_mm15 >= 0}">{{evol_180p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm30 < 0,'text-green': evol_180p_mm30 >= 0}">{{evol_180p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm45 < 0,'text-green': evol_180p_mm45 >= 0}">{{evol_180p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm60 < 0,'text-green': evol_180p_mm60 >= 0}">{{evol_180p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm75 < 0,'text-green': evol_180p_mm75 >= 0}">{{evol_180p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm90 < 0,'text-green': evol_180p_mm90 >= 0}">{{evol_180p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm105 < 0,'text-green': evol_180p_mm105 >= 0}">{{evol_180p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm120 < 0,'text-green': evol_180p_mm120 >= 0}">{{evol_180p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm180 < 0,'text-green': evol_180p_mm180 >= 0}" class="table-black-backg">{{evol_180p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm360 < 0,'text-green': evol_180p_mm360 >= 0}">{{evol_180p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm540 < 0,'text-green': evol_180p_mm540 >= 0}">{{evol_180p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm720 < 0,'text-green': evol_180p_mm720 >= 0}">{{evol_180p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_180p_mm1440 < 0,'text-green': evol_180p_mm1440 >= 0}">{{evol_180p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>360</td>
+                    <td ng-class="{'text-red': evol_360p_mm5 < 0,'text-green': evol_360p_mm5 >= 0}">{{evol_360p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm15 < 0,'text-green': evol_360p_mm15 >= 0}">{{evol_360p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm30 < 0,'text-green': evol_360p_mm30 >= 0}">{{evol_360p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm45 < 0,'text-green': evol_360p_mm45 >= 0}">{{evol_360p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm60 < 0,'text-green': evol_360p_mm60 >= 0}">{{evol_360p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm75 < 0,'text-green': evol_360p_mm75 >= 0}">{{evol_360p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm90 < 0,'text-green': evol_360p_mm90 >= 0}">{{evol_360p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm105 < 0,'text-green': evol_360p_mm105 >= 0}">{{evol_360p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm120 < 0,'text-green': evol_360p_mm120 >= 0}">{{evol_360p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm180 < 0,'text-green': evol_360p_mm180 >= 0}">{{evol_360p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm360 < 0,'text-green': evol_360p_mm360 >= 0}" class="table-black-backg">{{evol_360p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm540 < 0,'text-green': evol_360p_mm540 >= 0}">{{evol_360p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm720 < 0,'text-green': evol_360p_mm720 >= 0}">{{evol_360p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_360p_mm1440 < 0,'text-green': evol_360p_mm1440 >= 0}">{{evol_360p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>540</td>
+                    <td ng-class="{'text-red': evol_540p_mm5 < 0,'text-green': evol_540p_mm5 >= 0}">{{evol_540p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm15 < 0,'text-green': evol_540p_mm15 >= 0}">{{evol_540p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm30 < 0,'text-green': evol_540p_mm30 >= 0}">{{evol_540p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm45 < 0,'text-green': evol_540p_mm45 >= 0}">{{evol_540p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm60 < 0,'text-green': evol_540p_mm60 >= 0}">{{evol_540p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm75 < 0,'text-green': evol_540p_mm75 >= 0}">{{evol_540p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm90 < 0,'text-green': evol_540p_mm90 >= 0}">{{evol_540p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm105 < 0,'text-green': evol_540p_mm105 >= 0}">{{evol_540p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm120 < 0,'text-green': evol_540p_mm120 >= 0}">{{evol_540p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm180 < 0,'text-green': evol_540p_mm180 >= 0}">{{evol_540p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm360 < 0,'text-green': evol_540p_mm360 >= 0}">{{evol_540p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm540 < 0,'text-green': evol_540p_mm540 >= 0}" class="table-black-backg">{{evol_540p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm720 < 0,'text-green': evol_540p_mm720 >= 0}">{{evol_540p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_540p_mm1440 < 0,'text-green': evol_540p_mm1440 >= 0}">{{evol_540p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>720</td>
+                    <td ng-class="{'text-red': evol_720p_mm5 < 0,'text-green': evol_720p_mm5 >= 0}">{{evol_720p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm15 < 0,'text-green': evol_720p_mm15 >= 0}">{{evol_720p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm30 < 0,'text-green': evol_720p_mm30 >= 0}">{{evol_720p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm45 < 0,'text-green': evol_720p_mm45 >= 0}">{{evol_720p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm60 < 0,'text-green': evol_720p_mm60 >= 0}">{{evol_720p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm75 < 0,'text-green': evol_720p_mm75 >= 0}">{{evol_720p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm90 < 0,'text-green': evol_720p_mm90 >= 0}">{{evol_720p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm105 < 0,'text-green': evol_720p_mm105 >= 0}">{{evol_720p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm120 < 0,'text-green': evol_720p_mm120 >= 0}">{{evol_720p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm180 < 0,'text-green': evol_720p_mm180 >= 0}">{{evol_720p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm360 < 0,'text-green': evol_720p_mm360 >= 0}">{{evol_720p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm540 < 0,'text-green': evol_720p_mm540 >= 0}">{{evol_720p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm720 < 0,'text-green': evol_720p_mm720 >= 0}" class="table-black-backg">{{evol_720p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_720p_mm1440 < 0,'text-green': evol_720p_mm1440 >= 0}">{{evol_720p_mm1440}} &percnt;</td>
+                </tr>
+                <tr class="table-center-text">
+                    <td>1440</td>
+                    <td ng-class="{'text-red': evol_1440p_mm5 < 0,'text-green': evol_1440p_mm5 >= 0}">{{evol_1440p_mm5}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm15 < 0,'text-green': evol_1440p_mm15 >= 0}">{{evol_1440p_mm15}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm30 < 0,'text-green': evol_1440p_mm30 >= 0}">{{evol_1440p_mm30}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm45 < 0,'text-green': evol_1440p_mm45 >= 0}">{{evol_1440p_mm45}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm60 < 0,'text-green': evol_1440p_mm60 >= 0}">{{evol_1440p_mm60}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm75 < 0,'text-green': evol_1440p_mm75 >= 0}">{{evol_1440p_mm75}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm90 < 0,'text-green': evol_1440p_mm90 >= 0}">{{evol_1440p_mm90}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm105 < 0,'text-green': evol_1440p_mm105 >= 0}">{{evol_1440p_mm105}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm120 < 0,'text-green': evol_1440p_mm120 >= 0}">{{evol_1440p_mm120}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm180 < 0,'text-green': evol_1440p_mm180 >= 0}">{{evol_1440p_mm180}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm360 < 0,'text-green': evol_1440p_mm360 >= 0}">{{evol_1440p_mm360}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm540 < 0,'text-green': evol_1440p_mm540 >= 0}">{{evol_1440p_mm540}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm720 < 0,'text-green': evol_1440p_mm720 >= 0}">{{evol_1440p_mm720}} &percnt;</td>
+                    <td ng-class="{'text-red': evol_1440p_mm1440 < 0,'text-green': evol_1440p_mm1440 >= 0}" class="table-black-backg">{{evol_1440p_mm1440}} &percnt;</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div ng-controller="Ctrl_MMGraph" class="row justify-content-md-center">
+        <div class="col-10">
+            <br />
+            <h4>Mobile Averages Graph for pair {{p}}</h4>
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="MobileAverageLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-controller="Ctrl_MMCompare" class="row justify-content-md-center">
+        <div class="col-10">
+            <br />
+            <h4>Mobile Averages Comparaison for pair {{p}}</h4>
+            <table class="table table-striped table-dark table-sm table-center-text">
+                <thead class="thead-dark">
+                <tr class="table-center-text">
+                    <th scope="col" class="table-primary table-center-text">MM A</th>
+                    <th scope="col" class="table-primary table-center-text">MM B</th>
+                    <th scope="col" class="table-primary table-center-text">MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">MM A on MM B Last Trend</th>
+                    <th scope="col" class="table-primary table-center-text">Nb Period Since Trend</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>5 P</td>
+                    <td>60 P</td>
+                    <td>Since {{mm5_upto_60_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_60_trend === 'NO', 'bg-warning': mm5_on_60_trend === 'DOWN', 'bg-success': mm5_on_60_trend === 'UP'}">{{mm5_on_60_trend}}</td>
+                    <td>{{mm5_on_60_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>180 P</td>
+                    <td>Since {{mm5_upto_180_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_180_trend === 'NO', 'bg-warning': mm5_on_180_trend === 'DOWN', 'bg-success': mm5_on_180_trend === 'UP'}">{{mm5_on_180_trend}}</td>
+                    <td>{{mm5_on_180_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>360 P</td>
+                    <td>Since {{mm5_upto_360_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_360_trend === 'NO', 'bg-warning': mm5_on_360_trend === 'DOWN', 'bg-success': mm5_on_360_trend === 'UP'}">{{mm5_on_360_trend}}</td>
+                    <td>{{mm5_on_360_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm5_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_720_trend === 'NO', 'bg-warning': mm5_on_720_trend === 'DOWN', 'bg-success': mm5_on_720_trend === 'UP'}">{{mm5_on_720_trend}}</td>
+                    <td>{{mm5_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm5_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_1440_trend === 'NO', 'bg-warning': mm5_on_1440_trend === 'DOWN', 'bg-success': mm5_on_1440_trend === 'UP'}">{{mm5_on_1440_trend}}</td>
+                    <td>{{mm5_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>180 P</td>
+                    <td>Since {{mm60_upto_180_since}} P</td>
+                    <td  ng-class="{'bg-danger': mm60_on_180_trend === 'NO', 'bg-warning': mm60_on_180_trend === 'DOWN', 'bg-success': mm60_on_180_trend === 'UP'}">{{mm60_on_180_trend}}</td>
+                    <td>{{mm60_on_180_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>360 P</td>
+                    <td>Since {{mm60_upto_360_since}} P</td>
+                    <td ng-class="{'bg-danger': mm60_on_360_trend === 'NO', 'bg-warning': mm60_on_360_trend === 'DOWN', 'bg-success': mm60_on_360_trend === 'UP'}">{{mm60_on_360_trend}}</td>
+                    <td>{{mm60_on_360_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm60_upto_720_since}} P</td>
+                    <td  ng-class="{'bg-danger': mm60_on_720_trend === 'NO', 'bg-warning': mm60_on_720_trend === 'DOWN', 'bg-success': mm60_on_720_trend === 'UP'}">{{mm60_on_720_trend}}</td>
+                    <td>{{mm60_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm60_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm60_on_1440_trend === 'NO', 'bg-warning': mm60_on_1440_trend === 'DOWN', 'bg-success': mm60_on_1440_trend === 'UP'}">{{mm60_on_1440_trend}}</td>
+                    <td>{{mm60_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
+                    <td>360 P</td>
+                    <td>Since {{mm180_upto_360_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_360_trend === 'NO', 'bg-warning': mm180_on_360_trend === 'DOWN', 'bg-success': mm180_on_360_trend === 'UP'}">{{mm180_on_360_trend}}</td>
+                    <td>{{mm180_on_360_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm180_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_720_trend === 'NO', 'bg-warning': mm180_on_720_trend === 'DOWN', 'bg-success': mm180_on_720_trend === 'UP'}">{{mm180_on_720_trend}}</td>
+                    <td>{{mm180_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm180_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_1440_trend === 'NO', 'bg-warning': mm180_on_1440_trend === 'DOWN', 'bg-success': mm180_on_1440_trend === 'UP'}">{{mm180_on_1440_trend}}</td>
+                    <td>{{mm180_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>360 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm360_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm360_on_720_trend === 'NO', 'bg-warning': mm360_on_720_trend === 'DOWN', 'bg-success': mm360_on_720_trend === 'UP'}">{{mm360_on_720_trend}}</td>
+                    <td>{{mm360_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>360 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm360_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm360_on_1440_trend === 'NO', 'bg-warning': mm360_on_1440_trend === 'DOWN', 'bg-success': mm360_on_1440_trend === 'UP'}">{{mm360_on_1440_trend}}</td>
+                    <td>{{mm360_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>720 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm720_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm720_on_1440_trend === 'NO', 'bg-warning': mm720_on_1440_trend === 'DOWN', 'bg-success': mm720_on_1440_trend === 'UP'}">{{mm720_on_1440_trend}}</td>
+                    <td>{{mm720_on_1440_trend_since}} Periods</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-             // SHARE DATA BETWEEN CONTROLLERS WITH FACTORY
-             app.factory('Fact', function(){
-                 return { MMEVolTable: '', MMGraph: '', MMCompareTable: ''};
-             });
+</div>
+<script>
+    var app = angular.module('myApp', []);
 
-             // PAIR Controller
-             app.controller('Ctrl_MMEvolPairSelection', function($scope, $http, Fact) {
-                 $http.get("analyse_pairsList")
-                     .then(function(response) {
-                         $scope.pairs = response.data;
-                     }).catch(function(response) {
-                     $scope.pairs = 'Erreur';
-                 });
+    // SHARE DATA BETWEEN CONTROLLERS WITH FACTORY
+    app.factory('Fact', function(){
+        return { MMEVolTable: '', MMGraph: '', MMCompareTable: ''};
+    });
 
-                 $scope.loadPairData = function(pairSelected){
-                     let data = {pair: pairSelected};
-                     $http({
-                         method: 'POST',
-                         url: '/analyse_MMEvolPairData',
-                         headers: {'Content-Type': 'application/json'},
-                         data: data
-                     }).then(function (response) {
-                         Fact.MMEVolTable = response.data;
-                     });
+    // PAIR Controller
+    app.controller('Ctrl_MMEvolPairSelection', function($scope, $http, Fact) {
+        $http.get("analyse_pairsList")
+            .then(function(response) {
+                $scope.pairs = response.data;
+            }).catch(function(response) {
+            $scope.pairs = 'Erreur';
+        });
 
-                     $http({
-                         method: 'POST',
-                         url: '/analyse_MMPairData',
-                         headers: {'Content-Type': 'application/json'},
-                         data: data
-                     }).then(function (response) {
-                         Fact.MMGraph = response.data;
-                     });
-
-                     $http({
-                         method: 'POST',
-                         url: '/analyse_MMComparePairData',
-                         headers: {'Content-Type': 'application/json'},
-                         data: data
-                     }).then(function (response) {
-                         Fact.MMCompareTable = response.data;
-                     });
-                 }
-             });
-
-             // MOBILE AVERAGE EVOLUTION GRAPH CONTROLLER
-             app.controller('Ctrl_MMGraph', function($scope, Fact) {
-                 $scope.$watch(function(){
-                     return Fact.MMGraph;
-                 }, function(){
-                     if(Fact.MMGraph.length > 0){
-                         $scope.p = Fact.MMGraph[0].pair;
-                         let MMData = Fact.MMGraph;
-                         let arrayOfMM5 = [];
-                         let arrayOfMM15 = [];
-                         let arrayOfMM60 = [];
-                         let arrayOfMM180 = [];
-                         let arrayOfMM360 = [];
-                         let arrayOfMM720 = [];
-                         let arrayOfMM1440 = [];
-                         let datetimeOfTMM = [];
-
-                         for(let MM in MMData){
-                             if(MMData.hasOwnProperty(MM)){
-                                 datetimeOfTMM.unshift(MMData[MM].insert_date+' '+MMData[MM].insert_hour);
-                                 arrayOfMM5.unshift(MMData[MM].mm5);
-                                 arrayOfMM15.unshift(MMData[MM].mm15);
-                                 arrayOfMM60.unshift(MMData[MM].mm60);
-                                 arrayOfMM180.unshift(MMData[MM].mm180);
-                                 arrayOfMM360.unshift(MMData[MM].mm360);
-                                 arrayOfMM720.unshift(MMData[MM].mm720);
-                                 arrayOfMM1440.unshift(MMData[MM].mm1440);
-                             }
-                         }
-
-                         let graphData =  {
-                             labels: datetimeOfTMM,
-                             datasets: [
-                                 {
-                                     data: arrayOfMM5,
-                                     label: "MM5",
-                                     borderColor: "#66b3ff",
-                                     borderWidth: 1,
-                                     fill: false
-                                 },
-                                 {
-                                     data: arrayOfMM15,
-                                     label: "MM15",
-                                     borderColor: "#87FF91",
-                                     borderWidth: 1,
-                                     fill: false
-                                 }, {
-                                     data: arrayOfMM60,
-                                     label: "MM60",
-                                     borderColor: "#ffffff",
-                                     borderWidth: 1,
-                                     fill: false
-                                 }, {
-                                     data: arrayOfMM180,
-                                     label: "MM180",
-                                     borderColor: "#ffffb3",
-                                     borderWidth: 2,
-                                     fill: false
-                                 }, {
-                                     data: arrayOfMM360,
-                                     label: "MM360",
-                                     borderColor: "#ffd9b3",
-                                     borderWidth: 2,
-                                     fill: false
-                                 }, {
-                                     data: arrayOfMM720,
-                                     label: "MM720",
-                                     borderColor: "#ffa64d",
-                                     borderWidth: 3,
-                                     fill: false
-                                 }, {
-                                     data: arrayOfMM1440,
-                                     label: "MM1440",
-                                     borderColor: "#ff0000",
-                                     borderWidth: 3,
-                                     fill: false
-                                 }
-                             ]
-                         };
-
-                        let graphOptions = {
-                            title: {
-                                display: true,
-                                text: 'MM Evolution'
-                            },
-                            elements: {
-                                point:{
-                                    radius: 0
-                                }
-                            }
-                        };
-
-                         myLineChart = new Chart(document.getElementById("MobileAverageLineChart"), {
-                             type: 'line',
-                             data: graphData,
-                             options: graphOptions
-                         });
-                     }
-                 });
-             });
-
-             // MOBILE AVERAGE EVOLUTION TABLE CONTROLLER
-             app.controller('Ctrl_MMEvolData', function($scope, Fact) {
-                 $scope.$watch(function(){
-                     return Fact.MMEVolTable;
-                 }, function(){
-                     if(Fact.MMEVolTable.length > 0){
-                         $scope.p = Fact.MMEVolTable[0].pair;
-                         $scope.evol_1p_mm5 = Fact.MMEVolTable[0].evol_1p_mm5.toFixed(3);
-                         $scope.evol_5p_mm5 = Fact.MMEVolTable[0].evol_5p_mm5.toFixed(3);
-                         $scope.evol_15p_mm5 = Fact.MMEVolTable[0].evol_15p_mm5.toFixed(3);
-                         $scope.evol_30p_mm5 = Fact.MMEVolTable[0].evol_30p_mm5.toFixed(3);
-                         $scope.evol_45p_mm5 = Fact.MMEVolTable[0].evol_45p_mm5.toFixed(3);
-                         $scope.evol_60p_mm5 = Fact.MMEVolTable[0].evol_60p_mm5.toFixed(3);
-                         $scope.evol_75p_mm5 = Fact.MMEVolTable[0].evol_75p_mm5.toFixed(3);
-                         $scope.evol_90p_mm5 = Fact.MMEVolTable[0].evol_90p_mm5.toFixed(3);
-                         $scope.evol_105p_mm5 = Fact.MMEVolTable[0].evol_105p_mm5.toFixed(3);
-                         $scope.evol_120p_mm5 = Fact.MMEVolTable[0].evol_120p_mm5.toFixed(3);
-                         $scope.evol_180p_mm5 = Fact.MMEVolTable[0].evol_180p_mm5.toFixed(3);
-                         $scope.evol_360p_mm5 = Fact.MMEVolTable[0].evol_360p_mm5.toFixed(3);
-                         $scope.evol_540p_mm5 = Fact.MMEVolTable[0].evol_540p_mm5.toFixed(3);
-                         $scope.evol_720p_mm5 = Fact.MMEVolTable[0].evol_720p_mm5.toFixed(3);
-                         $scope.evol_1440p_mm5 = Fact.MMEVolTable[0].evol_1440p_mm5.toFixed(3);
-
-                         $scope.evol_1p_mm15 = Fact.MMEVolTable[0].evol_1p_mm15.toFixed(3);
-                         $scope.evol_5p_mm15 = Fact.MMEVolTable[0].evol_5p_mm15.toFixed(3);
-                         $scope.evol_15p_mm15 = Fact.MMEVolTable[0].evol_15p_mm15.toFixed(3);
-                         $scope.evol_30p_mm15 = Fact.MMEVolTable[0].evol_30p_mm15.toFixed(3);
-                         $scope.evol_45p_mm15 = Fact.MMEVolTable[0].evol_45p_mm15.toFixed(3);
-                         $scope.evol_60p_mm15 = Fact.MMEVolTable[0].evol_60p_mm15.toFixed(3);
-                         $scope.evol_75p_mm15 = Fact.MMEVolTable[0].evol_75p_mm15.toFixed(3);
-                         $scope.evol_90p_mm15 = Fact.MMEVolTable[0].evol_90p_mm15.toFixed(3);
-                         $scope.evol_105p_mm15 = Fact.MMEVolTable[0].evol_105p_mm15.toFixed(3);
-                         $scope.evol_120p_mm15 = Fact.MMEVolTable[0].evol_120p_mm15.toFixed(3);
-                         $scope.evol_180p_mm15 = Fact.MMEVolTable[0].evol_180p_mm15.toFixed(3);
-                         $scope.evol_360p_mm15 = Fact.MMEVolTable[0].evol_360p_mm15.toFixed(3);
-                         $scope.evol_540p_mm15 = Fact.MMEVolTable[0].evol_540p_mm15.toFixed(3);
-                         $scope.evol_720p_mm15 = Fact.MMEVolTable[0].evol_720p_mm15.toFixed(3);
-                         $scope.evol_1440p_mm15 = Fact.MMEVolTable[0].evol_1440p_mm15.toFixed(3);
-
-                         $scope.evol_1p_mm30 = Fact.MMEVolTable[0].evol_1p_mm30.toFixed(3);
-                         $scope.evol_5p_mm30 = Fact.MMEVolTable[0].evol_5p_mm30.toFixed(3);
-                         $scope.evol_15p_mm30 = Fact.MMEVolTable[0].evol_15p_mm30.toFixed(3);
-                         $scope.evol_30p_mm30 = Fact.MMEVolTable[0].evol_30p_mm30.toFixed(3);
-                         $scope.evol_45p_mm30 = Fact.MMEVolTable[0].evol_45p_mm30.toFixed(3);
-                         $scope.evol_60p_mm30 = Fact.MMEVolTable[0].evol_60p_mm30.toFixed(3);
-                         $scope.evol_75p_mm30 = Fact.MMEVolTable[0].evol_75p_mm30.toFixed(3);
-                         $scope.evol_90p_mm30 = Fact.MMEVolTable[0].evol_90p_mm30.toFixed(3);
-                         $scope.evol_105p_mm30 = Fact.MMEVolTable[0].evol_105p_mm30.toFixed(3);
-                         $scope.evol_120p_mm30 = Fact.MMEVolTable[0].evol_120p_mm30.toFixed(3);
-                         $scope.evol_180p_mm30 = Fact.MMEVolTable[0].evol_180p_mm30.toFixed(3);
-                         $scope.evol_360p_mm30 = Fact.MMEVolTable[0].evol_360p_mm30.toFixed(3);
-                         $scope.evol_540p_mm30 = Fact.MMEVolTable[0].evol_540p_mm30.toFixed(3);
-                         $scope.evol_720p_mm30 = Fact.MMEVolTable[0].evol_720p_mm30.toFixed(3);
-                         $scope.evol_1440p_mm30 = Fact.MMEVolTable[0].evol_1440p_mm30.toFixed(3);
-
-                         $scope.evol_1p_mm30 = Fact.MMEVolTable[0].evol_1p_mm30.toFixed(3);
-                         $scope.evol_5p_mm30 = Fact.MMEVolTable[0].evol_5p_mm30.toFixed(3);
-                         $scope.evol_15p_mm30 = Fact.MMEVolTable[0].evol_15p_mm30.toFixed(3);
-                         $scope.evol_30p_mm30 = Fact.MMEVolTable[0].evol_30p_mm30.toFixed(3);
-                         $scope.evol_45p_mm30 = Fact.MMEVolTable[0].evol_45p_mm30.toFixed(3);
-                         $scope.evol_60p_mm30 = Fact.MMEVolTable[0].evol_60p_mm30.toFixed(3);
-                         $scope.evol_75p_mm30 = Fact.MMEVolTable[0].evol_75p_mm30.toFixed(3);
-                         $scope.evol_90p_mm30 = Fact.MMEVolTable[0].evol_90p_mm30.toFixed(3);
-                         $scope.evol_105p_mm30 = Fact.MMEVolTable[0].evol_105p_mm30.toFixed(3);
-                         $scope.evol_120p_mm30 = Fact.MMEVolTable[0].evol_120p_mm30.toFixed(3);
-                         $scope.evol_180p_mm30 = Fact.MMEVolTable[0].evol_180p_mm30.toFixed(3);
-                         $scope.evol_360p_mm30 = Fact.MMEVolTable[0].evol_360p_mm30.toFixed(3);
-                         $scope.evol_540p_mm30 = Fact.MMEVolTable[0].evol_540p_mm30.toFixed(3);
-                         $scope.evol_720p_mm30 = Fact.MMEVolTable[0].evol_720p_mm30.toFixed(3);
-                         $scope.evol_1440p_mm30 = Fact.MMEVolTable[0].evol_1440p_mm30.toFixed(3);
-
-                         $scope.evol_1p_mm45 = Fact.MMEVolTable[0].evol_1p_mm45.toFixed(3);
-                         $scope.evol_5p_mm45 = Fact.MMEVolTable[0].evol_5p_mm45.toFixed(3);
-                         $scope.evol_15p_mm45 = Fact.MMEVolTable[0].evol_15p_mm45.toFixed(3);
-                         $scope.evol_30p_mm45 = Fact.MMEVolTable[0].evol_30p_mm45.toFixed(3);
-                         $scope.evol_45p_mm45 = Fact.MMEVolTable[0].evol_45p_mm45.toFixed(3);
-                         $scope.evol_60p_mm45 = Fact.MMEVolTable[0].evol_60p_mm45.toFixed(3);
-                         $scope.evol_75p_mm45 = Fact.MMEVolTable[0].evol_75p_mm45.toFixed(3);
-                         $scope.evol_90p_mm45 = Fact.MMEVolTable[0].evol_90p_mm45.toFixed(3);
-                         $scope.evol_105p_mm45 = Fact.MMEVolTable[0].evol_105p_mm45.toFixed(3);
-                         $scope.evol_120p_mm45 = Fact.MMEVolTable[0].evol_120p_mm45.toFixed(3);
-                         $scope.evol_180p_mm45 = Fact.MMEVolTable[0].evol_180p_mm45.toFixed(3);
-                         $scope.evol_360p_mm45 = Fact.MMEVolTable[0].evol_360p_mm45.toFixed(3);
-                         $scope.evol_540p_mm45 = Fact.MMEVolTable[0].evol_540p_mm45.toFixed(3);
-                         $scope.evol_720p_mm45 = Fact.MMEVolTable[0].evol_720p_mm45.toFixed(3);
-                         $scope.evol_1440p_mm45 = Fact.MMEVolTable[0].evol_1440p_mm45.toFixed(3);
-
-                         $scope.evol_1p_mm60 = Fact.MMEVolTable[0].evol_1p_mm60.toFixed(3);
-                         $scope.evol_5p_mm60 = Fact.MMEVolTable[0].evol_5p_mm60.toFixed(3);
-                         $scope.evol_15p_mm60 = Fact.MMEVolTable[0].evol_15p_mm60.toFixed(3);
-                         $scope.evol_30p_mm60 = Fact.MMEVolTable[0].evol_30p_mm60.toFixed(3);
-                         $scope.evol_45p_mm60 = Fact.MMEVolTable[0].evol_45p_mm60.toFixed(3);
-                         $scope.evol_60p_mm60 = Fact.MMEVolTable[0].evol_60p_mm60.toFixed(3);
-                         $scope.evol_75p_mm60 = Fact.MMEVolTable[0].evol_75p_mm60.toFixed(3);
-                         $scope.evol_90p_mm60 = Fact.MMEVolTable[0].evol_90p_mm60.toFixed(3);
-                         $scope.evol_105p_mm60 = Fact.MMEVolTable[0].evol_105p_mm60.toFixed(3);
-                         $scope.evol_120p_mm60 = Fact.MMEVolTable[0].evol_120p_mm60.toFixed(3);
-                         $scope.evol_180p_mm60 = Fact.MMEVolTable[0].evol_180p_mm60.toFixed(3);
-                         $scope.evol_360p_mm60 = Fact.MMEVolTable[0].evol_360p_mm60.toFixed(3);
-                         $scope.evol_540p_mm60 = Fact.MMEVolTable[0].evol_540p_mm60.toFixed(3);
-                         $scope.evol_720p_mm60 = Fact.MMEVolTable[0].evol_720p_mm60.toFixed(3);
-                         $scope.evol_1440p_mm60 = Fact.MMEVolTable[0].evol_1440p_mm60.toFixed(3);
-
-                         $scope.evol_1p_mm75 = Fact.MMEVolTable[0].evol_1p_mm75.toFixed(3);
-                         $scope.evol_5p_mm75 = Fact.MMEVolTable[0].evol_5p_mm75.toFixed(3);
-                         $scope.evol_15p_mm75 = Fact.MMEVolTable[0].evol_15p_mm75.toFixed(3);
-                         $scope.evol_30p_mm75 = Fact.MMEVolTable[0].evol_30p_mm75.toFixed(3);
-                         $scope.evol_45p_mm75 = Fact.MMEVolTable[0].evol_45p_mm75.toFixed(3);
-                         $scope.evol_60p_mm75 = Fact.MMEVolTable[0].evol_60p_mm75.toFixed(3);
-                         $scope.evol_75p_mm75 = Fact.MMEVolTable[0].evol_75p_mm75.toFixed(3);
-                         $scope.evol_90p_mm75 = Fact.MMEVolTable[0].evol_90p_mm75.toFixed(3);
-                         $scope.evol_105p_mm75 = Fact.MMEVolTable[0].evol_105p_mm75.toFixed(3);
-                         $scope.evol_120p_mm75 = Fact.MMEVolTable[0].evol_120p_mm75.toFixed(3);
-                         $scope.evol_180p_mm75 = Fact.MMEVolTable[0].evol_180p_mm75.toFixed(3);
-                         $scope.evol_360p_mm75 = Fact.MMEVolTable[0].evol_360p_mm75.toFixed(3);
-                         $scope.evol_540p_mm75 = Fact.MMEVolTable[0].evol_540p_mm75.toFixed(3);
-                         $scope.evol_720p_mm75 = Fact.MMEVolTable[0].evol_720p_mm75.toFixed(3);
-                         $scope.evol_1440p_mm75 = Fact.MMEVolTable[0].evol_1440p_mm75.toFixed(3);
-
-                         $scope.evol_1p_mm90 = Fact.MMEVolTable[0].evol_1p_mm90.toFixed(3);
-                         $scope.evol_5p_mm90 = Fact.MMEVolTable[0].evol_5p_mm90.toFixed(3);
-                         $scope.evol_15p_mm90 = Fact.MMEVolTable[0].evol_15p_mm90.toFixed(3);
-                         $scope.evol_30p_mm90 = Fact.MMEVolTable[0].evol_30p_mm90.toFixed(3);
-                         $scope.evol_45p_mm90 = Fact.MMEVolTable[0].evol_45p_mm90.toFixed(3);
-                         $scope.evol_60p_mm90 = Fact.MMEVolTable[0].evol_60p_mm90.toFixed(3);
-                         $scope.evol_75p_mm90 = Fact.MMEVolTable[0].evol_75p_mm90.toFixed(3);
-                         $scope.evol_90p_mm90 = Fact.MMEVolTable[0].evol_90p_mm90.toFixed(3);
-                         $scope.evol_105p_mm90 = Fact.MMEVolTable[0].evol_105p_mm90.toFixed(3);
-                         $scope.evol_120p_mm90 = Fact.MMEVolTable[0].evol_120p_mm90.toFixed(3);
-                         $scope.evol_180p_mm90 = Fact.MMEVolTable[0].evol_180p_mm90.toFixed(3);
-                         $scope.evol_360p_mm90 = Fact.MMEVolTable[0].evol_360p_mm90.toFixed(3);
-                         $scope.evol_540p_mm90 = Fact.MMEVolTable[0].evol_540p_mm90.toFixed(3);
-                         $scope.evol_720p_mm90 = Fact.MMEVolTable[0].evol_720p_mm90.toFixed(3);
-                         $scope.evol_1440p_mm90 = Fact.MMEVolTable[0].evol_1440p_mm90.toFixed(3);
-
-                         $scope.evol_1p_mm105 = Fact.MMEVolTable[0].evol_1p_mm105.toFixed(3);
-                         $scope.evol_5p_mm105 = Fact.MMEVolTable[0].evol_5p_mm105.toFixed(3);
-                         $scope.evol_15p_mm105 = Fact.MMEVolTable[0].evol_15p_mm105.toFixed(3);
-                         $scope.evol_30p_mm105 = Fact.MMEVolTable[0].evol_30p_mm105.toFixed(3);
-                         $scope.evol_45p_mm105 = Fact.MMEVolTable[0].evol_45p_mm105.toFixed(3);
-                         $scope.evol_60p_mm105 = Fact.MMEVolTable[0].evol_60p_mm105.toFixed(3);
-                         $scope.evol_75p_mm105 = Fact.MMEVolTable[0].evol_75p_mm105.toFixed(3);
-                         $scope.evol_90p_mm105 = Fact.MMEVolTable[0].evol_90p_mm105.toFixed(3);
-                         $scope.evol_105p_mm105 = Fact.MMEVolTable[0].evol_105p_mm105.toFixed(3);
-                         $scope.evol_120p_mm105 = Fact.MMEVolTable[0].evol_120p_mm105.toFixed(3);
-                         $scope.evol_180p_mm105 = Fact.MMEVolTable[0].evol_180p_mm105.toFixed(3);
-                         $scope.evol_360p_mm105 = Fact.MMEVolTable[0].evol_360p_mm105.toFixed(3);
-                         $scope.evol_540p_mm105 = Fact.MMEVolTable[0].evol_540p_mm105.toFixed(3);
-                         $scope.evol_720p_mm105 = Fact.MMEVolTable[0].evol_720p_mm105.toFixed(3);
-                         $scope.evol_1440p_mm105 = Fact.MMEVolTable[0].evol_1440p_mm105.toFixed(3);
-
-                         $scope.evol_1p_mm120 = Fact.MMEVolTable[0].evol_1p_mm120.toFixed(3);
-                         $scope.evol_5p_mm120 = Fact.MMEVolTable[0].evol_5p_mm120.toFixed(3);
-                         $scope.evol_15p_mm120 = Fact.MMEVolTable[0].evol_15p_mm120.toFixed(3);
-                         $scope.evol_30p_mm120 = Fact.MMEVolTable[0].evol_30p_mm120.toFixed(3);
-                         $scope.evol_45p_mm120 = Fact.MMEVolTable[0].evol_45p_mm120.toFixed(3);
-                         $scope.evol_60p_mm120 = Fact.MMEVolTable[0].evol_60p_mm120.toFixed(3);
-                         $scope.evol_75p_mm120 = Fact.MMEVolTable[0].evol_75p_mm120.toFixed(3);
-                         $scope.evol_90p_mm120 = Fact.MMEVolTable[0].evol_90p_mm120.toFixed(3);
-                         $scope.evol_105p_mm120 = Fact.MMEVolTable[0].evol_105p_mm120.toFixed(3);
-                         $scope.evol_120p_mm120 = Fact.MMEVolTable[0].evol_120p_mm120.toFixed(3);
-                         $scope.evol_180p_mm120 = Fact.MMEVolTable[0].evol_180p_mm120.toFixed(3);
-                         $scope.evol_360p_mm120 = Fact.MMEVolTable[0].evol_360p_mm120.toFixed(3);
-                         $scope.evol_540p_mm120 = Fact.MMEVolTable[0].evol_540p_mm120.toFixed(3);
-                         $scope.evol_720p_mm120 = Fact.MMEVolTable[0].evol_720p_mm120.toFixed(3);
-                         $scope.evol_1440p_mm120 = Fact.MMEVolTable[0].evol_1440p_mm120.toFixed(3);
-
-                         $scope.evol_1p_mm180 = Fact.MMEVolTable[0].evol_1p_mm180.toFixed(3);
-                         $scope.evol_5p_mm180 = Fact.MMEVolTable[0].evol_5p_mm180.toFixed(3);
-                         $scope.evol_15p_mm180 = Fact.MMEVolTable[0].evol_15p_mm180.toFixed(3);
-                         $scope.evol_30p_mm180 = Fact.MMEVolTable[0].evol_30p_mm180.toFixed(3);
-                         $scope.evol_45p_mm180 = Fact.MMEVolTable[0].evol_45p_mm180.toFixed(3);
-                         $scope.evol_60p_mm180 = Fact.MMEVolTable[0].evol_60p_mm180.toFixed(3);
-                         $scope.evol_75p_mm180 = Fact.MMEVolTable[0].evol_75p_mm180.toFixed(3);
-                         $scope.evol_90p_mm180 = Fact.MMEVolTable[0].evol_90p_mm180.toFixed(3);
-                         $scope.evol_105p_mm180 = Fact.MMEVolTable[0].evol_105p_mm180.toFixed(3);
-                         $scope.evol_120p_mm180 = Fact.MMEVolTable[0].evol_120p_mm180.toFixed(3);
-                         $scope.evol_180p_mm180 = Fact.MMEVolTable[0].evol_180p_mm180.toFixed(3);
-                         $scope.evol_360p_mm180 = Fact.MMEVolTable[0].evol_360p_mm180.toFixed(3);
-                         $scope.evol_540p_mm180 = Fact.MMEVolTable[0].evol_540p_mm180.toFixed(3);
-                         $scope.evol_720p_mm180 = Fact.MMEVolTable[0].evol_720p_mm180.toFixed(3);
-                         $scope.evol_1440p_mm180 = Fact.MMEVolTable[0].evol_1440p_mm180.toFixed(3);
-
-                         $scope.evol_1p_mm360 = Fact.MMEVolTable[0].evol_1p_mm360.toFixed(3);
-                         $scope.evol_5p_mm360 = Fact.MMEVolTable[0].evol_5p_mm360.toFixed(3);
-                         $scope.evol_15p_mm360 = Fact.MMEVolTable[0].evol_15p_mm360.toFixed(3);
-                         $scope.evol_30p_mm360 = Fact.MMEVolTable[0].evol_30p_mm360.toFixed(3);
-                         $scope.evol_45p_mm360 = Fact.MMEVolTable[0].evol_45p_mm360.toFixed(3);
-                         $scope.evol_60p_mm360 = Fact.MMEVolTable[0].evol_60p_mm360.toFixed(3);
-                         $scope.evol_75p_mm360 = Fact.MMEVolTable[0].evol_75p_mm360.toFixed(3);
-                         $scope.evol_90p_mm360 = Fact.MMEVolTable[0].evol_90p_mm360.toFixed(3);
-                         $scope.evol_105p_mm360 = Fact.MMEVolTable[0].evol_105p_mm360.toFixed(3);
-                         $scope.evol_120p_mm360 = Fact.MMEVolTable[0].evol_120p_mm360.toFixed(3);
-                         $scope.evol_180p_mm360 = Fact.MMEVolTable[0].evol_180p_mm360.toFixed(3);
-                         $scope.evol_360p_mm360 = Fact.MMEVolTable[0].evol_360p_mm360.toFixed(3);
-                         $scope.evol_540p_mm360 = Fact.MMEVolTable[0].evol_540p_mm360.toFixed(3);
-                         $scope.evol_720p_mm360 = Fact.MMEVolTable[0].evol_720p_mm360.toFixed(3);
-                         $scope.evol_1440p_mm360 = Fact.MMEVolTable[0].evol_1440p_mm360.toFixed(3);
-
-                         $scope.evol_1p_mm540 = Fact.MMEVolTable[0].evol_1p_mm540.toFixed(3);
-                         $scope.evol_5p_mm540 = Fact.MMEVolTable[0].evol_5p_mm540.toFixed(3);
-                         $scope.evol_15p_mm540 = Fact.MMEVolTable[0].evol_15p_mm540.toFixed(3);
-                         $scope.evol_30p_mm540 = Fact.MMEVolTable[0].evol_30p_mm540.toFixed(3);
-                         $scope.evol_45p_mm540 = Fact.MMEVolTable[0].evol_45p_mm540.toFixed(3);
-                         $scope.evol_60p_mm540 = Fact.MMEVolTable[0].evol_60p_mm540.toFixed(3);
-                         $scope.evol_75p_mm540 = Fact.MMEVolTable[0].evol_75p_mm540.toFixed(3);
-                         $scope.evol_90p_mm540 = Fact.MMEVolTable[0].evol_90p_mm540.toFixed(3);
-                         $scope.evol_105p_mm540 = Fact.MMEVolTable[0].evol_105p_mm540.toFixed(3);
-                         $scope.evol_120p_mm540 = Fact.MMEVolTable[0].evol_120p_mm540.toFixed(3);
-                         $scope.evol_180p_mm540 = Fact.MMEVolTable[0].evol_180p_mm540.toFixed(3);
-                         $scope.evol_360p_mm540 = Fact.MMEVolTable[0].evol_360p_mm540.toFixed(3);
-                         $scope.evol_540p_mm540 = Fact.MMEVolTable[0].evol_540p_mm540.toFixed(3);
-                         $scope.evol_720p_mm540 = Fact.MMEVolTable[0].evol_720p_mm540.toFixed(3);
-                         $scope.evol_1440p_mm540 = Fact.MMEVolTable[0].evol_1440p_mm540.toFixed(3);
-
-                         $scope.evol_1p_mm720 = Fact.MMEVolTable[0].evol_1p_mm720.toFixed(3);
-                         $scope.evol_5p_mm720 = Fact.MMEVolTable[0].evol_5p_mm720.toFixed(3);
-                         $scope.evol_15p_mm720 = Fact.MMEVolTable[0].evol_15p_mm720.toFixed(3);
-                         $scope.evol_30p_mm720 = Fact.MMEVolTable[0].evol_30p_mm720.toFixed(3);
-                         $scope.evol_45p_mm720 = Fact.MMEVolTable[0].evol_45p_mm720.toFixed(3);
-                         $scope.evol_60p_mm720 = Fact.MMEVolTable[0].evol_60p_mm720.toFixed(3);
-                         $scope.evol_75p_mm720 = Fact.MMEVolTable[0].evol_75p_mm720.toFixed(3);
-                         $scope.evol_90p_mm720 = Fact.MMEVolTable[0].evol_90p_mm720.toFixed(3);
-                         $scope.evol_105p_mm720 = Fact.MMEVolTable[0].evol_105p_mm720.toFixed(3);
-                         $scope.evol_120p_mm720 = Fact.MMEVolTable[0].evol_120p_mm720.toFixed(3);
-                         $scope.evol_180p_mm720 = Fact.MMEVolTable[0].evol_180p_mm720.toFixed(3);
-                         $scope.evol_360p_mm720 = Fact.MMEVolTable[0].evol_360p_mm720.toFixed(3);
-                         $scope.evol_540p_mm720 = Fact.MMEVolTable[0].evol_540p_mm720.toFixed(3);
-                         $scope.evol_720p_mm720 = Fact.MMEVolTable[0].evol_720p_mm720.toFixed(3);
-                         $scope.evol_1440p_mm720 = Fact.MMEVolTable[0].evol_1440p_mm720.toFixed(3);
-
-                         $scope.evol_1p_mm1440 = Fact.MMEVolTable[0].evol_1p_mm1440.toFixed(3);
-                         $scope.evol_5p_mm1440 = Fact.MMEVolTable[0].evol_5p_mm1440.toFixed(3);
-                         $scope.evol_15p_mm1440 = Fact.MMEVolTable[0].evol_15p_mm1440.toFixed(3);
-                         $scope.evol_30p_mm1440 = Fact.MMEVolTable[0].evol_30p_mm1440.toFixed(3);
-                         $scope.evol_45p_mm1440 = Fact.MMEVolTable[0].evol_45p_mm1440.toFixed(3);
-                         $scope.evol_60p_mm1440 = Fact.MMEVolTable[0].evol_60p_mm1440.toFixed(3);
-                         $scope.evol_75p_mm1440 = Fact.MMEVolTable[0].evol_75p_mm1440.toFixed(3);
-                         $scope.evol_90p_mm1440 = Fact.MMEVolTable[0].evol_90p_mm1440.toFixed(3);
-                         $scope.evol_105p_mm1440 = Fact.MMEVolTable[0].evol_105p_mm1440.toFixed(3);
-                         $scope.evol_120p_mm1440 = Fact.MMEVolTable[0].evol_120p_mm1440.toFixed(3);
-                         $scope.evol_180p_mm1440 = Fact.MMEVolTable[0].evol_180p_mm1440.toFixed(3);
-                         $scope.evol_360p_mm1440 = Fact.MMEVolTable[0].evol_360p_mm1440.toFixed(3);
-                         $scope.evol_540p_mm1440 = Fact.MMEVolTable[0].evol_540p_mm1440.toFixed(3);
-                         $scope.evol_720p_mm1440 = Fact.MMEVolTable[0].evol_720p_mm1440.toFixed(3);
-                         $scope.evol_1440p_mm1440 = Fact.MMEVolTable[0].evol_1440p_mm1440.toFixed(3);
-                     }
-                 });
-             });
-
-             app.controller('Ctrl_MMCompare', function($scope, Fact) {
-                 $scope.$watch(function(){
-                     return Fact.MMCompareTable;
-                 }, function(){
-                     if(Fact.MMCompareTable.length > 0){
-                         console.log('Data is there');
-                     }
-                });
-             });
-
-
-             // DATE Controller
-             app.controller('Ctrl_Date', function($scope, $interval) {
-                $interval(function() {
-                    var currentdate = new Date();
-                    var datetime = "Time : " + currentdate.getDate() + "/"
-                        + (currentdate.getMonth()+1)  + "/"
-                        + currentdate.getFullYear() + "  -  "
-                        + currentdate.getHours() + ":"
-                        + currentdate.getMinutes() + ":"
-                        + currentdate.getSeconds();
-                    $scope.today = datetime;
-                },1000);
+        $scope.loadPairData = function(pairSelected){
+            let data = {pair: pairSelected};
+            $http({
+                method: 'POST',
+                url: '/analyse_MMEvolPairData',
+                headers: {'Content-Type': 'application/json'},
+                data: data
+            }).then(function (response) {
+                Fact.MMEVolTable = response.data;
             });
-        </script>
 
-    </body>
+            $http({
+                method: 'POST',
+                url: '/analyse_MMPairData',
+                headers: {'Content-Type': 'application/json'},
+                data: data
+            }).then(function (response) {
+                Fact.MMGraph = response.data;
+            });
+
+            $http({
+                method: 'POST',
+                url: '/analyse_MMComparePairData',
+                headers: {'Content-Type': 'application/json'},
+                data: data
+            }).then(function (response) {
+                Fact.MMCompareTable = response.data;
+            });
+        }
+    });
+
+    // MOBILE AVERAGE EVOLUTION GRAPH CONTROLLER
+    app.controller('Ctrl_MMGraph', function($scope, Fact) {
+        $scope.$watch(function(){
+            return Fact.MMGraph;
+        }, function(){
+            if(Fact.MMGraph.length > 0){
+                $scope.p = Fact.MMGraph[0].pair;
+                let MMData = Fact.MMGraph;
+                let arrayOfMM5 = [];
+                let arrayOfMM15 = [];
+                let arrayOfMM60 = [];
+                let arrayOfMM180 = [];
+                let arrayOfMM360 = [];
+                let arrayOfMM720 = [];
+                let arrayOfMM1440 = [];
+                let datetimeOfTMM = [];
+
+                for(let MM in MMData){
+                    if(MMData.hasOwnProperty(MM)){
+                        datetimeOfTMM.unshift(MMData[MM].insert_date+' '+MMData[MM].insert_hour);
+                        arrayOfMM5.unshift(MMData[MM].mm5);
+                        arrayOfMM15.unshift(MMData[MM].mm15);
+                        arrayOfMM60.unshift(MMData[MM].mm60);
+                        arrayOfMM180.unshift(MMData[MM].mm180);
+                        arrayOfMM360.unshift(MMData[MM].mm360);
+                        arrayOfMM720.unshift(MMData[MM].mm720);
+                        arrayOfMM1440.unshift(MMData[MM].mm1440);
+                    }
+                }
+
+                let graphData =  {
+                    labels: datetimeOfTMM,
+                    datasets: [
+                        {
+                            data: arrayOfMM5,
+                            label: "MM5",
+                            borderColor: "#87FF91",
+                            borderWidth: 1,
+                            fill: false
+                        }, {
+                            data: arrayOfMM60,
+                            label: "MM60",
+                            borderColor: "#ffffff",
+                            borderWidth: 1,
+                            fill: false
+                        }, {
+                            data: arrayOfMM180,
+                            label: "MM180",
+                            borderColor: "#ffffb3",
+                            borderWidth: 2,
+                            fill: false
+                        }, {
+                            data: arrayOfMM360,
+                            label: "MM360",
+                            borderColor: "#ffd9b3",
+                            borderWidth: 2,
+                            fill: false
+                        }, {
+                            data: arrayOfMM720,
+                            label: "MM720",
+                            borderColor: "#ffa64d",
+                            borderWidth: 3,
+                            fill: false
+                        }, {
+                            data: arrayOfMM1440,
+                            label: "MM1440",
+                            borderColor: "#ff0000",
+                            borderWidth: 3,
+                            fill: false
+                        }
+                    ]
+                };
+
+                let graphOptions = {
+                    title: {
+                        display: true,
+                        text: 'MM Evolution'
+                    },
+                    elements: {
+                        point:{
+                            radius: 0
+                        }
+                    }
+                };
+
+                myLineChart = new Chart(document.getElementById("MobileAverageLineChart"), {
+                    type: 'line',
+                    data: graphData,
+                    options: graphOptions
+                });
+            }
+        });
+    });
+
+    // MOBILE AVERAGE EVOLUTION TABLE CONTROLLER
+    app.controller('Ctrl_MMEvolData', function($scope, Fact) {
+        $scope.$watch(function(){
+            return Fact.MMEVolTable;
+        }, function(){
+            if(Fact.MMEVolTable.length > 0){
+                $scope.p = Fact.MMEVolTable[0].pair;
+                $scope.evol_1p_mm5 = Fact.MMEVolTable[0].evol_1p_mm5.toFixed(3);
+                $scope.evol_5p_mm5 = Fact.MMEVolTable[0].evol_5p_mm5.toFixed(3);
+                $scope.evol_15p_mm5 = Fact.MMEVolTable[0].evol_15p_mm5.toFixed(3);
+                $scope.evol_30p_mm5 = Fact.MMEVolTable[0].evol_30p_mm5.toFixed(3);
+                $scope.evol_45p_mm5 = Fact.MMEVolTable[0].evol_45p_mm5.toFixed(3);
+                $scope.evol_60p_mm5 = Fact.MMEVolTable[0].evol_60p_mm5.toFixed(3);
+                $scope.evol_75p_mm5 = Fact.MMEVolTable[0].evol_75p_mm5.toFixed(3);
+                $scope.evol_90p_mm5 = Fact.MMEVolTable[0].evol_90p_mm5.toFixed(3);
+                $scope.evol_105p_mm5 = Fact.MMEVolTable[0].evol_105p_mm5.toFixed(3);
+                $scope.evol_120p_mm5 = Fact.MMEVolTable[0].evol_120p_mm5.toFixed(3);
+                $scope.evol_180p_mm5 = Fact.MMEVolTable[0].evol_180p_mm5.toFixed(3);
+                $scope.evol_360p_mm5 = Fact.MMEVolTable[0].evol_360p_mm5.toFixed(3);
+                $scope.evol_540p_mm5 = Fact.MMEVolTable[0].evol_540p_mm5.toFixed(3);
+                $scope.evol_720p_mm5 = Fact.MMEVolTable[0].evol_720p_mm5.toFixed(3);
+                $scope.evol_1440p_mm5 = Fact.MMEVolTable[0].evol_1440p_mm5.toFixed(3);
+
+                $scope.evol_1p_mm15 = Fact.MMEVolTable[0].evol_1p_mm15.toFixed(3);
+                $scope.evol_5p_mm15 = Fact.MMEVolTable[0].evol_5p_mm15.toFixed(3);
+                $scope.evol_15p_mm15 = Fact.MMEVolTable[0].evol_15p_mm15.toFixed(3);
+                $scope.evol_30p_mm15 = Fact.MMEVolTable[0].evol_30p_mm15.toFixed(3);
+                $scope.evol_45p_mm15 = Fact.MMEVolTable[0].evol_45p_mm15.toFixed(3);
+                $scope.evol_60p_mm15 = Fact.MMEVolTable[0].evol_60p_mm15.toFixed(3);
+                $scope.evol_75p_mm15 = Fact.MMEVolTable[0].evol_75p_mm15.toFixed(3);
+                $scope.evol_90p_mm15 = Fact.MMEVolTable[0].evol_90p_mm15.toFixed(3);
+                $scope.evol_105p_mm15 = Fact.MMEVolTable[0].evol_105p_mm15.toFixed(3);
+                $scope.evol_120p_mm15 = Fact.MMEVolTable[0].evol_120p_mm15.toFixed(3);
+                $scope.evol_180p_mm15 = Fact.MMEVolTable[0].evol_180p_mm15.toFixed(3);
+                $scope.evol_360p_mm15 = Fact.MMEVolTable[0].evol_360p_mm15.toFixed(3);
+                $scope.evol_540p_mm15 = Fact.MMEVolTable[0].evol_540p_mm15.toFixed(3);
+                $scope.evol_720p_mm15 = Fact.MMEVolTable[0].evol_720p_mm15.toFixed(3);
+                $scope.evol_1440p_mm15 = Fact.MMEVolTable[0].evol_1440p_mm15.toFixed(3);
+
+                $scope.evol_1p_mm30 = Fact.MMEVolTable[0].evol_1p_mm30.toFixed(3);
+                $scope.evol_5p_mm30 = Fact.MMEVolTable[0].evol_5p_mm30.toFixed(3);
+                $scope.evol_15p_mm30 = Fact.MMEVolTable[0].evol_15p_mm30.toFixed(3);
+                $scope.evol_30p_mm30 = Fact.MMEVolTable[0].evol_30p_mm30.toFixed(3);
+                $scope.evol_45p_mm30 = Fact.MMEVolTable[0].evol_45p_mm30.toFixed(3);
+                $scope.evol_60p_mm30 = Fact.MMEVolTable[0].evol_60p_mm30.toFixed(3);
+                $scope.evol_75p_mm30 = Fact.MMEVolTable[0].evol_75p_mm30.toFixed(3);
+                $scope.evol_90p_mm30 = Fact.MMEVolTable[0].evol_90p_mm30.toFixed(3);
+                $scope.evol_105p_mm30 = Fact.MMEVolTable[0].evol_105p_mm30.toFixed(3);
+                $scope.evol_120p_mm30 = Fact.MMEVolTable[0].evol_120p_mm30.toFixed(3);
+                $scope.evol_180p_mm30 = Fact.MMEVolTable[0].evol_180p_mm30.toFixed(3);
+                $scope.evol_360p_mm30 = Fact.MMEVolTable[0].evol_360p_mm30.toFixed(3);
+                $scope.evol_540p_mm30 = Fact.MMEVolTable[0].evol_540p_mm30.toFixed(3);
+                $scope.evol_720p_mm30 = Fact.MMEVolTable[0].evol_720p_mm30.toFixed(3);
+                $scope.evol_1440p_mm30 = Fact.MMEVolTable[0].evol_1440p_mm30.toFixed(3);
+
+                $scope.evol_1p_mm30 = Fact.MMEVolTable[0].evol_1p_mm30.toFixed(3);
+                $scope.evol_5p_mm30 = Fact.MMEVolTable[0].evol_5p_mm30.toFixed(3);
+                $scope.evol_15p_mm30 = Fact.MMEVolTable[0].evol_15p_mm30.toFixed(3);
+                $scope.evol_30p_mm30 = Fact.MMEVolTable[0].evol_30p_mm30.toFixed(3);
+                $scope.evol_45p_mm30 = Fact.MMEVolTable[0].evol_45p_mm30.toFixed(3);
+                $scope.evol_60p_mm30 = Fact.MMEVolTable[0].evol_60p_mm30.toFixed(3);
+                $scope.evol_75p_mm30 = Fact.MMEVolTable[0].evol_75p_mm30.toFixed(3);
+                $scope.evol_90p_mm30 = Fact.MMEVolTable[0].evol_90p_mm30.toFixed(3);
+                $scope.evol_105p_mm30 = Fact.MMEVolTable[0].evol_105p_mm30.toFixed(3);
+                $scope.evol_120p_mm30 = Fact.MMEVolTable[0].evol_120p_mm30.toFixed(3);
+                $scope.evol_180p_mm30 = Fact.MMEVolTable[0].evol_180p_mm30.toFixed(3);
+                $scope.evol_360p_mm30 = Fact.MMEVolTable[0].evol_360p_mm30.toFixed(3);
+                $scope.evol_540p_mm30 = Fact.MMEVolTable[0].evol_540p_mm30.toFixed(3);
+                $scope.evol_720p_mm30 = Fact.MMEVolTable[0].evol_720p_mm30.toFixed(3);
+                $scope.evol_1440p_mm30 = Fact.MMEVolTable[0].evol_1440p_mm30.toFixed(3);
+
+                $scope.evol_1p_mm45 = Fact.MMEVolTable[0].evol_1p_mm45.toFixed(3);
+                $scope.evol_5p_mm45 = Fact.MMEVolTable[0].evol_5p_mm45.toFixed(3);
+                $scope.evol_15p_mm45 = Fact.MMEVolTable[0].evol_15p_mm45.toFixed(3);
+                $scope.evol_30p_mm45 = Fact.MMEVolTable[0].evol_30p_mm45.toFixed(3);
+                $scope.evol_45p_mm45 = Fact.MMEVolTable[0].evol_45p_mm45.toFixed(3);
+                $scope.evol_60p_mm45 = Fact.MMEVolTable[0].evol_60p_mm45.toFixed(3);
+                $scope.evol_75p_mm45 = Fact.MMEVolTable[0].evol_75p_mm45.toFixed(3);
+                $scope.evol_90p_mm45 = Fact.MMEVolTable[0].evol_90p_mm45.toFixed(3);
+                $scope.evol_105p_mm45 = Fact.MMEVolTable[0].evol_105p_mm45.toFixed(3);
+                $scope.evol_120p_mm45 = Fact.MMEVolTable[0].evol_120p_mm45.toFixed(3);
+                $scope.evol_180p_mm45 = Fact.MMEVolTable[0].evol_180p_mm45.toFixed(3);
+                $scope.evol_360p_mm45 = Fact.MMEVolTable[0].evol_360p_mm45.toFixed(3);
+                $scope.evol_540p_mm45 = Fact.MMEVolTable[0].evol_540p_mm45.toFixed(3);
+                $scope.evol_720p_mm45 = Fact.MMEVolTable[0].evol_720p_mm45.toFixed(3);
+                $scope.evol_1440p_mm45 = Fact.MMEVolTable[0].evol_1440p_mm45.toFixed(3);
+
+                $scope.evol_1p_mm60 = Fact.MMEVolTable[0].evol_1p_mm60.toFixed(3);
+                $scope.evol_5p_mm60 = Fact.MMEVolTable[0].evol_5p_mm60.toFixed(3);
+                $scope.evol_15p_mm60 = Fact.MMEVolTable[0].evol_15p_mm60.toFixed(3);
+                $scope.evol_30p_mm60 = Fact.MMEVolTable[0].evol_30p_mm60.toFixed(3);
+                $scope.evol_45p_mm60 = Fact.MMEVolTable[0].evol_45p_mm60.toFixed(3);
+                $scope.evol_60p_mm60 = Fact.MMEVolTable[0].evol_60p_mm60.toFixed(3);
+                $scope.evol_75p_mm60 = Fact.MMEVolTable[0].evol_75p_mm60.toFixed(3);
+                $scope.evol_90p_mm60 = Fact.MMEVolTable[0].evol_90p_mm60.toFixed(3);
+                $scope.evol_105p_mm60 = Fact.MMEVolTable[0].evol_105p_mm60.toFixed(3);
+                $scope.evol_120p_mm60 = Fact.MMEVolTable[0].evol_120p_mm60.toFixed(3);
+                $scope.evol_180p_mm60 = Fact.MMEVolTable[0].evol_180p_mm60.toFixed(3);
+                $scope.evol_360p_mm60 = Fact.MMEVolTable[0].evol_360p_mm60.toFixed(3);
+                $scope.evol_540p_mm60 = Fact.MMEVolTable[0].evol_540p_mm60.toFixed(3);
+                $scope.evol_720p_mm60 = Fact.MMEVolTable[0].evol_720p_mm60.toFixed(3);
+                $scope.evol_1440p_mm60 = Fact.MMEVolTable[0].evol_1440p_mm60.toFixed(3);
+
+                $scope.evol_1p_mm75 = Fact.MMEVolTable[0].evol_1p_mm75.toFixed(3);
+                $scope.evol_5p_mm75 = Fact.MMEVolTable[0].evol_5p_mm75.toFixed(3);
+                $scope.evol_15p_mm75 = Fact.MMEVolTable[0].evol_15p_mm75.toFixed(3);
+                $scope.evol_30p_mm75 = Fact.MMEVolTable[0].evol_30p_mm75.toFixed(3);
+                $scope.evol_45p_mm75 = Fact.MMEVolTable[0].evol_45p_mm75.toFixed(3);
+                $scope.evol_60p_mm75 = Fact.MMEVolTable[0].evol_60p_mm75.toFixed(3);
+                $scope.evol_75p_mm75 = Fact.MMEVolTable[0].evol_75p_mm75.toFixed(3);
+                $scope.evol_90p_mm75 = Fact.MMEVolTable[0].evol_90p_mm75.toFixed(3);
+                $scope.evol_105p_mm75 = Fact.MMEVolTable[0].evol_105p_mm75.toFixed(3);
+                $scope.evol_120p_mm75 = Fact.MMEVolTable[0].evol_120p_mm75.toFixed(3);
+                $scope.evol_180p_mm75 = Fact.MMEVolTable[0].evol_180p_mm75.toFixed(3);
+                $scope.evol_360p_mm75 = Fact.MMEVolTable[0].evol_360p_mm75.toFixed(3);
+                $scope.evol_540p_mm75 = Fact.MMEVolTable[0].evol_540p_mm75.toFixed(3);
+                $scope.evol_720p_mm75 = Fact.MMEVolTable[0].evol_720p_mm75.toFixed(3);
+                $scope.evol_1440p_mm75 = Fact.MMEVolTable[0].evol_1440p_mm75.toFixed(3);
+
+                $scope.evol_1p_mm90 = Fact.MMEVolTable[0].evol_1p_mm90.toFixed(3);
+                $scope.evol_5p_mm90 = Fact.MMEVolTable[0].evol_5p_mm90.toFixed(3);
+                $scope.evol_15p_mm90 = Fact.MMEVolTable[0].evol_15p_mm90.toFixed(3);
+                $scope.evol_30p_mm90 = Fact.MMEVolTable[0].evol_30p_mm90.toFixed(3);
+                $scope.evol_45p_mm90 = Fact.MMEVolTable[0].evol_45p_mm90.toFixed(3);
+                $scope.evol_60p_mm90 = Fact.MMEVolTable[0].evol_60p_mm90.toFixed(3);
+                $scope.evol_75p_mm90 = Fact.MMEVolTable[0].evol_75p_mm90.toFixed(3);
+                $scope.evol_90p_mm90 = Fact.MMEVolTable[0].evol_90p_mm90.toFixed(3);
+                $scope.evol_105p_mm90 = Fact.MMEVolTable[0].evol_105p_mm90.toFixed(3);
+                $scope.evol_120p_mm90 = Fact.MMEVolTable[0].evol_120p_mm90.toFixed(3);
+                $scope.evol_180p_mm90 = Fact.MMEVolTable[0].evol_180p_mm90.toFixed(3);
+                $scope.evol_360p_mm90 = Fact.MMEVolTable[0].evol_360p_mm90.toFixed(3);
+                $scope.evol_540p_mm90 = Fact.MMEVolTable[0].evol_540p_mm90.toFixed(3);
+                $scope.evol_720p_mm90 = Fact.MMEVolTable[0].evol_720p_mm90.toFixed(3);
+                $scope.evol_1440p_mm90 = Fact.MMEVolTable[0].evol_1440p_mm90.toFixed(3);
+
+                $scope.evol_1p_mm105 = Fact.MMEVolTable[0].evol_1p_mm105.toFixed(3);
+                $scope.evol_5p_mm105 = Fact.MMEVolTable[0].evol_5p_mm105.toFixed(3);
+                $scope.evol_15p_mm105 = Fact.MMEVolTable[0].evol_15p_mm105.toFixed(3);
+                $scope.evol_30p_mm105 = Fact.MMEVolTable[0].evol_30p_mm105.toFixed(3);
+                $scope.evol_45p_mm105 = Fact.MMEVolTable[0].evol_45p_mm105.toFixed(3);
+                $scope.evol_60p_mm105 = Fact.MMEVolTable[0].evol_60p_mm105.toFixed(3);
+                $scope.evol_75p_mm105 = Fact.MMEVolTable[0].evol_75p_mm105.toFixed(3);
+                $scope.evol_90p_mm105 = Fact.MMEVolTable[0].evol_90p_mm105.toFixed(3);
+                $scope.evol_105p_mm105 = Fact.MMEVolTable[0].evol_105p_mm105.toFixed(3);
+                $scope.evol_120p_mm105 = Fact.MMEVolTable[0].evol_120p_mm105.toFixed(3);
+                $scope.evol_180p_mm105 = Fact.MMEVolTable[0].evol_180p_mm105.toFixed(3);
+                $scope.evol_360p_mm105 = Fact.MMEVolTable[0].evol_360p_mm105.toFixed(3);
+                $scope.evol_540p_mm105 = Fact.MMEVolTable[0].evol_540p_mm105.toFixed(3);
+                $scope.evol_720p_mm105 = Fact.MMEVolTable[0].evol_720p_mm105.toFixed(3);
+                $scope.evol_1440p_mm105 = Fact.MMEVolTable[0].evol_1440p_mm105.toFixed(3);
+
+                $scope.evol_1p_mm120 = Fact.MMEVolTable[0].evol_1p_mm120.toFixed(3);
+                $scope.evol_5p_mm120 = Fact.MMEVolTable[0].evol_5p_mm120.toFixed(3);
+                $scope.evol_15p_mm120 = Fact.MMEVolTable[0].evol_15p_mm120.toFixed(3);
+                $scope.evol_30p_mm120 = Fact.MMEVolTable[0].evol_30p_mm120.toFixed(3);
+                $scope.evol_45p_mm120 = Fact.MMEVolTable[0].evol_45p_mm120.toFixed(3);
+                $scope.evol_60p_mm120 = Fact.MMEVolTable[0].evol_60p_mm120.toFixed(3);
+                $scope.evol_75p_mm120 = Fact.MMEVolTable[0].evol_75p_mm120.toFixed(3);
+                $scope.evol_90p_mm120 = Fact.MMEVolTable[0].evol_90p_mm120.toFixed(3);
+                $scope.evol_105p_mm120 = Fact.MMEVolTable[0].evol_105p_mm120.toFixed(3);
+                $scope.evol_120p_mm120 = Fact.MMEVolTable[0].evol_120p_mm120.toFixed(3);
+                $scope.evol_180p_mm120 = Fact.MMEVolTable[0].evol_180p_mm120.toFixed(3);
+                $scope.evol_360p_mm120 = Fact.MMEVolTable[0].evol_360p_mm120.toFixed(3);
+                $scope.evol_540p_mm120 = Fact.MMEVolTable[0].evol_540p_mm120.toFixed(3);
+                $scope.evol_720p_mm120 = Fact.MMEVolTable[0].evol_720p_mm120.toFixed(3);
+                $scope.evol_1440p_mm120 = Fact.MMEVolTable[0].evol_1440p_mm120.toFixed(3);
+
+                $scope.evol_1p_mm180 = Fact.MMEVolTable[0].evol_1p_mm180.toFixed(3);
+                $scope.evol_5p_mm180 = Fact.MMEVolTable[0].evol_5p_mm180.toFixed(3);
+                $scope.evol_15p_mm180 = Fact.MMEVolTable[0].evol_15p_mm180.toFixed(3);
+                $scope.evol_30p_mm180 = Fact.MMEVolTable[0].evol_30p_mm180.toFixed(3);
+                $scope.evol_45p_mm180 = Fact.MMEVolTable[0].evol_45p_mm180.toFixed(3);
+                $scope.evol_60p_mm180 = Fact.MMEVolTable[0].evol_60p_mm180.toFixed(3);
+                $scope.evol_75p_mm180 = Fact.MMEVolTable[0].evol_75p_mm180.toFixed(3);
+                $scope.evol_90p_mm180 = Fact.MMEVolTable[0].evol_90p_mm180.toFixed(3);
+                $scope.evol_105p_mm180 = Fact.MMEVolTable[0].evol_105p_mm180.toFixed(3);
+                $scope.evol_120p_mm180 = Fact.MMEVolTable[0].evol_120p_mm180.toFixed(3);
+                $scope.evol_180p_mm180 = Fact.MMEVolTable[0].evol_180p_mm180.toFixed(3);
+                $scope.evol_360p_mm180 = Fact.MMEVolTable[0].evol_360p_mm180.toFixed(3);
+                $scope.evol_540p_mm180 = Fact.MMEVolTable[0].evol_540p_mm180.toFixed(3);
+                $scope.evol_720p_mm180 = Fact.MMEVolTable[0].evol_720p_mm180.toFixed(3);
+                $scope.evol_1440p_mm180 = Fact.MMEVolTable[0].evol_1440p_mm180.toFixed(3);
+
+                $scope.evol_1p_mm360 = Fact.MMEVolTable[0].evol_1p_mm360.toFixed(3);
+                $scope.evol_5p_mm360 = Fact.MMEVolTable[0].evol_5p_mm360.toFixed(3);
+                $scope.evol_15p_mm360 = Fact.MMEVolTable[0].evol_15p_mm360.toFixed(3);
+                $scope.evol_30p_mm360 = Fact.MMEVolTable[0].evol_30p_mm360.toFixed(3);
+                $scope.evol_45p_mm360 = Fact.MMEVolTable[0].evol_45p_mm360.toFixed(3);
+                $scope.evol_60p_mm360 = Fact.MMEVolTable[0].evol_60p_mm360.toFixed(3);
+                $scope.evol_75p_mm360 = Fact.MMEVolTable[0].evol_75p_mm360.toFixed(3);
+                $scope.evol_90p_mm360 = Fact.MMEVolTable[0].evol_90p_mm360.toFixed(3);
+                $scope.evol_105p_mm360 = Fact.MMEVolTable[0].evol_105p_mm360.toFixed(3);
+                $scope.evol_120p_mm360 = Fact.MMEVolTable[0].evol_120p_mm360.toFixed(3);
+                $scope.evol_180p_mm360 = Fact.MMEVolTable[0].evol_180p_mm360.toFixed(3);
+                $scope.evol_360p_mm360 = Fact.MMEVolTable[0].evol_360p_mm360.toFixed(3);
+                $scope.evol_540p_mm360 = Fact.MMEVolTable[0].evol_540p_mm360.toFixed(3);
+                $scope.evol_720p_mm360 = Fact.MMEVolTable[0].evol_720p_mm360.toFixed(3);
+                $scope.evol_1440p_mm360 = Fact.MMEVolTable[0].evol_1440p_mm360.toFixed(3);
+
+                $scope.evol_1p_mm540 = Fact.MMEVolTable[0].evol_1p_mm540.toFixed(3);
+                $scope.evol_5p_mm540 = Fact.MMEVolTable[0].evol_5p_mm540.toFixed(3);
+                $scope.evol_15p_mm540 = Fact.MMEVolTable[0].evol_15p_mm540.toFixed(3);
+                $scope.evol_30p_mm540 = Fact.MMEVolTable[0].evol_30p_mm540.toFixed(3);
+                $scope.evol_45p_mm540 = Fact.MMEVolTable[0].evol_45p_mm540.toFixed(3);
+                $scope.evol_60p_mm540 = Fact.MMEVolTable[0].evol_60p_mm540.toFixed(3);
+                $scope.evol_75p_mm540 = Fact.MMEVolTable[0].evol_75p_mm540.toFixed(3);
+                $scope.evol_90p_mm540 = Fact.MMEVolTable[0].evol_90p_mm540.toFixed(3);
+                $scope.evol_105p_mm540 = Fact.MMEVolTable[0].evol_105p_mm540.toFixed(3);
+                $scope.evol_120p_mm540 = Fact.MMEVolTable[0].evol_120p_mm540.toFixed(3);
+                $scope.evol_180p_mm540 = Fact.MMEVolTable[0].evol_180p_mm540.toFixed(3);
+                $scope.evol_360p_mm540 = Fact.MMEVolTable[0].evol_360p_mm540.toFixed(3);
+                $scope.evol_540p_mm540 = Fact.MMEVolTable[0].evol_540p_mm540.toFixed(3);
+                $scope.evol_720p_mm540 = Fact.MMEVolTable[0].evol_720p_mm540.toFixed(3);
+                $scope.evol_1440p_mm540 = Fact.MMEVolTable[0].evol_1440p_mm540.toFixed(3);
+
+                $scope.evol_1p_mm720 = Fact.MMEVolTable[0].evol_1p_mm720.toFixed(3);
+                $scope.evol_5p_mm720 = Fact.MMEVolTable[0].evol_5p_mm720.toFixed(3);
+                $scope.evol_15p_mm720 = Fact.MMEVolTable[0].evol_15p_mm720.toFixed(3);
+                $scope.evol_30p_mm720 = Fact.MMEVolTable[0].evol_30p_mm720.toFixed(3);
+                $scope.evol_45p_mm720 = Fact.MMEVolTable[0].evol_45p_mm720.toFixed(3);
+                $scope.evol_60p_mm720 = Fact.MMEVolTable[0].evol_60p_mm720.toFixed(3);
+                $scope.evol_75p_mm720 = Fact.MMEVolTable[0].evol_75p_mm720.toFixed(3);
+                $scope.evol_90p_mm720 = Fact.MMEVolTable[0].evol_90p_mm720.toFixed(3);
+                $scope.evol_105p_mm720 = Fact.MMEVolTable[0].evol_105p_mm720.toFixed(3);
+                $scope.evol_120p_mm720 = Fact.MMEVolTable[0].evol_120p_mm720.toFixed(3);
+                $scope.evol_180p_mm720 = Fact.MMEVolTable[0].evol_180p_mm720.toFixed(3);
+                $scope.evol_360p_mm720 = Fact.MMEVolTable[0].evol_360p_mm720.toFixed(3);
+                $scope.evol_540p_mm720 = Fact.MMEVolTable[0].evol_540p_mm720.toFixed(3);
+                $scope.evol_720p_mm720 = Fact.MMEVolTable[0].evol_720p_mm720.toFixed(3);
+                $scope.evol_1440p_mm720 = Fact.MMEVolTable[0].evol_1440p_mm720.toFixed(3);
+
+                $scope.evol_1p_mm1440 = Fact.MMEVolTable[0].evol_1p_mm1440.toFixed(3);
+                $scope.evol_5p_mm1440 = Fact.MMEVolTable[0].evol_5p_mm1440.toFixed(3);
+                $scope.evol_15p_mm1440 = Fact.MMEVolTable[0].evol_15p_mm1440.toFixed(3);
+                $scope.evol_30p_mm1440 = Fact.MMEVolTable[0].evol_30p_mm1440.toFixed(3);
+                $scope.evol_45p_mm1440 = Fact.MMEVolTable[0].evol_45p_mm1440.toFixed(3);
+                $scope.evol_60p_mm1440 = Fact.MMEVolTable[0].evol_60p_mm1440.toFixed(3);
+                $scope.evol_75p_mm1440 = Fact.MMEVolTable[0].evol_75p_mm1440.toFixed(3);
+                $scope.evol_90p_mm1440 = Fact.MMEVolTable[0].evol_90p_mm1440.toFixed(3);
+                $scope.evol_105p_mm1440 = Fact.MMEVolTable[0].evol_105p_mm1440.toFixed(3);
+                $scope.evol_120p_mm1440 = Fact.MMEVolTable[0].evol_120p_mm1440.toFixed(3);
+                $scope.evol_180p_mm1440 = Fact.MMEVolTable[0].evol_180p_mm1440.toFixed(3);
+                $scope.evol_360p_mm1440 = Fact.MMEVolTable[0].evol_360p_mm1440.toFixed(3);
+                $scope.evol_540p_mm1440 = Fact.MMEVolTable[0].evol_540p_mm1440.toFixed(3);
+                $scope.evol_720p_mm1440 = Fact.MMEVolTable[0].evol_720p_mm1440.toFixed(3);
+                $scope.evol_1440p_mm1440 = Fact.MMEVolTable[0].evol_1440p_mm1440.toFixed(3);
+            }
+        });
+    });
+
+    app.controller('Ctrl_MMCompare', function($scope, Fact) {
+        $scope.$watch(function(){
+            return Fact.MMCompareTable;
+        }, function(){
+            if(Fact.MMCompareTable.length > 0){
+                $scope.p = Fact.MMCompareTable[0].pair;
+                $scope.mm5_upto_60_since = Fact.MMCompareTable[0].mm5_upto_60_since;
+                $scope.mm5_on_60_trend = Fact.MMCompareTable[0].mm5_on_60_trend;
+                $scope.mm5_on_60_trend_since = Fact.MMCompareTable[0].mm5_on_60_trend_since;
+                $scope.mm5_upto_180_since = Fact.MMCompareTable[0].mm5_upto_180_since;
+                $scope.mm5_on_180_trend = Fact.MMCompareTable[0].mm5_on_180_trend;
+                $scope.mm5_on_180_trend_since = Fact.MMCompareTable[0].mm5_on_180_trend_since;
+                $scope.mm5_upto_360_since = Fact.MMCompareTable[0].mm5_upto_360_since;
+                $scope.mm5_on_360_trend = Fact.MMCompareTable[0].mm5_on_360_trend;
+                $scope.mm5_on_360_trend_since = Fact.MMCompareTable[0].mm5_on_360_trend_since;
+                $scope.mm5_upto_720_since = Fact.MMCompareTable[0].mm5_upto_720_since;
+                $scope.mm5_on_720_trend = Fact.MMCompareTable[0].mm5_on_720_trend;
+                $scope.mm5_on_720_trend_since = Fact.MMCompareTable[0].mm5_on_720_trend_since;
+                $scope.mm5_upto_1440_since = Fact.MMCompareTable[0].mm5_upto_1440_since;
+                $scope.mm5_on_1440_trend = Fact.MMCompareTable[0].mm5_on_1440_trend;
+                $scope.mm5_on_1440_trend_since = Fact.MMCompareTable[0].mm5_on_1440_trend_since;
+
+                $scope.mm60_upto_180_since = Fact.MMCompareTable[0].mm60_upto_180_since;
+                $scope.mm60_on_180_trend = Fact.MMCompareTable[0].mm60_on_180_trend;
+                $scope.mm60_on_180_trend_since = Fact.MMCompareTable[0].mm60_on_180_trend_since;
+                $scope.mm60_upto_360_since = Fact.MMCompareTable[0].mm60_upto_360_since;
+                $scope.mm60_on_360_trend = Fact.MMCompareTable[0].mm60_on_360_trend;
+                $scope.mm60_on_360_trend_since = Fact.MMCompareTable[0].mm60_on_360_trend_since;
+                $scope.mm60_upto_720_since = Fact.MMCompareTable[0].mm60_upto_720_since;
+                $scope.mm60_on_720_trend = Fact.MMCompareTable[0].mm60_on_720_trend;
+                $scope.mm60_on_720_trend_since = Fact.MMCompareTable[0].mm60_on_720_trend_since;
+                $scope.mm60_upto_1440_since = Fact.MMCompareTable[0].mm60_upto_1440_since;
+                $scope.mm60_on_1440_trend = Fact.MMCompareTable[0].mm60_on_1440_trend;
+                $scope.mm60_on_1440_trend_since = Fact.MMCompareTable[0].mm60_on_1440_trend_since;
+
+                $scope.mm180_upto_360_since = Fact.MMCompareTable[0].mm180_upto_360_since;
+                $scope.mm180_on_360_trend = Fact.MMCompareTable[0].mm180_on_360_trend;
+                $scope.mm180_on_360_trend_since = Fact.MMCompareTable[0].mm180_on_360_trend_since;
+                $scope.mm180_upto_720_since = Fact.MMCompareTable[0].mm180_upto_720_since;
+                $scope.mm180_on_720_trend = Fact.MMCompareTable[0].mm180_on_720_trend;
+                $scope.mm180_on_720_trend_since = Fact.MMCompareTable[0].mm180_on_720_trend_since;
+                $scope.mm180_upto_1440_since = Fact.MMCompareTable[0].mm180_upto_1440_since;
+                $scope.mm180_on_1440_trend = Fact.MMCompareTable[0].mm180_on_1440_trend;
+                $scope.mm180_on_1440_trend_since = Fact.MMCompareTable[0].mm180_on_1440_trend_since;
+
+                $scope.mm360_upto_720_since = Fact.MMCompareTable[0].mm360_upto_720_since;
+                $scope.mm360_on_720_trend = Fact.MMCompareTable[0].mm360_on_720_trend;
+                $scope.mm360_on_720_trend_since = Fact.MMCompareTable[0].mm360_on_720_trend_since;
+                $scope.mm360_upto_1440_since = Fact.MMCompareTable[0].mm360_upto_1440_since;
+                $scope.mm360_on_1440_trend = Fact.MMCompareTable[0].mm360_on_1440_trend;
+                $scope.mm360_on_1440_trend_since = Fact.MMCompareTable[0].mm360_on_1440_trend_since;
+
+                $scope.mm720_upto_1440_since = Fact.MMCompareTable[0].mm720_upto_1440_since;
+                $scope.mm720_on_1440_trend = Fact.MMCompareTable[0].mm720_on_1440_trend;
+                $scope.mm720_on_1440_trend_since = Fact.MMCompareTable[0].mm720_on_1440_trend_since;
+            }
+        });
+    });
+
+
+    // DATE Controller
+    app.controller('Ctrl_Date', function($scope, $interval) {
+        $interval(function() {
+            var currentdate = new Date();
+            var datetime = "Time : " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + "  -  "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            $scope.today = datetime;
+        },1000);
+    });
+</script>
+
+</body>
 </html>
