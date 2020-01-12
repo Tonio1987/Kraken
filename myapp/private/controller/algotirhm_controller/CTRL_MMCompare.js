@@ -14,7 +14,7 @@ module.exports = {
             STEP_DB_getAllPairs,
             STEP_DB_getLast1440MM,
             STEP_ALGO_compareMM,
-            // STEP_DB_insertMMCompare,
+            STEP_DB_insertMMCompare,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
@@ -36,13 +36,13 @@ module.exports = {
 
         function STEP_ALGO_compareMM(err, MM) {
             if(!err) {
-                ALGO_MMCompare.calculateMMCompare(STEP_finish, MM, date, hour, timestamp);
+                ALGO_MMCompare.calculateMMCompare(STEP_DB_insertMMCompare, MM, date, hour, timestamp);
             }else{
                 STEP_finish(err);
             }
         }
 
-        /*
+
         function STEP_DB_insertMMCompare(err, MMC) {
             if(!err) {
                 DB_MMCompare.insertMMCompare(STEP_finish, MMC);
@@ -50,7 +50,7 @@ module.exports = {
                 STEP_finish(err);
             }
         }
-*/
+
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
