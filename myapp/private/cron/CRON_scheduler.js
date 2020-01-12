@@ -30,6 +30,7 @@ const CTRL_PurgeTradeBalance = require('../controller/purge_controller/CTRL_Purg
 const CTRL_PurgeTicker = require('../controller/purge_controller/CTRL_PurgeTicker');
 const CTRL_PurgeMobileM = require('../controller/purge_controller/CTRL_PurgeMobileM');
 const CTRL_PurgeMobileMEvolution = require('../controller/purge_controller/CTRL_PurgeMobileMEvolution');
+const CTRL_PurgeMobileMCompare = require('../controller/purge_controller/CTRL_PurgeMobileMCompare');
 const CTRL_PurgeKeltner = require('../controller/purge_controller/CTRL_PurgeKeltner');
 const CTRL_PurgeOHLC = require('../controller/purge_controller/CTRL_PurgeOHLC');
 const CTRL_PurgeATR = require('../controller/purge_controller/CTRL_PurgeATR');
@@ -268,6 +269,7 @@ Handler.init_task_PurgeData = function(cron_expression){
         CTRL_PurgeTradeBalance.purgeTradeBalanceData();
         CTRL_PurgeMobileM.purgeMobileMData();
         CTRL_PurgeMobileMEvolution.purgeMobileMEvolutionData();
+        CTRL_PurgeMobileMCompare.purgeMobileMCompareData();
         CTRL_PurgeTicker.purgeTickerData();
         CTRL_PurgeKeltner.purgeKeltnerData();
         CTRL_PurgeOHLC.purgeOHLCData1h();

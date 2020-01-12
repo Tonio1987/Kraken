@@ -344,7 +344,26 @@
                             <canvas id="MobileAverageLineChart"></canvas>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div ng-controller="Ctrl_MMCompare" class="row justify-content-md-center">
+                <div class="col-10">
+                    <br />
+                    <h4>Mobile Averages Comparaison for pair {{p}}</h4>
+                    <table class="table table-striped table-dark table-sm">
+                        <thead class="thead-dark">
+                        <tr class="table-center-text">
+                            <th scope="col" class="table-primary table-center-text">MM A</th>
+                            <th scope="col" class="table-primary table-center-text">MM B</th>
+                            <th scope="col" class="table-primary table-center-text">MM A on MM B Position</th>
+                            <th scope="col" class="table-primary table-center-text">MM A on MM B LAst Trend</th>
+                            <th scope="col" class="table-primary table-center-text">Nb Period Since Trend</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -737,7 +756,6 @@
                          $scope.evol_1440p_mm1440 = Fact.MMEVolTable[0].evol_1440p_mm1440.toFixed(3);
                      }
                  });
-
              });
 
              // DATE Controller
