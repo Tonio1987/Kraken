@@ -51,7 +51,7 @@ module.exports = {
         function STEP_DB_getLastTicker(err, data, currency, nb_units) {
             if(!err){
                 if(data.length > 0){
-                    DB_Ticker.getLastTicker(STEP_DB_getLastBalance, data[0].kraken_pair_name, currency, nb_units)
+                    DB_Ticker.getLastTicker(STEP_DB_getLastBalance, data[0].name, currency, nb_units)
                 }else{
                     // Cas de l'EURO ou du DOGE
                     STEP_DB_getLastBalance(err, data, null, currency, nb_units);
