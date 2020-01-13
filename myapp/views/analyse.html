@@ -47,7 +47,7 @@
             <br />
             Select pair :
             <select  ng-model="pairSelected" ng-change="loadPairData(pairSelected)" class="custom-select mr-sm-2">
-                <option ng-repeat="pair in pairs" value="{{pair.kraken_pair_name}}">{{pair.kraken_pair_name}}</option>
+                <option ng-repeat="pair in pairs" value="{{pair.name}}">{{pair.name}}</option>
             </select>
         </div>
     </div>
@@ -485,6 +485,7 @@
         $http.get("analyse_pairsList")
             .then(function(response) {
                 $scope.pairs = response.data;
+                console.log(response.data);
             }).catch(function(response) {
             $scope.pairs = 'Erreur';
         });

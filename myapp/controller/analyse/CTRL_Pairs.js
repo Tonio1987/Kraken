@@ -1,4 +1,4 @@
-const DB_Pairs = require('../../persistence/analyse/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/analyse/DB_AssetPairs');
 const async = require('async');
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
         });
 
         function STEP_DB_getPairsList(err, data) {
-            DB_Pairs.getAllPairs(STEP_finish);
+            DB_AssetPairs.getAllPairs(STEP_finish);
         }
 
         function STEP_finish(err, data) {
