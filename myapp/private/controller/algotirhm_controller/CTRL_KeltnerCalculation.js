@@ -1,6 +1,6 @@
 const async = require('async');
-const moment = require('moment/moment');
-const DB_Pairs = require('../../persistence/algorithm/keltner/DB_Pairs');
+const moment = require('moment');
+const DB_AssetPairs = require('../../persistence/algorithm/keltner/DB_AssetPairs');
 const DB_Ticker = require('../../persistence/algorithm/keltner/DB_Ticker');
 const DB_Keltner = require('../../persistence/algorithm/keltner/DB_Keltner');
 const DB_ATR = require('../../persistence/algorithm/keltner/DB_ATR');
@@ -26,13 +26,13 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_getLastATR);
+            DB_AssetPairs.getAllPairs(STEP_DB_getLastATR);
         }
 
         function STEP_DB_getLastATR(err, allPairs) {
             if (!err) {
                 allPairs.forEach(function (pair) {
-                    DB_ATR.getLastATR_1h(STEP_DB_getLastTicker, pair.kraken_pair_name);
+                    DB_ATR.getLastATR_1h(STEP_DB_getLastTicker, pair.name);
                 });
             } else {
                 STEP_finish(err);

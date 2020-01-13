@@ -19,7 +19,7 @@ module.exports = {
         }).then(function(data){
             callback(null, data, pair, param_fw1);
         }).catch(function(err) {
-            callback(err, null, null);
+            callback(err, null, pair);
         });
     },
     kraken_OHLC_1d: function(callback, pair, param_fw1) {

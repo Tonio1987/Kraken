@@ -4,6 +4,7 @@ const moment = require('moment');
 // CONTROLLER CALL
 
 // KRAKEN API
+const CTRL_AssetPairs = require('../controller/kraken_controller/CTRL_AssetPairs');
 const CTRL_LoadTicker = require('../controller/kraken_controller/CTRL_Ticker');
 const CTRL_TradeBalance = require('../controller/kraken_controller/CTRL_TradeBalance');
 const CTRL_Balance = require('../controller/kraken_controller/CTRL_Balance');
@@ -43,6 +44,7 @@ let task_ServerOk = null;
 let task_KrakenServerOnline = null;
 
 // LOAD DATA TASKS
+let task_LoadAssetPairs = null;
 let task_LoadTradeBalance = null;
 let task_LoadBalance = null;
 let task_LoadTradeHistory = null;
@@ -85,6 +87,16 @@ Handler.init_task_KrakenServerOnline = function (cron_expression){
     task_KrakenServerOnline = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Check Kraken Server Time');
         CTRL_Time.LoadTime();
+    }, {
+        scheduled: false
+    });
+};
+
+// LOAD ASSET PAIRS
+Handler.init_task_LoadAssetPairs = function(cron_expression){
+    task_LoadAssetPairs = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Load Asset Pairs');
+        CTRL_AssetPairs.LoadAssetPairs();
     }, {
         scheduled: false
     });
@@ -286,6 +298,9 @@ Handler.stop_task_ServerOk = function(){task_ServerOk.stop();};
 
 Handler.start_task_KrakenServerOnline = function(){task_KrakenServerOnline.start();};
 Handler.stop_task_KrakenServerOnline = function(){task_KrakenServerOnline.stop();};
+
+Handler.start_task_LoadAssetPairs = function(){task_LoadAssetPairs.start();};
+Handler.stop_task_LoadAssetPairs = function(){task_LoadAssetPairs.stop();};
 
 Handler.start_task_LoadTicker = function(){task_LoadTicker.start();};
 Handler.stop_task_LoadTicker = function(){task_LoadTicker.stop();};

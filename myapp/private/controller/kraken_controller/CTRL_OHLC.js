@@ -1,4 +1,4 @@
-const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_OHLC = require('../../persistence/kraken/DB_OHLC');
 const API_OHLC = require('../../api/kraken/API_OHLC');
 const async = require('async');
@@ -29,7 +29,7 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_countOHLC);
+            DB_AssetPairs.getAllPairs(STEP_DB_countOHLC);
         }
 
         function STEP_DB_countOHLC(err, allPairs) {
@@ -39,7 +39,7 @@ module.exports = {
         function STEP_API_loadOHLC(err, count, allPairs) {
             if(!err){
                 allPairs.forEach(function(pair){
-                    API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, pair.kraken_pair_name, count);
+                    API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, pair.name, count);
                 });
             }else{
                 STEP_finish(err);
@@ -75,7 +75,7 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_countOHLC);
+            DB_AssetPairs.getAllPairs(STEP_DB_countOHLC);
         }
 
         function STEP_DB_countOHLC(err, allPairs) {
@@ -85,7 +85,7 @@ module.exports = {
         function STEP_API_loadOHLC(err, count, allPairs) {
             if (!err) {
                 allPairs.forEach(function (pair) {
-                    API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, pair.kraken_pair_name, count);
+                    API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, pair.name, count);
                 });
             } else {
                 STEP_finish(err);

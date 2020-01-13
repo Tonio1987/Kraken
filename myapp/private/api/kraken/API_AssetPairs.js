@@ -9,7 +9,7 @@ const api = kraken({
 module.exports = {
     kraken_AssetPairs: function(callback, pair) {
         return new Promise(function (resolve, reject) {
-            api.call('AssetPairs', { pair: pair, count: 1 },(err, data) => {
+            api.call('AssetPairs', (err, data) => {
                 if (err) {
                     console.error(err);
                     reject(err);

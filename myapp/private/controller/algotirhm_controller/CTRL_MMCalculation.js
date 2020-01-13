@@ -1,6 +1,6 @@
 const async = require('async');
 const moment = require('moment');
-const DB_Pairs = require('../../persistence/algorithm/mm/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/algorithm/mm/DB_AssetPairs');
 const DB_Ticker = require('../../persistence/algorithm/mm/DB_Ticker');
 const DB_MM = require('../../persistence/algorithm/mm/DB_MobileM');
 const ALGO_MM = require('../../algorithm/MM_Algorithm');
@@ -22,13 +22,13 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_getTickerByPair);
+            DB_AssetPairs.getAllPairs(STEP_DB_getTickerByPair);
         }
 
         function STEP_DB_getTickerByPair(err, data) {
             if(!err) {
                 data.forEach(function (pair) {
-                    DB_Ticker.getLast1440Ticker(STEP_ALGO_calculateNN, pair.kraken_pair_name);
+                    DB_Ticker.getLast1440Ticker(STEP_ALGO_calculateNN, pair.name);
                 });
             }else{
                 STEP_finish(err);

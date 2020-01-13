@@ -1,4 +1,4 @@
-const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
 const API_Ticker = require('../../api/kraken/API_Ticker');
 const async = require('async');
@@ -30,12 +30,12 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_API_loadTicker);
+            DB_AssetPairs.getAllPairs(STEP_API_loadTicker);
         }
         function STEP_API_loadTicker(err, data) {
             if(!err){
                 data.forEach(function(pair){
-                    API_Ticker.kraken_Ticker(STEP_DB_insertTicker, pair.kraken_pair_name);
+                    API_Ticker.kraken_Ticker(STEP_DB_insertTicker, pair.name);
                 });
             }else{
                 STEP_finish(err);

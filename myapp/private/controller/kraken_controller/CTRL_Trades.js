@@ -1,4 +1,4 @@
-const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_Trades = require('../../persistence/kraken/DB_Trades');
 const API_Trades = require('../../api/kraken/API_Trades');
 const async = require('async');
@@ -30,12 +30,12 @@ module.exports = {
             DB_Trades.dropMarketTrades(STEP_DB_getAllPairs);
         }
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_API_loadTrades);
+            DB_AssetPairs.getAllPairs(STEP_API_loadTrades);
         }
         function STEP_API_loadTrades(err, data) {
             if(!err){
                 data.forEach(function(pair){
-                    API_Trades.kraken_Trades(STEP_DB_insertTrades, pair.kraken_pair_name);
+                    API_Trades.kraken_Trades(STEP_DB_insertTrades, pair.name);
                 });
 
             }else{

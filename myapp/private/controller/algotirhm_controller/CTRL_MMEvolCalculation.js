@@ -1,6 +1,6 @@
 const async = require('async');
 const moment = require('moment');
-const DB_Pairs = require('../../persistence/algorithm/mm_evol/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/algorithm/mm_evol/DB_AssetPairs');
 const DB_MM = require('../../persistence/algorithm/mm_evol/DB_MobileM');
 const DB_MMEvol = require('../../persistence/algorithm/mm_evol/DB_MobileMEvolution');
 const ALGO_MMEvol = require('../../algorithm/MMEvol_Algorithm');
@@ -21,13 +21,13 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_getLast1440MM);
+            DB_AssetPairs.getAllPairs(STEP_DB_getLast1440MM);
         }
 
         function STEP_DB_getLast1440MM(err, data) {
             if(!err) {
                 data.forEach(function (pair) {
-                    DB_MM.getLast1440MM(STEP_ALGO_calculateMMEvol, pair.kraken_pair_name);
+                    DB_MM.getLast1440MM(STEP_ALGO_calculateMMEvol, pair.name);
                 });
             }else{
                 STEP_finish(err);

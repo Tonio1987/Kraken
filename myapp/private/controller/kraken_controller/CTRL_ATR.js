@@ -1,4 +1,4 @@
-const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_ATR = require('../../persistence/kraken/DB_ATR');
 const DB_OHLC = require('../../persistence/kraken/DB_OHLC');
 const async = require('async');
@@ -29,7 +29,7 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_countATR);
+            DB_AssetPairs.getAllPairs(STEP_DB_countATR);
         }
 
         function STEP_DB_countATR(err, allPairs) {
@@ -39,7 +39,7 @@ module.exports = {
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if(!err){
                 allPairs.forEach(function(pair){
-                    DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, pair.kraken_pair_name, count);
+                    DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, pair.name, count);
                 });
             }else{
                 STEP_finish(err);
@@ -87,7 +87,7 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_countATR);
+            DB_AssetPairs.getAllPairs(STEP_DB_countATR);
         }
 
         function STEP_DB_countATR(err, allPairs) {
@@ -97,7 +97,7 @@ module.exports = {
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if (!err) {
                 allPairs.forEach(function (pair) {
-                    DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1D, pair.kraken_pair_name, count);
+                    DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1D, pair.name, count);
                 });
             } else {
                 STEP_finish(err);

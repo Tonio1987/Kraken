@@ -1,4 +1,4 @@
-const moment = require('moment/moment');
+const moment = require('moment');
 const MongoClient = require('mongodb').MongoClient;
 
 moment.locale('fr');
@@ -11,7 +11,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Pairs").find({pair_out: "EUR", pair_in_kraken: {$in: currencyList}}).toArray(function(err, result) {
+                    dbo.collection("AssetPairs").find({darkpool: false, quote: "ZEUR",  base: {$in: currencyList}}).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }
@@ -27,3 +27,4 @@ module.exports = {
         });
     }
 };
+

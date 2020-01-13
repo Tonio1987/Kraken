@@ -6,7 +6,7 @@ const DB_OpenOrders = require('../../persistence/robot/stop_loss_order/DB_OpenOr
 const DB_Keltner = require('../../persistence/robot/stop_loss_order/DB_Keltner');
 const DB_Balance = require('../../persistence/robot/stop_loss_order/DB_Balance');
 const DB_Trigger = require('../../persistence/robot/stop_loss_order/DB_Triggers');
-const DB_Pair = require('../../persistence/robot/stop_loss_order/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/robot/stop_loss_order/DB_AssetPairs');
 const DB_Ticker = require('../../persistence/robot/stop_loss_order/DB_Tickers');
 
 const ALGO_AddOrder = require('../../algorithm/AddOrder_Algorithm');
@@ -92,7 +92,7 @@ module.exports = {
                        currencyList.push(LastBalance[elem].currency)
                    }
                }
-               DB_Pair.getEurPairs(STEP_DB_getLastKeltner, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders)
+               DB_AssetPairs.getEurPairs(STEP_DB_getLastKeltner, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders)
            }else{
                STEP_finish(err);
            }
@@ -103,7 +103,7 @@ module.exports = {
                let pairList = [];
                for(elem in eurPairs){
                    if(eurPairs.hasOwnProperty(elem)){
-                       pairList.push(eurPairs[elem].kraken_pair_name);
+                       pairList.push(eurPairs[elem].name);
                    }
                }
                DB_Keltner.getLastKeltner(STEP_DB_getLastTickerTimestamp, pairList, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders);

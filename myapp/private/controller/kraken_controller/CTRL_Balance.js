@@ -1,7 +1,7 @@
 const API_Balance = require('../../api/kraken/API_Balance');
 const DB_Balance = require('../../persistence/kraken/DB_Balance');
 const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
-const DB_Pairs = require('../../persistence/kraken/DB_Pairs');
+const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const async = require('async');
 const moment = require('moment');
 
@@ -40,7 +40,7 @@ module.exports = {
             if(!err){
                 for (var i in data) {
                     if (data.hasOwnProperty(i)) {
-                        DB_Pairs.getEurPair(STEP_DB_getLastTicker, i, data[i]);
+                        DB_AssetPairs.getEurPair(STEP_DB_getLastTicker, i, data[i]);
                     }
                 }
             }else {
