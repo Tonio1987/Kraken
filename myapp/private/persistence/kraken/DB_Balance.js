@@ -9,7 +9,7 @@ function prepareData(lastBalance, bid_price, currency, nb_units, date, hour, tim
         if(lastBalance.hasOwnProperty(elem)){
             if(lastBalance[elem].currency == currency){
                 if(lastBalance[elem].units != nb_units){
-                    console.log(currency + '  '+ nb_units +  '   '+ lastBalance[elem].units);
+                    console.log('\x1b[32m', moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- DB BALANCE --- NEW ELEMENT IN BALANCE : '+currency + ' '+ nb_units +  '  OLD : '+ lastBalance[elem].units, '\x1b[0m');
                     change = true;
                 }
             }
