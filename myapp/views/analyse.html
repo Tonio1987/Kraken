@@ -533,6 +533,7 @@
                 let arrayOfMM15 = [];
                 let arrayOfMM60 = [];
                 let arrayOfMM180 = [];
+                let arrayOfMM540 = [];
                 let arrayOfMM360 = [];
                 let arrayOfMM720 = [];
                 let arrayOfMM1440 = [];
@@ -546,6 +547,7 @@
                         arrayOfMM60.unshift(MMData[MM].mm60);
                         arrayOfMM180.unshift(MMData[MM].mm180);
                         arrayOfMM360.unshift(MMData[MM].mm360);
+                        arrayOfMM540.unshift(MMData[MM].mm540);
                         arrayOfMM720.unshift(MMData[MM].mm720);
                         arrayOfMM1440.unshift(MMData[MM].mm1440);
                     }
@@ -579,15 +581,21 @@
                             borderWidth: 2,
                             fill: false
                         }, {
+                            data: arrayOfMM540,
+                            label: "MM540",
+                            borderColor: "#ffa64d",
+                            borderWidth: 2,
+                            fill: false
+                        }, {
                             data: arrayOfMM720,
                             label: "MM720",
-                            borderColor: "#ffa64d",
+                            borderColor: "#ff0000",
                             borderWidth: 3,
                             fill: false
                         }, {
                             data: arrayOfMM1440,
                             label: "MM1440",
-                            borderColor: "#ff0000",
+                            borderColor: "#9900cc",
                             borderWidth: 3,
                             fill: false
                         }
