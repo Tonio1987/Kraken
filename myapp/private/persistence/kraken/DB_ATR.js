@@ -56,9 +56,8 @@ function prepareData(ohlcs, atr, pair, interval, count, insert_date, insert_hour
         atrs.push(new_atr);
     }else{
         let listTR = [];
-
-        for(let i=13; i>=0; i--){
-            if(i===13){
+        for(let i=ohlcs.length-1; i>=0; i--){
+            if(i===ohlcs.length-1){
                 High = ohlcs[i].high;
                 Low = ohlcs[i].low;
                 H_minus_L = Math.abs(High - Low);

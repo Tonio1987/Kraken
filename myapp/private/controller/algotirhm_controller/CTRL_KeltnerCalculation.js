@@ -88,13 +88,13 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_Pairs.getAllPairs(STEP_DB_getLastATR);
+            DB_AssetPairs.getAllPairs(STEP_DB_getLastATR);
         }
 
         function STEP_DB_getLastATR(err, allPairs) {
             if (!err) {
                 allPairs.forEach(function (pair) {
-                    DB_ATR.getLastATR_1d(STEP_DB_getLastTicker, pair.kraken_pair_name);
+                    DB_ATR.getLastATR_1d(STEP_DB_getLastTicker, pair._name);
                 });
             } else {
                 STEP_finish(err);

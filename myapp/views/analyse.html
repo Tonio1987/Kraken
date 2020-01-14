@@ -384,6 +384,13 @@
                 </tr>
                 <tr>
                     <td>5 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm5_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_540_trend === 'NO', 'bg-warning': mm5_on_540_trend === 'DOWN', 'bg-success': mm5_on_540_trend === 'UP'}">{{mm5_on_540_trend}}</td>
+                    <td>{{mm5_on_540_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
                     <td>720 P</td>
                     <td>Since {{mm5_upto_720_since}} P</td>
                     <td ng-class="{'bg-danger': mm5_on_720_trend === 'NO', 'bg-warning': mm5_on_720_trend === 'DOWN', 'bg-success': mm5_on_720_trend === 'UP'}">{{mm5_on_720_trend}}</td>
@@ -412,6 +419,13 @@
                 </tr>
                 <tr>
                     <td>60 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm60_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm60_on_540_trend === 'NO', 'bg-warning': mm60_on_540_trend === 'DOWN', 'bg-success': mm60_on_540_trend === 'UP'}">{{mm60_on_540_trend}}</td>
+                    <td>{{mm60_on_540_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
                     <td>720 P</td>
                     <td>Since {{mm60_upto_720_since}} P</td>
                     <td  ng-class="{'bg-danger': mm60_on_720_trend === 'NO', 'bg-warning': mm60_on_720_trend === 'DOWN', 'bg-success': mm60_on_720_trend === 'UP'}">{{mm60_on_720_trend}}</td>
@@ -433,6 +447,13 @@
                 </tr>
                 <tr>
                     <td>180 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm180_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_540_trend === 'NO', 'bg-warning': mm180_on_540_trend === 'DOWN', 'bg-success': mm180_on_540_trend === 'UP'}">{{mm180_on_540_trend}}</td>
+                    <td>{{mm180_on_360_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
                     <td>720 P</td>
                     <td>Since {{mm180_upto_720_since}} P</td>
                     <td ng-class="{'bg-danger': mm180_on_720_trend === 'NO', 'bg-warning': mm180_on_720_trend === 'DOWN', 'bg-success': mm180_on_720_trend === 'UP'}">{{mm180_on_720_trend}}</td>
@@ -447,6 +468,13 @@
                 </tr>
                 <tr>
                     <td>360 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm360_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm360_on_540_trend === 'NO', 'bg-warning': mm360_on_540_trend === 'DOWN', 'bg-success': mm360_on_540_trend === 'UP'}">{{mm360_on_540_trend}}</td>
+                    <td>{{mm360_on_540_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>360 P</td>
                     <td>720 P</td>
                     <td>Since {{mm360_upto_720_since}} P</td>
                     <td ng-class="{'bg-danger': mm360_on_720_trend === 'NO', 'bg-warning': mm360_on_720_trend === 'DOWN', 'bg-success': mm360_on_720_trend === 'UP'}">{{mm360_on_720_trend}}</td>
@@ -458,6 +486,20 @@
                     <td>Since {{mm360_upto_1440_since}} P</td>
                     <td ng-class="{'bg-danger': mm360_on_1440_trend === 'NO', 'bg-warning': mm360_on_1440_trend === 'DOWN', 'bg-success': mm360_on_1440_trend === 'UP'}">{{mm360_on_1440_trend}}</td>
                     <td>{{mm360_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>540 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm540_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm540_on_720_trend === 'NO', 'bg-warning': mm540_on_720_trend === 'DOWN', 'bg-success': mm540_on_720_trend === 'UP'}">{{mm540_on_720_trend}}</td>
+                    <td>{{mm540_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>540 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm540_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm540_on_1440_trend === 'NO', 'bg-warning': mm540_on_1440_trend === 'DOWN', 'bg-success': mm540_on_1440_trend === 'UP'}">{{mm540_on_1440_trend}}</td>
+                    <td>{{mm720_on_1440_trend_since}} Periods</td>
                 </tr>
                 <tr>
                     <td>720 P</td>
@@ -888,6 +930,9 @@
                 $scope.mm5_upto_360_since = Fact.MMCompareTable[0].mm5_upto_360_since;
                 $scope.mm5_on_360_trend = Fact.MMCompareTable[0].mm5_on_360_trend;
                 $scope.mm5_on_360_trend_since = Fact.MMCompareTable[0].mm5_on_360_trend_since;
+                $scope.mm5_upto_540_since = Fact.MMCompareTable[0].mm5_upto_540_since;
+                $scope.mm5_on_540_trend = Fact.MMCompareTable[0].mm5_on_540_trend;
+                $scope.mm5_on_540_trend_since = Fact.MMCompareTable[0].mm5_on_540_trend_since;
                 $scope.mm5_upto_720_since = Fact.MMCompareTable[0].mm5_upto_720_since;
                 $scope.mm5_on_720_trend = Fact.MMCompareTable[0].mm5_on_720_trend;
                 $scope.mm5_on_720_trend_since = Fact.MMCompareTable[0].mm5_on_720_trend_since;
@@ -901,6 +946,9 @@
                 $scope.mm60_upto_360_since = Fact.MMCompareTable[0].mm60_upto_360_since;
                 $scope.mm60_on_360_trend = Fact.MMCompareTable[0].mm60_on_360_trend;
                 $scope.mm60_on_360_trend_since = Fact.MMCompareTable[0].mm60_on_360_trend_since;
+                $scope.mm60_upto_540_since = Fact.MMCompareTable[0].mm60_upto_540_since;
+                $scope.mm60_on_540_trend = Fact.MMCompareTable[0].mm60_on_540_trend;
+                $scope.mm60_on_540_trend_since = Fact.MMCompareTable[0].mm60_on_540_trend_since;
                 $scope.mm60_upto_720_since = Fact.MMCompareTable[0].mm60_upto_720_since;
                 $scope.mm60_on_720_trend = Fact.MMCompareTable[0].mm60_on_720_trend;
                 $scope.mm60_on_720_trend_since = Fact.MMCompareTable[0].mm60_on_720_trend_since;
@@ -911,6 +959,9 @@
                 $scope.mm180_upto_360_since = Fact.MMCompareTable[0].mm180_upto_360_since;
                 $scope.mm180_on_360_trend = Fact.MMCompareTable[0].mm180_on_360_trend;
                 $scope.mm180_on_360_trend_since = Fact.MMCompareTable[0].mm180_on_360_trend_since;
+                $scope.mm180_upto_540_since = Fact.MMCompareTable[0].mm180_upto_540_since;
+                $scope.mm180_on_540_trend = Fact.MMCompareTable[0].mm180_on_540_trend;
+                $scope.mm180_on_540_trend_since = Fact.MMCompareTable[0].mm180_on_540_trend_since;
                 $scope.mm180_upto_720_since = Fact.MMCompareTable[0].mm180_upto_720_since;
                 $scope.mm180_on_720_trend = Fact.MMCompareTable[0].mm180_on_720_trend;
                 $scope.mm180_on_720_trend_since = Fact.MMCompareTable[0].mm180_on_720_trend_since;
@@ -918,12 +969,22 @@
                 $scope.mm180_on_1440_trend = Fact.MMCompareTable[0].mm180_on_1440_trend;
                 $scope.mm180_on_1440_trend_since = Fact.MMCompareTable[0].mm180_on_1440_trend_since;
 
+                $scope.mm360_upto_540_since = Fact.MMCompareTable[0].mm360_upto_540_since;
+                $scope.mm360_on_540_trend = Fact.MMCompareTable[0].mm360_on_540_trend;
+                $scope.mm360_on_540_trend_since = Fact.MMCompareTable[0].mm360_on_540_trend_since;
                 $scope.mm360_upto_720_since = Fact.MMCompareTable[0].mm360_upto_720_since;
                 $scope.mm360_on_720_trend = Fact.MMCompareTable[0].mm360_on_720_trend;
                 $scope.mm360_on_720_trend_since = Fact.MMCompareTable[0].mm360_on_720_trend_since;
                 $scope.mm360_upto_1440_since = Fact.MMCompareTable[0].mm360_upto_1440_since;
                 $scope.mm360_on_1440_trend = Fact.MMCompareTable[0].mm360_on_1440_trend;
                 $scope.mm360_on_1440_trend_since = Fact.MMCompareTable[0].mm360_on_1440_trend_since;
+
+                $scope.mm540_upto_720_since = Fact.MMCompareTable[0].mm540_upto_720_since;
+                $scope.mm540_on_720_trend = Fact.MMCompareTable[0].mm540_on_720_trend;
+                $scope.mm540_on_720_trend_since = Fact.MMCompareTable[0].mm540_on_720_trend_since;
+                $scope.mm540_upto_1440_since = Fact.MMCompareTable[0].mm540_upto_1440_since;
+                $scope.mm540_on_1440_trend = Fact.MMCompareTable[0].mm540_on_1440_trend;
+                $scope.mm540_on_1440_trend_since = Fact.MMCompareTable[0].mm540_on_1440_trend_since;
 
                 $scope.mm720_upto_1440_since = Fact.MMCompareTable[0].mm720_upto_1440_since;
                 $scope.mm720_on_1440_trend = Fact.MMCompareTable[0].mm720_on_1440_trend;
