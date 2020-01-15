@@ -230,6 +230,11 @@ module.exports = {
                         ordersToPosition.push(orders[i]);
                     }
                 }
+            }else{
+                // NO OPEN ORDERS IN POSITION - FIRST POSITION
+                for(let i=0; i<orders.length; i++){
+                    ordersToPosition.push(orders[i]);
+                }
             }
 
             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL');
