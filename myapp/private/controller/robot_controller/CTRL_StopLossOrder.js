@@ -145,7 +145,7 @@ module.exports = {
                    API_CancelOrder.kraken_CancelOrder(STEP_API_addNewStopLossOrder, preparedOrders.ordersToCancel, preparedOrders);
                }else{
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO ORDERS TO CANCEL');
-                   STEP_API_addNewStopLossOrder(err, null, preparedOrders);
+                   STEP_API_addNewStopLossOrder(err,  preparedOrders);
                }
            }else{
                STEP_finish(err);
@@ -153,7 +153,7 @@ module.exports = {
        }
 
        // POSITION NEW STOP LOSS
-       function STEP_API_addNewStopLossOrder(err, data, preparedOrders) {
+       function STEP_API_addNewStopLossOrder(err, preparedOrders) {
            if(!err){
                if(preparedOrders.orders.length>0){
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- CALL THE ADD ORDER API');

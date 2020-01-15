@@ -160,8 +160,8 @@ module.exports = {
             let orders = [];
             let ordersToCancel = [];
             let ordersToPosition = [];
-            let old_stoploss = false;
-            let pos_new_stoploss = false;
+            var old_stoploss = false;
+            var pos_new_stoploss = false;
             let coefKeltnerTrigger = ActiveTriggersKeltner[0].value;
 
             // INSERT LAST TICKER IN KELTNER DATA
@@ -208,25 +208,31 @@ module.exports = {
                     for (let j=0; j<OpenOrders.length; j++) {
                         if(OpenOrders[j].pair === orders[i].pair || OpenOrders[j].pair === pairsConvertion[orders[i].pair].value) {
                             old_stoploss = true;
+                            console.log('old_stoploss '+old_stoploss);
                             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- OLD OPEN ORDER DETECTED FOR PAIR ' + OpenOrders[j].pair);
                             let order_id = OpenOrders[j].orderid;
                             let keltnerPrice = orders[i].price;
                             let openOrderPrice = OpenOrders[j].price.toFixed(pairsConvertion[orders[i].pair].decimal);
                             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER ' + coefKeltnerTrigger + 'X PRICE : ' + keltnerPrice + ' - OPEN ORDER PRICE : ' + openOrderPrice);
-                            if (openOrderPrice < keltnerPrice) {
-                                ordersToCancel.push(order_id);
+                            if(openOrderPrice < keltnerPrice) {
+
                                 pos_new_stoploss = true;
+                                console.log('pos_new_stoploss '+pos_new_stoploss);
+                                ordersToCancel.push(order_id);
                             }
                         }
                     }
                     if(old_stoploss === true){
+                        console.log('old_stoploss '+pos_new_stoploss);
                         if(pos_new_stoploss === true){
+                            console.log('pos_new_stoploss');
                             ordersToPosition.push(orders[i]);
                             pos_new_stoploss = false;
                         }
                         old_stoploss = false;
                     }else{
                         // NO OLD OPEN ORDER FIND
+                        console.log('NO OLD OPEN ORDER FIND');
                         ordersToPosition.push(orders[i]);
                     }
                 }
