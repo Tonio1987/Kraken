@@ -19,6 +19,9 @@ module.exports = {
    generateStopLossOrders: function() {
 
         async.waterfall([
+            STEP_DB_dropOpenOrders_1,
+            STEP_API_getOpenOrders_1,
+            STEP_DB_insertOpenOrders_1,
             STEP_DB_getAutonomousTrigger,
             STEP_CHECK_AutonomousMode,
             STEP_DB_getOpenOrders,
@@ -40,8 +43,37 @@ module.exports = {
             // Nothing to do here
         });
 
-       function STEP_DB_getAutonomousTrigger() {
-           DB_Trigger.getTriggerAutonomous(STEP_CHECK_AutonomousMode);
+       function STEP_DB_dropOpenOrders_1() {
+           console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- DROP OPEN ORDERS');
+           DB_OpenOrders.dropOpenOrders(STEP_API_getOpenOrders_1);
+       }
+
+       function STEP_API_getOpenOrders_1(err, data) {
+           console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- CALL OPEN ORDERS API');
+           API_OpenOrders.kraken_OpenOrders(STEP_DB_insertOpenOrders_1);
+       }
+
+       function STEP_DB_insertOpenOrders_1(err, data) {
+           if(!err){
+               if(Object.keys(data).length > 0){
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- PREVIOUS OPEN ORDERS ARE IN POSITION');
+                   DB_OpenOrders.upsertOpenOrders(STEP_DB_getAutonomousTrigger, data);
+               }else{
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO OPEN ORDERS');
+                   STEP_DB_getAutonomousTrigger();
+               }
+           }else{
+               STEP_finish(err);
+           }
+       }
+
+
+       function STEP_DB_getAutonomousTrigger(err, data) {
+           if(!err){
+               DB_Trigger.getTriggerAutonomous(STEP_CHECK_AutonomousMode);
+           }else{
+               STEP_finish(err);
+           }
        }
 
        function STEP_CHECK_AutonomousMode(err, trigger) {
@@ -180,7 +212,7 @@ module.exports = {
        function STEP_DB_insertOpenOrders(err, data) {
            if(!err){
                if(Object.keys(data).length > 0){
-                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- OPEN ORDERS ARE IN POSITION');
+                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NEW OPEN ORDERS ARE IN POSITION');
                    DB_OpenOrders.upsertOpenOrders(STEP_finish, data);
                }else{
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO OPEN ORDERS');
