@@ -206,13 +206,14 @@ module.exports = {
                     for (let j=0; j<OpenOrders.length; j++) {
                         if(OpenOrders[j].pair === orders[i].pair || OpenOrders[j].pair === pairsConvertion[orders[i].pair].value) {
                             old_stoploss = true;
-                            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- OLD OPEN ORDER DETECTED FOR PAIR ' + OpenOrders[j].pair);
                             let order_id = OpenOrders[j].orderid;
                             let openOrderPrice = OpenOrders[j].price.toFixed(pairsConvertion[orders[i].pair].decimal);
-                            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- KELTNER ' + coefKeltnerTrigger + 'X PRICE : ' + orders[i].price + ' - OPEN ORDER PRICE : ' + openOrderPrice);
                             if(openOrderPrice < orders[i].price) {
+                                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- FOR PAIR : '+ OpenOrders[j].pair +' OLD OPEN ORDER PRICE :  '+ openOrderPrice + ' - KELTNER ' + coefKeltnerTrigger + 'X - NEW OPEN ORDER PRICE : ' + orders[i].price);
                                 ordersToCancel.push(order_id);
                                 ordersToPosition.push(orders[i]);
+                            }else{
+                                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- FOR PAIR : '+ OpenOrders[j].pair +' KEEP OLD OPEN ORDER PRICE :  '+ openOrderPrice + ' - LAST KELTNER ' + coefKeltnerTrigger + 'X - PRICE : ' + orders[i].price);
                             }
                         }
                         if(j===OpenOrders.length-1){
@@ -233,12 +234,13 @@ module.exports = {
 
             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL');
             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToPosition.length+' PREPARED ORDER(S) TO POSITION');
+            /*
             for(elem in ordersToPosition){
                 if(ordersToPosition.hasOwnProperty(elem)){
                     console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ ordersToPosition[elem].type+' '+ordersToPosition[elem].ordertype+' '+ordersToPosition[elem].volume+' '+ordersToPosition[elem].pair+' '+ordersToPosition[elem].price);
                 }
             }
-
+            */
             let preparedOrders = {
                 ordersToCancel: ordersToCancel,
                 orders: ordersToPosition

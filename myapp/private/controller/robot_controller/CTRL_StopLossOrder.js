@@ -130,7 +130,6 @@ module.exports = {
 
         function STEP_ALGO_PrepareOrder(err, LastTicker, pairList, LastKeltners, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders) {
            if(!err){
-               console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- PREPARE ORDER');
                 ALGO_AddOrder.prepareStopLossOrders(STEP_API_cancelOldStopLossOrder, LastTicker, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders);
             }else{
                 STEP_finish(err);
@@ -144,7 +143,6 @@ module.exports = {
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- CALL THE CANCEL ORDER API');
                    API_CancelOrder.kraken_CancelOrder(STEP_API_addNewStopLossOrder, preparedOrders.ordersToCancel, preparedOrders);
                }else{
-                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO ORDERS TO CANCEL');
                    STEP_API_addNewStopLossOrder(err,  preparedOrders);
                }
            }else{
@@ -159,7 +157,6 @@ module.exports = {
                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- CALL THE ADD ORDER API');
                    API_AddOrder.kraken_AddOrder(STEP_DB_dropOpenOrders, preparedOrders.orders);
                }else{
-                   console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- NO NEW ORDERS');
                    STEP_DB_dropOpenOrders();
                }
            }else{
