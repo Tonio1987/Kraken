@@ -7,49 +7,6 @@ module.exports = {
 
             let count = 0;
             let sum = 0;
-            let mm5_upto_60 = false;
-            let mm5_upto_180 = false;
-            let mm5_upto_360 = false;
-            let mm5_upto_540 = false;
-            let mm5_upto_720 = false;
-            let mm5_upto_1440 = false;
-            let mm60_upto_180 = false;
-            let mm60_upto_360 = false;
-            let mm60_upto_540 = false;
-            let mm60_upto_720 = false;
-            let mm60_upto_1440 = false;
-            let mm180_upto_360 = false;
-            let mm180_upto_540 = false;
-            let mm180_upto_720 = false;
-            let mm180_upto_1440 = false;
-            let mm360_upto_540 = false;
-            let mm360_upto_720 = false;
-            let mm360_upto_1440 = false;
-            let mm540_upto_720 = false;
-            let mm540_upto_1440 = false;
-            let mm720_upto_1440 = false;
-            let since_mm5_upto_60 = 0;
-            let since_mm5_upto_180 = 0;
-            let since_mm5_upto_360 = 0;
-            let since_mm5_upto_540 = 0;
-            let since_mm5_upto_720 = 0;
-            let since_mm5_upto_1440 = 0;
-            let since_mm60_upto_180 = 0;
-            let since_mm60_upto_360 = 0;
-            let since_mm60_upto_540 = 0;
-            let since_mm60_upto_720 = 0;
-            let since_mm60_upto_1440 = 0;
-            let since_mm180_upto_360 = 0;
-            let since_mm180_upto_540 = 0;
-            let since_mm180_upto_720 = 0;
-            let since_mm180_upto_1440 = 0;
-            let since_mm360_upto_540 = 0;
-            let since_mm360_upto_720 = 0;
-            let since_mm360_upto_1440 = 0;
-            let since_mm540_upto_720 = 0;
-            let since_mm540_upto_1440 = 0;
-            let since_mm720_upto_1440 = 0;
-
             let  mm = {
                 insert_date: date,
                 insert_hour: hour,
@@ -89,7 +46,28 @@ module.exports = {
                 mm360_upto_1440: false,
                 mm540_upto_720: false,
                 mm540_upto_1440: false,
-                mm720_upto_1440: false
+                mm720_upto_1440: false,
+                mm5_on_60_diff: 0,
+                mm5_on_180_diff: 0,
+                mm5_on_360_diff: 0,
+                mm5_on_540_diff: 0,
+                mm5_on_720_diff: 0,
+                mm5_on_1440_diff: 0,
+                mm60_on_180_diff: 0,
+                mm60_on_360_diff: 0,
+                mm60_on_540_diff: 0,
+                mm60_on_720_diff: 0,
+                mm60_on_1440_diff: 0,
+                mm180_on_360_diff: 0,
+                mm180_on_540_diff: 0,
+                mm180_on_720_diff: 0,
+                mm180_on_1440_diff: 0,
+                mm360_on_540_diff: 0,
+                mm360_on_720_diff: 0,
+                mm360_on_1440_diff: 0,
+                mm540_on_720_diff: 0,
+                mm540_on_1440_diff: 0,
+                mm720_on_1440_diff: 0,
             };
             for(let ticker in data){
                 if (data.hasOwnProperty(ticker)) {
@@ -142,6 +120,28 @@ module.exports = {
             if(mm.mm540 >= mm.mm720){mm.mm540_upto_720 = true;}
             if(mm.mm540 >= mm.mm1440){mm.mm540_upto_1440 = true;}
             if(mm.mm720 >= mm.mm1440){mm.mm720_upto_1440 = true;}
+
+            mm.mm5_on_60_diff = (((mm.mm5 - mm.mm60) / mm.mm60)*100).toFixed(2);
+            mm.mm5_on_180_diff = (((mm.mm5 - mm.mm180) / mm.mm180)*100).toFixed(2);
+            mm.mm5_on_360_diff = (((mm.mm5 - mm.mm360) / mm.mm360)*100).toFixed(2);
+            mm.mm5_on_540_diff = (((mm.mm5 - mm.mm540) / mm.mm540)*100).toFixed(2);
+            mm.mm5_on_720_diff = (((mm.mm5 - mm.mm720) / mm.mm720)*100).toFixed(2);
+            mm.mm5_on_1440_diff = (((mm.mm5 - mm.mm1440) / mm.mm1440)*100).toFixed(2);
+            mm.mm60_on_180_diff = (((mm.mm60 - mm.mm180) / mm.mm180)*100).toFixed(2);
+            mm.mm60_on_360_diff = (((mm.mm60 - mm.mm360) / mm.mm360)*100).toFixed(2);
+            mm.mm60_on_540_diff = (((mm.mm60 - mm.mm540) / mm.mm540)*100).toFixed(2);
+            mm.mm60_on_720_diff = (((mm.mm60 - mm.mm720) / mm.mm720)*100).toFixed(2);
+            mm.mm60_on_1440_diff = (((mm.mm60 - mm.mm1440) / mm.mm1440)*100).toFixed(2);
+            mm.mm180_on_360_diff = (((mm.mm180 - mm.mm360) / mm.mm360)*100).toFixed(2);
+            mm.mm180_on_540_diff = (((mm.mm180 - mm.mm540) / mm.mm540)*100).toFixed(2);
+            mm.mm180_on_720_diff = (((mm.mm180 - mm.mm720) / mm.mm720)*100).toFixed(2);
+            mm.mm180_on_1440_diff = (((mm.mm180 - mm.mm1440) / mm.mm1440)*100).toFixed(2);
+            mm.mm360_on_540_diff = (((mm.mm360 - mm.mm540) / mm.mm540)*100).toFixed(2);
+            mm.mm360_on_720_diff = (((mm.mm360 - mm.mm720) / mm.mm720)*100).toFixed(2);
+            mm.mm360_on_1440_diff = (((mm.mm360 - mm.mm1440) / mm.mm1440)*100).toFixed(2);
+            mm.mm540_on_720_diff = (((mm.mm540 - mm.mm720) / mm.mm720)*100).toFixed(2);
+            mm.mm540_on_1440_diff = (((mm.mm540 - mm.mm1440) / mm.mm1440)*100).toFixed(2);
+            mm.mm720_on_1440_diff = (((mm.mm720 - mm.mm1440) / mm.mm1440)*100).toFixed(2);
 
             resolve(mm);
         }).then(function(res){
