@@ -24,13 +24,16 @@ function loop(i, ordersToCancel, preparedOrders, callback) {
         }).then(function(data){
             i = i+1;
             if(i < ordersToCancel.length){
-                loop.bind(null, i+1, ordersToCancel)
+                var newfct = loop.bind(null, i, ordersToCancel, preparedOrders, callback)
+                newfct();
             }else{
                 callback(null, preparedOrders);
             }
         }).catch(function(err) {
             callback(err, null);
         });
+    }else{
+        callback(null, preparedOrders);
     }
 }
 

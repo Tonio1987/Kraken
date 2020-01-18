@@ -29,19 +29,22 @@ function loop(i, orders, callback) {
         }).then(function(data){
             i = i+1;
             if(i < orders.length){
-                loop.bind(null, i+1, orders)
+                var newfct = loop.bind(null, i, orders, callback)
+                newfct();
             }else{
-                callback(null, data);
+                callback(null, orders);
             }
         }).catch(function(err) {
             callback(err, null);
         });
+    }else{
+        callback(null, orders);
     }
 }
 
 module.exports = {
     kraken_AddOrder: function(callback, orders) {
-        let i =0;
+        let i = 0;
         loop(i, orders, callback);
     }
 };

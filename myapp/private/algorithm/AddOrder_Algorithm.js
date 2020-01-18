@@ -199,7 +199,6 @@ module.exports = {
                     }
                 }
             }
-
             // HANDLE PREVIOUSLKY OPEN ORDERS POSITIONED
             if(OpenOrders.length > 0) {
                 var old_stoploss = false;
@@ -216,12 +215,14 @@ module.exports = {
                                 ordersToPosition.push(orders[i]);
                             }
                         }
+                        if(j===OpenOrders.length-1){
+                            if(old_stoploss === false){
+                                ordersToPosition.push(orders[i]);
+                                old_stoploss = false;
+                            }
+                        }
                     }
-                    if(old_stoploss === false){
-                        console.log('NO OLD OPEN ORDER FIND');
-                        ordersToPosition.push(orders[i]);
-                        old_stoploss = false;
-                    }
+                    old_stoploss = false;
                 }
             }else{
                 // NO OPEN ORDERS IN POSITION - FIRST POSITION
