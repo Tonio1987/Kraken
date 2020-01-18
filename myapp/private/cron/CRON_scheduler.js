@@ -245,7 +245,7 @@ Handler.init_task_MMCompareCalculation = function(cron_expression){
     });
 };
 
-// CALCULATE MOVING AVERAGES COMPARAISON
+// CALCULATE MOVING AVERAGES INDICATORS
 Handler.init_task_MMIndicators = function(cron_expression){
     task_MMIndicators = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Calculate MM Indicators');
