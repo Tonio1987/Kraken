@@ -138,7 +138,7 @@ module.exports = {
             }
 
             // MT
-            if(MMC[0].mm180_upto_360 > 0){
+            if(MMC[0].mm180_upto_360_since > 0){
                 mms_on_mml_weigth_global = mms_on_mml_weigth_global + mm180_on_mm360_weight;
                 mms_on_mml_since_weigth_global = mms_on_mml_since_weigth_global + (MMC[0].mm180_upto_360_since * mm180_on_mm360_weight);
 
@@ -160,7 +160,7 @@ module.exports = {
                     mms_on_mml_trend_since_weigth_mt = mms_on_mml_trend_since_weigth_mt + (0.25 * MMC[0].mm180_on_360_trend_since * mm180_on_mm360_weight_mt);
                 }
             }
-            if(MMC[0].mm180_upto_540 > 0){
+            if(MMC[0].mm180_upto_540_since > 0){
                 mms_on_mml_weigth_global = mms_on_mml_weigth_global + mm180_on_mm540_weight;
                 mms_on_mml_since_weigth_global = mms_on_mml_since_weigth_global + (MMC[0].mm180_upto_540_since * mm180_on_mm540_weight);
 
