@@ -513,13 +513,67 @@
         </div>
     </div>
 
+    <div ng-controller="Ctrl_MMIndicators" class="row justify-content-md-center">
+        <div class="col-10">
+            <br />
+            <h4>Mobile Averages Indicators for pair {{p}}</h4>
+            <table class="table table-striped table-dark table-sm table-center-text">
+                <thead class="thead-dark">
+                <tr class="table-center-text">
+                    <th scope="col" class="table-primary table-center-text">TIME</th>
+                    <th scope="col" class="table-primary table-center-text">RATE</th>
+                    <th scope="col" class="table-primary table-center-text">% MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">% SINCE MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">% TREND MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">% TREND SINCE MM A > MM B</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GLOBAL</td>
+                        <td>{{pair_mm_rating_global}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_global}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_global}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_global}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_global}} &percnt;</td>
+                    </tr>
+                    <tr>
+                        <td>COURT TERME</td>
+                        <td>{{pair_mm_rating_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_ct}} &percnt;</td>
+                    </tr>
+                    <tr>
+                        <td>MOYEN TERMEE</td>
+                        <td>{{pair_mm_rating_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_mt}} &percnt;</td>
+                    </tr>
+                    <tr>
+                        <td>LONG TERME</td>
+                        <td>{{pair_mm_rating_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_lt}} &percnt;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 </div>
 <script>
     var app = angular.module('myApp', []);
 
     // SHARE DATA BETWEEN CONTROLLERS WITH FACTORY
     app.factory('Fact', function(){
-        return { MMEVolTable: '', MMGraph: '', MMCompareTable: ''};
+        return { MMEVolTable: '', MMGraph: '', MMCompareTable: '', MMIndicatorsTable: ''};
     });
 
     // PAIR Controller
@@ -559,6 +613,15 @@
                 data: data
             }).then(function (response) {
                 Fact.MMCompareTable = response.data;
+            });
+
+            $http({
+                method: 'POST',
+                url: '/analyse_MMIndicatorsPairData',
+                headers: {'Content-Type': 'application/json'},
+                data: data
+            }).then(function (response) {
+                Fact.MMIndicatorsTable = response.data;
             });
         }
     });
@@ -990,6 +1053,34 @@
                 $scope.mm720_on_1440_trend = Fact.MMCompareTable[0].mm720_on_1440_trend;
                 $scope.mm720_on_1440_trend_since = Fact.MMCompareTable[0].mm720_on_1440_trend_since;
             }
+        });
+    });
+
+    app.controller('Ctrl_MMIndicators', function($scope, Fact) {
+        $scope.$watch(function(){
+            return Fact.MMIndicatorsTable;
+        }, function(){
+            $scope.p = Fact.MMIndicatorsTable[0].pair;
+            $scope.pair_mm_rating_global = (Fact.MMIndicatorsTable[0].pair_mm_rating_global*100).toFixed(2);
+            $scope.pair_mm_rating_ct = (Fact.MMIndicatorsTable[0].pair_mm_rating_ct*100).toFixed(2);
+            $scope.pair_mm_rating_mt = (Fact.MMIndicatorsTable[0].pair_mm_rating_mt*100).toFixed(2);
+            $scope.pair_mm_rating_lt = (Fact.MMIndicatorsTable[0].pair_mm_rating_lt*100).toFixed(2);
+            $scope.mms_on_mml_weigth_global = (Fact.MMIndicatorsTable[0].mms_on_mml_weigth_global*100).toFixed(2);
+            $scope.mms_on_mml_weigth_ct = (Fact.MMIndicatorsTable[0].mms_on_mml_weigth_ct*100).toFixed(2);
+            $scope.mms_on_mml_weigth_mt = (Fact.MMIndicatorsTable[0].mms_on_mml_weigth_mt*100).toFixed(2);
+            $scope.mms_on_mml_weigth_lt = (Fact.MMIndicatorsTable[0].mms_on_mml_weigth_lt*100).toFixed(2);
+            $scope.mms_on_mml_since_weigth_global = (Fact.MMIndicatorsTable[0].mms_on_mml_since_weigth_global*100).toFixed(2);
+            $scope.mms_on_mml_since_weigth_ct = (Fact.MMIndicatorsTable[0].mms_on_mml_since_weigth_ct*100).toFixed(2);
+            $scope.mms_on_mml_since_weigth_mt = (Fact.MMIndicatorsTable[0].mms_on_mml_since_weigth_mt*100).toFixed(2);
+            $scope.mms_on_mml_since_weigth_lt = (Fact.MMIndicatorsTable[0].mms_on_mml_since_weigth_lt*100).toFixed(2);
+            $scope.mms_on_mml_trend_weigth_global = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_weigth_global*100).toFixed(2);
+            $scope.mms_on_mml_trend_weigth_ct = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_weigth_ct*100).toFixed(2);
+            $scope.mms_on_mml_trend_weigth_mt = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_weigth_mt*100).toFixed(2);
+            $scope.mms_on_mml_trend_weigth_lt = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_weigth_lt*100).toFixed(2);
+            $scope.mms_on_mml_trend_since_weigth_global = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_since_weigth_global*100).toFixed(2);
+            $scope.mms_on_mml_trend_since_weigth_ct = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_since_weigth_ct*100).toFixed(2);
+            $scope.mms_on_mml_trend_since_weigth_mt = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_since_weigth_mt*100).toFixed(2);
+            $scope.mms_on_mml_trend_since_weigth_lt = (Fact.MMIndicatorsTable[0].mms_on_mml_trend_since_weigth_lt*100).toFixed(2);
         });
     });
 

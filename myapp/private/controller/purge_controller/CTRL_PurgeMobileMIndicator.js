@@ -1,7 +1,7 @@
 const async = require('async');
 const moment = require('moment');
 
-const DB_MobileMEvolution = require('../../persistence/purge/DB_MobileMIndicators');
+const DB_MobileMIndicators = require('../../persistence/purge/DB_MobileMIndicators');
 
 module.exports = {
     purgeMobileMIndicatorsData: function () {

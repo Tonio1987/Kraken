@@ -56,11 +56,13 @@ var pairsListRouter = require('./routes/rest_api/analyse/PairsList');
 var MMPairDataRouter = require('./routes/rest_api/analyse/MMPairData');
 var MMEvolPairDataRouter = require('./routes/rest_api/analyse/MMEvolPairData');
 var MMComparePairDataRouter = require('./routes/rest_api/analyse/MMComparePairData');
+var MMIndicatorsPairDataRouter = require('./routes/rest_api/analyse/MMIndicatorsPairData');
 
 app.use('/analyse_pairsList', pairsListRouter);
 app.use('/analyse_MMPairData', MMPairDataRouter);
 app.use('/analyse_MMEvolPairData', MMEvolPairDataRouter);
 app.use('/analyse_MMComparePairData', MMComparePairDataRouter);
+app.use('/analyse_MMIndicatorsPairData', MMIndicatorsPairDataRouter);
 
 
 // SETTINGS
