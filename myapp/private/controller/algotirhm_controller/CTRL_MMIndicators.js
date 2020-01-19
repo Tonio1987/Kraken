@@ -14,7 +14,7 @@ module.exports = {
         async.waterfall([
             STEP_DB_getAllPairs,
             STEP_DB_getLastMM,
-            STEP_DB_getLastMMCompare,
+            STEP_DB_getLastMMC,
             STEP_ALGO_MMIndicators,
             STEP_DB_insertMMIndicator,
             STEP_finish
@@ -55,7 +55,7 @@ module.exports = {
 
         function STEP_DB_insertMMIndicator(err, MMIndicator) {
             if(!err) {
-                DB_MMIndicator.insertMMIndicator(STEP_finish, MMIndicator);
+                DB_MMIndicator.insertMMIndicators(STEP_finish, MMIndicator);
             }else{
                 STEP_finish(err);
             }

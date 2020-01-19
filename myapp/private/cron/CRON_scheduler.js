@@ -33,6 +33,7 @@ const CTRL_PurgeTicker = require('../controller/purge_controller/CTRL_PurgeTicke
 const CTRL_PurgeMobileM = require('../controller/purge_controller/CTRL_PurgeMobileM');
 const CTRL_PurgeMobileMEvolution = require('../controller/purge_controller/CTRL_PurgeMobileMEvolution');
 const CTRL_PurgeMobileMCompare = require('../controller/purge_controller/CTRL_PurgeMobileMCompare');
+const CTRL_PurgeMobileMIndicator = require('../controller/purge_controller/CTRL_PurgeMobileMIndicator');
 const CTRL_PurgeKeltner = require('../controller/purge_controller/CTRL_PurgeKeltner');
 const CTRL_PurgeOHLC = require('../controller/purge_controller/CTRL_PurgeOHLC');
 const CTRL_PurgeATR = require('../controller/purge_controller/CTRL_PurgeATR');
@@ -295,6 +296,7 @@ Handler.init_task_PurgeData = function(cron_expression){
         CTRL_PurgeMobileM.purgeMobileMData();
         CTRL_PurgeMobileMEvolution.purgeMobileMEvolutionData();
         CTRL_PurgeMobileMCompare.purgeMobileMCompareData();
+        CTRL_PurgeMobileMIndicator.purgeMobileMIndicatorsData();
         CTRL_PurgeTicker.purgeTickerData();
         CTRL_PurgeKeltner.purgeKeltnerData();
         CTRL_PurgeOHLC.purgeOHLCData1h();
