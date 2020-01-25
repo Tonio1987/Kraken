@@ -44,12 +44,8 @@ app.use('/home_last5ClosedOrders', last5ClosedOrdersRouter);
 
 // MARKET
 var marketInfoRouter = require('./routes/rest_api/market/MarketInfo');
-var tickerDataRouter = require('./routes/rest_api/market/TickerData');
-var marketTradesDataRouter = require('./routes/rest_api/market/MarketTradesData');
 
 app.use('/market_marketInfo', marketInfoRouter);
-app.use('/market_tickerData', tickerDataRouter);
-app.use('/market_marketTradesData', marketTradesDataRouter);
 
 // ANALYSE
 var pairsListRouter = require('./routes/rest_api/analyse/PairsList');

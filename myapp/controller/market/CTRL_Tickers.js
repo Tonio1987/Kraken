@@ -1,19 +1,22 @@
 const DB_Tickers = require('../../persistence/market/DB_Tickers');
+const DB_MMIndicators = require('../../persistence/market/DB_MMIndicators');
 const async = require('async');
 
 module.exports = {
     getLast24hTicker: function(callback, req, res, next) {
         async.waterfall([
-            STEP_DB_getMaxInsertTimestamp,
+            STEP_DB_getTickerMaxInsertTimestamp,
             STEP_DB_getLastTickers,
             STEP_DB_get24hAgoTickers,
+            STEP_DB_getMMIndicatorsMaxInsertTimestamp,
+            STEP_DB_getMMIndicators,
             STEP_ALGO_prepareMarketInfo,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
         });
 
-        function STEP_DB_getMaxInsertTimestamp() {
+        function STEP_DB_getTickerMaxInsertTimestamp() {
             DB_Tickers.getMaxInsertTimestamp(STEP_DB_getLastTickers);
         }
 
@@ -22,10 +25,18 @@ module.exports = {
         }
 
         function STEP_DB_get24hAgoTickers(err, lastTicker) {
-            DB_Tickers.get24hAgoTicker(STEP_ALGO_prepareMarketInfo, lastTicker);
+            DB_Tickers.get24hAgoTicker(STEP_DB_getMMIndicatorsMaxInsertTimestamp, lastTicker);
         }
 
-        function STEP_ALGO_prepareMarketInfo(err, ticker24hAgo, lastTicker) {
+        function STEP_DB_getMMIndicatorsMaxInsertTimestamp(err, ticker24hAgo, lastTicker){
+            DB_MMIndicators.getMaxInsertTimestamp(STEP_DB_getMMIndicators, ticker24hAgo, lastTicker);
+        }
+
+        function STEP_DB_getMMIndicators(err, data, ticker24hAgo, lastTicker){
+            DB_MMIndicators.getLastMMIndicators(STEP_ALGO_prepareMarketInfo, data[0].insert_timestamp, ticker24hAgo, lastTicker);
+        }
+
+        function STEP_ALGO_prepareMarketInfo(err, MMIndicators, ticker24hAgo, lastTicker) {
             let marketInfo = [];
             for (last in lastTicker){
                 if(lastTicker.hasOwnProperty(last)){
@@ -50,28 +61,23 @@ module.exports = {
                     }
                 }
             }
-            STEP_finish(null, marketInfo);
-        }
 
-        function STEP_finish(err, marketInfo) {
-            if(err){
-                console.log(err);
-                callback(err, marketInfo, req, res, next);
-            }else{
-                callback(err, marketInfo, req, res, next);
+            for (MMIndic in MMIndicators) {
+                if (MMIndicators.hasOwnProperty(MMIndic)) {
+                    for(ticker in marketInfo){
+                        if (marketInfo.hasOwnProperty(ticker)) {
+                            if(marketInfo[ticker].pair == MMIndicators[MMIndic].pair){
+                                marketInfo[ticker].pair_mm_rating_global = (100*MMIndicators[MMIndic].pair_mm_rating_global).toFixed(2);
+                                marketInfo[ticker].pair_mm_rating_ct = (100*MMIndicators[MMIndic].pair_mm_rating_ct).toFixed(2);
+                                marketInfo[ticker].pair_mm_rating_mt = (100*MMIndicators[MMIndic].pair_mm_rating_mt).toFixed(2);
+                                marketInfo[ticker].pair_mm_rating_lt = (100*MMIndicators[MMIndic].pair_mm_rating_lt).toFixed(2);
+                            }
+                        }
+                    }
+                }
             }
-        }
-    },
-    getLast1440Ticker: function(callback, req, res, next) {
-        async.waterfall([
-            STEP_DB_getlast24hTickerData,
-            STEP_finish
-        ], function (err, result) {
-            // Nothing to do here
-        });
 
-        function STEP_DB_getlast24hTickerData() {
-            DB_Tickers.getLast1440Ticker(STEP_finish, req.body.pair);
+            STEP_finish(null, marketInfo);
         }
 
         function STEP_finish(err, marketInfo) {

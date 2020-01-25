@@ -37,12 +37,12 @@
             <div class="row justify-content-md-center">
                 <div class="col">
                     <div ng-controller="Ctrl_Date" class="text-center">
-                        {{ today | date }}
+                        {{ today | date }} - Refresh data in {{remainingTimeBeforeRefresh}} seconds
                     </div>
                 </div>
             </div>
             <div class="row justify-content-md-center" ng-controller="Ctrl_Market">
-                <div class="col-6">
+                <div class="col-10">
                     <br />
                     <h4>Market informations</h4>
                     <table class="table table-striped table-dark table-hover table-sm">
@@ -54,27 +54,27 @@
                             <th scope="col">Low 24h</th>
                             <th scope="col">High 24h</th>
                             <th scope="col">Evol 24h</th>
+                            <th scope="col">Global Rating</th>
+                            <th scope="col">CT Rating</th>
+                            <th scope="col">MT Rating</th>
+                            <th scope="col">LT Rating</th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="ticker in tickers | orderBy:'-evol'">
-                        <tr ng-click="loadGraphData(ticker.pair)" class="table-row">
+                        <tr class="table-row">
                             <td>{{ticker.pair}}</td>
                             <td>{{ticker.ask_price}} {{ticker.cvl_currency}}</td>
                             <td>{{ticker.bid_price}}  {{ticker.cvl_currency}}</td>
                             <td>{{ticker.low24h}} {{ticker.cvl_currency}}</td>
                             <td>{{ticker.high24h}} {{ticker.cvl_currency}}</td>
                             <td ng-class="{'text-red': ticker.evol < 0,'text-green': ticker.evol  >= 0}">{{ticker.evol.toFixed(2)}} &percnt;</td>
+                            <td ng-class="{'bg-danger': ticker.pair_mm_rating_global < 5, 'bg-warning': ticker.pair_mm_rating_global < 10, 'bg-success': ticker.pair_mm_rating_global >=10}">{{ticker.pair_mm_rating_global}} &percnt;</td>
+                            <td ng-class="{'bg-danger': ticker.pair_mm_rating_ct < 5, 'bg-warning': ticker.pair_mm_rating_ct < 10, 'bg-success': ticker.pair_mm_rating_ct >=10}">{{ticker.pair_mm_rating_ct}} &percnt;</td>
+                            <td ng-class="{'bg-danger': ticker.pair_mm_rating_mt < 5, 'bg-warning': ticker.pair_mm_rating_mt < 10, 'bg-success': ticker.pair_mm_rating_mt >=10}">{{ticker.pair_mm_rating_mt}} &percnt;</td>
+                            <td ng-class="{'bg-danger': ticker.pair_mm_rating_lt < 5, 'bg-warning': ticker.pair_mm_rating_lt < 10, 'bg-success': ticker.pair_mm_rating_lt >=10}">{{ticker.pair_mm_rating_lt}} &percnt;</td>
                         </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="col-3">
-                    <br />
-                    <h4>Ticker History : {{selectedTicker}}</h4>
-                    <canvas id="TickerLineChart" width="200" height="200"></canvas>
-                    <br />
-                    <h4>Market Trades : {{selectedTicker}}</h4>
-                    <canvas id="MarketTradesLineChart" width="200" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -98,199 +98,10 @@
                             $scope.tickers = 'Erreur';
                         });
                 },60000);
-
-                let data = {pair: 'XXBTZEUR'};
-                $http({
-                    method: 'POST',
-                    url: 'market_tickerData',
-                    headers: {'Content-Type': 'application/json'},
-                    data: data
-                }).then(function (response) {
-                    let resp = response.data;
-
-                    let arrayOfTickers = [];
-                    let datetimeOfTickers = [];
-
-                    let i = 1;
-                    for (let d in resp) {
-                        if (resp.hasOwnProperty(d)) {
-                            arrayOfTickers.unshift(resp[d].ask_price);
-                            datetimeOfTickers.unshift(resp[d].insert_hour);
-                            i++;
-                        }
-                    }
-                    let data = {
-                        labels: datetimeOfTickers,
-                        datasets: [
-                            {
-                                label: 'XXBTZEUR',
-                                backgroundColor: "rgba(224,224,224, 1)",
-                                pointBackgroundColor: "rgba(160,160,160, 1)",
-                                pointStyle: "cross",
-                                data: arrayOfTickers
-                            }
-                        ]
-                    };
-                    var options = {};
-                    var ctx = document.getElementById("TickerLineChart").getContext("2d");
-                    var myLineChart = new Chart(ctx, {
-                        type: 'line',
-                        data: data,
-                        options: options
-                    });
-                    $scope.selectedTicker = 'XXBTZEUR';
-                });
-
-                $http({
-                    method: 'POST',
-                    url: 'market_marketTradesData',
-                    headers: {'Content-Type': 'application/json'},
-                    data: data
-                }).then(function (response) {
-                    let resp = response.data;
-
-                    let arrayOfTrades = [];
-                    let datetimeOfTrades = [];
-
-                    let i = 1;
-                    for (let d in resp) {
-                        if (resp.hasOwnProperty(d)) {
-                            var time = new Date(resp[d].time);
-                            var datetime = time.getDate() + "/"
-                                + (time.getMonth()+1)  + "/"
-                                + time.getFullYear() + "  -  "
-                                + time.getHours() + ":"
-                                + time.getMinutes() + ":"
-                                + time.getSeconds();
-
-                            arrayOfTrades.unshift(resp[d].volume);
-                            datetimeOfTrades.unshift(datetime);
-                            i++;
-                        }
-                    }
-                    let data = {
-                        labels: datetimeOfTrades,
-                        datasets: [
-                            {
-                                label: 'XXBTZEUR',
-                                backgroundColor: "rgba(224,224,224, 1)",
-                                pointBackgroundColor: "rgba(160,160,160, 1)",
-                                pointStyle: "cross",
-                                data: arrayOfTrades
-                            }
-                        ]
-                    };
-                    var options = {};
-                    var ctx2 = document.getElementById("MarketTradesLineChart").getContext("2d");
-                    var myLineChart = new Chart(ctx2, {
-                        type: 'line',
-                        data: data,
-                        options: options
-                    });
-                    $scope.selectedTicker = 'XXBTZEUR';
-                });
-
-                $scope.loadGraphData = function(pair) {
-                    let data = {pair: pair};
-
-                    $http({
-                        method: 'POST',
-                        url: 'market_tickerData',
-                        headers: {'Content-Type': 'application/json'},
-                        data: data
-                    }).then(function (response) {
-                        let resp = response.data;
-
-                        let arrayOfTickers = [];
-                        let datetimeOfTickers = [];
-
-                        let i = 1;
-                        for (let d in resp) {
-                            if (resp.hasOwnProperty(d)) {
-                                arrayOfTickers.unshift(resp[d].ask_price);
-                                datetimeOfTickers.unshift(resp[d].insert_hour);
-                                i++;
-                            }
-                        }
-                        let data = {
-                            labels: datetimeOfTickers,
-                            datasets: [
-                                {
-                                    label: pair,
-                                    backgroundColor: "rgba(224,224,224, 1)",
-                                    pointBackgroundColor: "rgba(160,160,160, 1)",
-                                    pointStyle: "cross",
-                                    data: arrayOfTickers
-                                }
-                            ]
-                        };
-                        var options = {};
-                        var ctx = document.getElementById("TickerLineChart").getContext("2d");
-                        var myLineChart = new Chart(ctx, {
-                            type: 'line',
-                            data: data,
-                            options: options
-                        });
-                    });
-
-                    $http({
-                        method: 'POST',
-                        url: 'market_marketTradesData',
-                        headers: {'Content-Type': 'application/json'},
-                        data: data
-                    }).then(function (response) {
-                        let resp = response.data;
-
-                        let arrayOfTrades = [];
-                        let datetimeOfTrades = [];
-
-                        let i = 1;
-                        for (let d in resp) {
-                            if (resp.hasOwnProperty(d)) {
-                                var time = new Date(resp[d].time);
-                                var datetime = time.getDate() + "/"
-                                    + (time.getMonth()+1)  + "/"
-                                    + time.getFullYear() + "  -  "
-                                    + time.getHours() + ":"
-                                    + time.getMinutes() + ":"
-                                    + time.getSeconds();
-
-                                arrayOfTrades.unshift(resp[d].volume);
-                                datetimeOfTrades.unshift(datetime);
-                                i++;
-                            }
-                        }
-                        let data = {
-                            labels: datetimeOfTrades,
-                            datasets: [
-                                {
-                                    label: pair,
-                                    backgroundColor: "rgba(224,224,224, 1)",
-                                    pointBackgroundColor: "rgba(160,160,160, 1)",
-                                    pointStyle: "cross",
-                                    data: arrayOfTrades
-                                }
-                            ]
-                        };
-                        var options = {};
-                        var ctx2 = document.getElementById("MarketTradesLineChart").getContext("2d");
-                        var myLineChart = new Chart(ctx2, {
-                            type: 'line',
-                            data: data,
-                            options: options
-                        });
-                        $scope.selectedTicker = pair;
-                    });
-
-                };
-
-
-
             });
 
 
-
-            // DATE Controller
+            /* DATE CONTROLLER */
             app.controller('Ctrl_Date', function($scope, $interval) {
                 $interval(function() {
                     var currentdate = new Date();
@@ -301,6 +112,13 @@
                         + currentdate.getMinutes() + ":"
                         + currentdate.getSeconds();
                     $scope.today = datetime;
+
+                    // init
+                    if($scope.remainingTimeBeforeRefresh === 0 || !$scope.remainingTimeBeforeRefresh){
+                        $scope.remainingTimeBeforeRefresh = 60;
+                    }
+                    $scope.remainingTimeBeforeRefresh--;
+
                 },1000);
             });
         </script>

@@ -51,6 +51,237 @@
             </select>
         </div>
     </div>
+
+    <div ng-controller="Ctrl_MMGraph" class="row justify-content-md-center">
+        <div class="col-10">
+            <br />
+            <h4>Mobile Averages Graph for pair {{p}}</h4>
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="MobileAverageLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-controller="Ctrl_MMCompare" class="row justify-content-md-center">
+        <div class="col-10">
+            <br />
+            <h4>Mobile Averages Comparaison for pair {{p}}</h4>
+            <table class="table table-striped table-dark table-sm table-center-text">
+                <thead class="thead-dark">
+                <tr class="table-center-text">
+                    <th scope="col" class="table-primary table-center-text">MM A</th>
+                    <th scope="col" class="table-primary table-center-text">MM B</th>
+                    <th scope="col" class="table-primary table-center-text">MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">MM A on MM B Last Trend</th>
+                    <th scope="col" class="table-primary table-center-text">Nb Period Since Trend</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>5 P</td>
+                    <td>60 P</td>
+                    <td>Since {{mm5_upto_60_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_60_trend === 'NO', 'bg-warning': mm5_on_60_trend === 'DOWN', 'bg-success': mm5_on_60_trend === 'UP'}">{{mm5_on_60_trend}}</td>
+                    <td>{{mm5_on_60_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>180 P</td>
+                    <td>Since {{mm5_upto_180_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_180_trend === 'NO', 'bg-warning': mm5_on_180_trend === 'DOWN', 'bg-success': mm5_on_180_trend === 'UP'}">{{mm5_on_180_trend}}</td>
+                    <td>{{mm5_on_180_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>360 P</td>
+                    <td>Since {{mm5_upto_360_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_360_trend === 'NO', 'bg-warning': mm5_on_360_trend === 'DOWN', 'bg-success': mm5_on_360_trend === 'UP'}">{{mm5_on_360_trend}}</td>
+                    <td>{{mm5_on_360_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm5_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_540_trend === 'NO', 'bg-warning': mm5_on_540_trend === 'DOWN', 'bg-success': mm5_on_540_trend === 'UP'}">{{mm5_on_540_trend}}</td>
+                    <td>{{mm5_on_540_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm5_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_720_trend === 'NO', 'bg-warning': mm5_on_720_trend === 'DOWN', 'bg-success': mm5_on_720_trend === 'UP'}">{{mm5_on_720_trend}}</td>
+                    <td>{{mm5_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>5 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm5_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm5_on_1440_trend === 'NO', 'bg-warning': mm5_on_1440_trend === 'DOWN', 'bg-success': mm5_on_1440_trend === 'UP'}">{{mm5_on_1440_trend}}</td>
+                    <td>{{mm5_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>180 P</td>
+                    <td>Since {{mm60_upto_180_since}} P</td>
+                    <td  ng-class="{'bg-danger': mm60_on_180_trend === 'NO', 'bg-warning': mm60_on_180_trend === 'DOWN', 'bg-success': mm60_on_180_trend === 'UP'}">{{mm60_on_180_trend}}</td>
+                    <td>{{mm60_on_180_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>360 P</td>
+                    <td>Since {{mm60_upto_360_since}} P</td>
+                    <td ng-class="{'bg-danger': mm60_on_360_trend === 'NO', 'bg-warning': mm60_on_360_trend === 'DOWN', 'bg-success': mm60_on_360_trend === 'UP'}">{{mm60_on_360_trend}}</td>
+                    <td>{{mm60_on_360_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm60_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm60_on_540_trend === 'NO', 'bg-warning': mm60_on_540_trend === 'DOWN', 'bg-success': mm60_on_540_trend === 'UP'}">{{mm60_on_540_trend}}</td>
+                    <td>{{mm60_on_540_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm60_upto_720_since}} P</td>
+                    <td  ng-class="{'bg-danger': mm60_on_720_trend === 'NO', 'bg-warning': mm60_on_720_trend === 'DOWN', 'bg-success': mm60_on_720_trend === 'UP'}">{{mm60_on_720_trend}}</td>
+                    <td>{{mm60_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>60 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm60_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm60_on_1440_trend === 'NO', 'bg-warning': mm60_on_1440_trend === 'DOWN', 'bg-success': mm60_on_1440_trend === 'UP'}">{{mm60_on_1440_trend}}</td>
+                    <td>{{mm60_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
+                    <td>360 P</td>
+                    <td>Since {{mm180_upto_360_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_360_trend === 'NO', 'bg-warning': mm180_on_360_trend === 'DOWN', 'bg-success': mm180_on_360_trend === 'UP'}">{{mm180_on_360_trend}}</td>
+                    <td>{{mm180_on_360_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm180_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_540_trend === 'NO', 'bg-warning': mm180_on_540_trend === 'DOWN', 'bg-success': mm180_on_540_trend === 'UP'}">{{mm180_on_540_trend}}</td>
+                    <td>{{mm180_on_540_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm180_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_720_trend === 'NO', 'bg-warning': mm180_on_720_trend === 'DOWN', 'bg-success': mm180_on_720_trend === 'UP'}">{{mm180_on_720_trend}}</td>
+                    <td>{{mm180_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>180 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm180_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm180_on_1440_trend === 'NO', 'bg-warning': mm180_on_1440_trend === 'DOWN', 'bg-success': mm180_on_1440_trend === 'UP'}">{{mm180_on_1440_trend}}</td>
+                    <td>{{mm180_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>360 P</td>
+                    <td>540 P</td>
+                    <td>Since {{mm360_upto_540_since}} P</td>
+                    <td ng-class="{'bg-danger': mm360_on_540_trend === 'NO', 'bg-warning': mm360_on_540_trend === 'DOWN', 'bg-success': mm360_on_540_trend === 'UP'}">{{mm360_on_540_trend}}</td>
+                    <td>{{mm360_on_540_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>360 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm360_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm360_on_720_trend === 'NO', 'bg-warning': mm360_on_720_trend === 'DOWN', 'bg-success': mm360_on_720_trend === 'UP'}">{{mm360_on_720_trend}}</td>
+                    <td>{{mm360_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>360 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm360_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm360_on_1440_trend === 'NO', 'bg-warning': mm360_on_1440_trend === 'DOWN', 'bg-success': mm360_on_1440_trend === 'UP'}">{{mm360_on_1440_trend}}</td>
+                    <td>{{mm360_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>540 P</td>
+                    <td>720 P</td>
+                    <td>Since {{mm540_upto_720_since}} P</td>
+                    <td ng-class="{'bg-danger': mm540_on_720_trend === 'NO', 'bg-warning': mm540_on_720_trend === 'DOWN', 'bg-success': mm540_on_720_trend === 'UP'}">{{mm540_on_720_trend}}</td>
+                    <td>{{mm540_on_720_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>540 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm540_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm540_on_1440_trend === 'NO', 'bg-warning': mm540_on_1440_trend === 'DOWN', 'bg-success': mm540_on_1440_trend === 'UP'}">{{mm540_on_1440_trend}}</td>
+                    <td>{{mm720_on_1440_trend_since}} Periods</td>
+                </tr>
+                <tr>
+                    <td>720 P</td>
+                    <td>1440 P</td>
+                    <td>Since {{mm720_upto_1440_since}} P</td>
+                    <td ng-class="{'bg-danger': mm720_on_1440_trend === 'NO', 'bg-warning': mm720_on_1440_trend === 'DOWN', 'bg-success': mm720_on_1440_trend === 'UP'}">{{mm720_on_1440_trend}}</td>
+                    <td>{{mm720_on_1440_trend_since}} Periods</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div ng-controller="Ctrl_MMIndicators" class="row justify-content-md-center">
+        <div class="col-10">
+            <br />
+            <h4>Mobile Averages Indicators for pair {{p}}</h4>
+            <table class="table table-striped table-dark table-sm table-center-text">
+                <thead class="thead-dark">
+                <tr class="table-center-text">
+                    <th scope="col" class="table-primary table-center-text">TIME</th>
+                    <th scope="col" class="table-primary table-center-text">RATE</th>
+                    <th scope="col" class="table-primary table-center-text">% MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">% SINCE MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">% TREND MM A > MM B</th>
+                    <th scope="col" class="table-primary table-center-text">% TREND SINCE MM A > MM B</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GLOBAL</td>
+                        <td>{{pair_mm_rating_global}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_global}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_global}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_global}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_global}} &percnt;</td>
+                    </tr>
+                    <tr>
+                        <td>COURT TERME</td>
+                        <td>{{pair_mm_rating_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_ct}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_ct}} &percnt;</td>
+                    </tr>
+                    <tr>
+                        <td>MOYEN TERMEE</td>
+                        <td>{{pair_mm_rating_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_mt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_mt}} &percnt;</td>
+                    </tr>
+                    <tr>
+                        <td>LONG TERME</td>
+                        <td>{{pair_mm_rating_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_weigth_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_since_weigth_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_weigth_lt}} &percnt;</td>
+                        <td>{{mms_on_mml_trend_since_weigth_lt}} &percnt;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div ng-controller="Ctrl_MMEvolData" class="row justify-content-md-center">
         <div class="col-10">
             <br />
@@ -335,237 +566,6 @@
             </table>
         </div>
     </div>
-    <div ng-controller="Ctrl_MMGraph" class="row justify-content-md-center">
-        <div class="col-10">
-            <br />
-            <h4>Mobile Averages Graph for pair {{p}}</h4>
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="MobileAverageLineChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div ng-controller="Ctrl_MMCompare" class="row justify-content-md-center">
-        <div class="col-10">
-            <br />
-            <h4>Mobile Averages Comparaison for pair {{p}}</h4>
-            <table class="table table-striped table-dark table-sm table-center-text">
-                <thead class="thead-dark">
-                <tr class="table-center-text">
-                    <th scope="col" class="table-primary table-center-text">MM A</th>
-                    <th scope="col" class="table-primary table-center-text">MM B</th>
-                    <th scope="col" class="table-primary table-center-text">MM A > MM B</th>
-                    <th scope="col" class="table-primary table-center-text">MM A on MM B Last Trend</th>
-                    <th scope="col" class="table-primary table-center-text">Nb Period Since Trend</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>5 P</td>
-                    <td>60 P</td>
-                    <td>Since {{mm5_upto_60_since}} P</td>
-                    <td ng-class="{'bg-danger': mm5_on_60_trend === 'NO', 'bg-warning': mm5_on_60_trend === 'DOWN', 'bg-success': mm5_on_60_trend === 'UP'}">{{mm5_on_60_trend}}</td>
-                    <td>{{mm5_on_60_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>5 P</td>
-                    <td>180 P</td>
-                    <td>Since {{mm5_upto_180_since}} P</td>
-                    <td ng-class="{'bg-danger': mm5_on_180_trend === 'NO', 'bg-warning': mm5_on_180_trend === 'DOWN', 'bg-success': mm5_on_180_trend === 'UP'}">{{mm5_on_180_trend}}</td>
-                    <td>{{mm5_on_180_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>5 P</td>
-                    <td>360 P</td>
-                    <td>Since {{mm5_upto_360_since}} P</td>
-                    <td ng-class="{'bg-danger': mm5_on_360_trend === 'NO', 'bg-warning': mm5_on_360_trend === 'DOWN', 'bg-success': mm5_on_360_trend === 'UP'}">{{mm5_on_360_trend}}</td>
-                    <td>{{mm5_on_360_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>5 P</td>
-                    <td>540 P</td>
-                    <td>Since {{mm5_upto_540_since}} P</td>
-                    <td ng-class="{'bg-danger': mm5_on_540_trend === 'NO', 'bg-warning': mm5_on_540_trend === 'DOWN', 'bg-success': mm5_on_540_trend === 'UP'}">{{mm5_on_540_trend}}</td>
-                    <td>{{mm5_on_540_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>5 P</td>
-                    <td>720 P</td>
-                    <td>Since {{mm5_upto_720_since}} P</td>
-                    <td ng-class="{'bg-danger': mm5_on_720_trend === 'NO', 'bg-warning': mm5_on_720_trend === 'DOWN', 'bg-success': mm5_on_720_trend === 'UP'}">{{mm5_on_720_trend}}</td>
-                    <td>{{mm5_on_720_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>5 P</td>
-                    <td>1440 P</td>
-                    <td>Since {{mm5_upto_1440_since}} P</td>
-                    <td ng-class="{'bg-danger': mm5_on_1440_trend === 'NO', 'bg-warning': mm5_on_1440_trend === 'DOWN', 'bg-success': mm5_on_1440_trend === 'UP'}">{{mm5_on_1440_trend}}</td>
-                    <td>{{mm5_on_1440_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>60 P</td>
-                    <td>180 P</td>
-                    <td>Since {{mm60_upto_180_since}} P</td>
-                    <td  ng-class="{'bg-danger': mm60_on_180_trend === 'NO', 'bg-warning': mm60_on_180_trend === 'DOWN', 'bg-success': mm60_on_180_trend === 'UP'}">{{mm60_on_180_trend}}</td>
-                    <td>{{mm60_on_180_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>60 P</td>
-                    <td>360 P</td>
-                    <td>Since {{mm60_upto_360_since}} P</td>
-                    <td ng-class="{'bg-danger': mm60_on_360_trend === 'NO', 'bg-warning': mm60_on_360_trend === 'DOWN', 'bg-success': mm60_on_360_trend === 'UP'}">{{mm60_on_360_trend}}</td>
-                    <td>{{mm60_on_360_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>60 P</td>
-                    <td>540 P</td>
-                    <td>Since {{mm60_upto_540_since}} P</td>
-                    <td ng-class="{'bg-danger': mm60_on_540_trend === 'NO', 'bg-warning': mm60_on_540_trend === 'DOWN', 'bg-success': mm60_on_540_trend === 'UP'}">{{mm60_on_540_trend}}</td>
-                    <td>{{mm60_on_540_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>60 P</td>
-                    <td>720 P</td>
-                    <td>Since {{mm60_upto_720_since}} P</td>
-                    <td  ng-class="{'bg-danger': mm60_on_720_trend === 'NO', 'bg-warning': mm60_on_720_trend === 'DOWN', 'bg-success': mm60_on_720_trend === 'UP'}">{{mm60_on_720_trend}}</td>
-                    <td>{{mm60_on_720_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>60 P</td>
-                    <td>1440 P</td>
-                    <td>Since {{mm60_upto_1440_since}} P</td>
-                    <td ng-class="{'bg-danger': mm60_on_1440_trend === 'NO', 'bg-warning': mm60_on_1440_trend === 'DOWN', 'bg-success': mm60_on_1440_trend === 'UP'}">{{mm60_on_1440_trend}}</td>
-                    <td>{{mm60_on_1440_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>180 P</td>
-                    <td>360 P</td>
-                    <td>Since {{mm180_upto_360_since}} P</td>
-                    <td ng-class="{'bg-danger': mm180_on_360_trend === 'NO', 'bg-warning': mm180_on_360_trend === 'DOWN', 'bg-success': mm180_on_360_trend === 'UP'}">{{mm180_on_360_trend}}</td>
-                    <td>{{mm180_on_360_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>180 P</td>
-                    <td>540 P</td>
-                    <td>Since {{mm180_upto_540_since}} P</td>
-                    <td ng-class="{'bg-danger': mm180_on_540_trend === 'NO', 'bg-warning': mm180_on_540_trend === 'DOWN', 'bg-success': mm180_on_540_trend === 'UP'}">{{mm180_on_540_trend}}</td>
-                    <td>{{mm180_on_540_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>180 P</td>
-                    <td>720 P</td>
-                    <td>Since {{mm180_upto_720_since}} P</td>
-                    <td ng-class="{'bg-danger': mm180_on_720_trend === 'NO', 'bg-warning': mm180_on_720_trend === 'DOWN', 'bg-success': mm180_on_720_trend === 'UP'}">{{mm180_on_720_trend}}</td>
-                    <td>{{mm180_on_720_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>180 P</td>
-                    <td>1440 P</td>
-                    <td>Since {{mm180_upto_1440_since}} P</td>
-                    <td ng-class="{'bg-danger': mm180_on_1440_trend === 'NO', 'bg-warning': mm180_on_1440_trend === 'DOWN', 'bg-success': mm180_on_1440_trend === 'UP'}">{{mm180_on_1440_trend}}</td>
-                    <td>{{mm180_on_1440_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>360 P</td>
-                    <td>540 P</td>
-                    <td>Since {{mm360_upto_540_since}} P</td>
-                    <td ng-class="{'bg-danger': mm360_on_540_trend === 'NO', 'bg-warning': mm360_on_540_trend === 'DOWN', 'bg-success': mm360_on_540_trend === 'UP'}">{{mm360_on_540_trend}}</td>
-                    <td>{{mm360_on_540_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>360 P</td>
-                    <td>720 P</td>
-                    <td>Since {{mm360_upto_720_since}} P</td>
-                    <td ng-class="{'bg-danger': mm360_on_720_trend === 'NO', 'bg-warning': mm360_on_720_trend === 'DOWN', 'bg-success': mm360_on_720_trend === 'UP'}">{{mm360_on_720_trend}}</td>
-                    <td>{{mm360_on_720_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>360 P</td>
-                    <td>1440 P</td>
-                    <td>Since {{mm360_upto_1440_since}} P</td>
-                    <td ng-class="{'bg-danger': mm360_on_1440_trend === 'NO', 'bg-warning': mm360_on_1440_trend === 'DOWN', 'bg-success': mm360_on_1440_trend === 'UP'}">{{mm360_on_1440_trend}}</td>
-                    <td>{{mm360_on_1440_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>540 P</td>
-                    <td>720 P</td>
-                    <td>Since {{mm540_upto_720_since}} P</td>
-                    <td ng-class="{'bg-danger': mm540_on_720_trend === 'NO', 'bg-warning': mm540_on_720_trend === 'DOWN', 'bg-success': mm540_on_720_trend === 'UP'}">{{mm540_on_720_trend}}</td>
-                    <td>{{mm540_on_720_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>540 P</td>
-                    <td>1440 P</td>
-                    <td>Since {{mm540_upto_1440_since}} P</td>
-                    <td ng-class="{'bg-danger': mm540_on_1440_trend === 'NO', 'bg-warning': mm540_on_1440_trend === 'DOWN', 'bg-success': mm540_on_1440_trend === 'UP'}">{{mm540_on_1440_trend}}</td>
-                    <td>{{mm720_on_1440_trend_since}} Periods</td>
-                </tr>
-                <tr>
-                    <td>720 P</td>
-                    <td>1440 P</td>
-                    <td>Since {{mm720_upto_1440_since}} P</td>
-                    <td ng-class="{'bg-danger': mm720_on_1440_trend === 'NO', 'bg-warning': mm720_on_1440_trend === 'DOWN', 'bg-success': mm720_on_1440_trend === 'UP'}">{{mm720_on_1440_trend}}</td>
-                    <td>{{mm720_on_1440_trend_since}} Periods</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div ng-controller="Ctrl_MMIndicators" class="row justify-content-md-center">
-        <div class="col-10">
-            <br />
-            <h4>Mobile Averages Indicators for pair {{p}}</h4>
-            <table class="table table-striped table-dark table-sm table-center-text">
-                <thead class="thead-dark">
-                <tr class="table-center-text">
-                    <th scope="col" class="table-primary table-center-text">TIME</th>
-                    <th scope="col" class="table-primary table-center-text">RATE</th>
-                    <th scope="col" class="table-primary table-center-text">% MM A > MM B</th>
-                    <th scope="col" class="table-primary table-center-text">% SINCE MM A > MM B</th>
-                    <th scope="col" class="table-primary table-center-text">% TREND MM A > MM B</th>
-                    <th scope="col" class="table-primary table-center-text">% TREND SINCE MM A > MM B</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>GLOBAL</td>
-                        <td>{{pair_mm_rating_global}} &percnt;</td>
-                        <td>{{mms_on_mml_weigth_global}} &percnt;</td>
-                        <td>{{mms_on_mml_since_weigth_global}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_weigth_global}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_since_weigth_global}} &percnt;</td>
-                    </tr>
-                    <tr>
-                        <td>COURT TERME</td>
-                        <td>{{pair_mm_rating_ct}} &percnt;</td>
-                        <td>{{mms_on_mml_weigth_ct}} &percnt;</td>
-                        <td>{{mms_on_mml_since_weigth_ct}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_weigth_ct}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_since_weigth_ct}} &percnt;</td>
-                    </tr>
-                    <tr>
-                        <td>MOYEN TERMEE</td>
-                        <td>{{pair_mm_rating_mt}} &percnt;</td>
-                        <td>{{mms_on_mml_weigth_mt}} &percnt;</td>
-                        <td>{{mms_on_mml_since_weigth_mt}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_weigth_mt}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_since_weigth_mt}} &percnt;</td>
-                    </tr>
-                    <tr>
-                        <td>LONG TERME</td>
-                        <td>{{pair_mm_rating_lt}} &percnt;</td>
-                        <td>{{mms_on_mml_weigth_lt}} &percnt;</td>
-                        <td>{{mms_on_mml_since_weigth_lt}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_weigth_lt}} &percnt;</td>
-                        <td>{{mms_on_mml_trend_since_weigth_lt}} &percnt;</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
 
 </div>
 <script>

@@ -11,6 +11,7 @@ module.exports = {
                 insert_hour: hour,
                 insert_timestamp: timestamp,
                 pair: data[0].pair,
+                global_rating: 0,
                 evol_1p_mm5: 0,
                 evol_5p_mm5: 0,
                 evol_15p_mm5: 0,
@@ -469,6 +470,10 @@ module.exports = {
                 mmEvol.evol_1440p_mm720 = ((data[0].mm720 - data[1439].mm720) / data[1439].mm720) * 100;
                 mmEvol.evol_1440p_mm1440 = ((data[0].mm1440 - data[1439].mm1440) / data[1439].mm1440) * 100;
             }
+
+
+
+
             resolve(mmEvol);
         }).then(function(res){
             callback(null, res);
