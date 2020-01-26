@@ -71,7 +71,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Balance").find({change: true, units: { $gt: 0 }, eur_value: { $gt: 0.01 }, currency: { $in : arrayOfCurrency}}).sort({insert_timestamp: -1}).limit(arrayOfCurrency.length).toArray(function(err, result) {
+                    dbo.collection("Balance").find({change: true, units: { $gt: 0 }, eur_value: { $gt: 0.01 }, currency: { $in : arrayOfCurrency}}).sort({insert_timestamp: -1}).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         } else{

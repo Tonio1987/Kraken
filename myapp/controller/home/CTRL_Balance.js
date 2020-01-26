@@ -98,7 +98,7 @@ module.exports = {
                                     buy_price = balanceChanges[elem2].price;
                                     myBalance[elem].evolution = evolution;
                                     myBalance[elem].buy_price = buy_price;
-
+                                    break;
                                 }
                             }
                         }
