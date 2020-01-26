@@ -171,13 +171,19 @@
         <script>
             var app = angular.module('myApp', []);
 
+            // SHARE DATA BETWEEN CONTROLLERS WITH FACTORY
+            app.factory('Fact', function(){
+                return { SLossValue: ''};
+            });
+
             /* TRADE BALANCE CONTROLLER */
-            app.controller('Ctrl_tradeBalance', function($scope, $http, $interval) {
+            app.controller('Ctrl_tradeBalance', function($scope, $http, $interval, Fact) {
                 $http.get("home_tradeBalance")
                     .then(function(response) {
                         let resp =  response.data;
                         let arrayOfTradeBalances = [];
                         let datetimeOfTradeBalances = [];
+
                         $scope.respData = response.data;
 
                         $scope.zoom = resp.length;
@@ -268,7 +274,9 @@
                             let resp =  response.data;
                             $scope.respData = response.data;
 
+
                             let arrayOfTradeBalances = [];
+                            let arrayOStopLoss = [];
                             let datetimeOfTradeBalances = [];
 
                             let zoom = $scope.zoom;
@@ -279,6 +287,7 @@
                             }
 
                             for(let i=0; i<zoom; i++){
+                                arrayOStopLoss.unshift(Fact.SLossValue);
                                 arrayOfTradeBalances.unshift(resp[i].eur_balance);
                                 datetimeOfTradeBalances.unshift(resp[i].insert_date+' '+resp[i].insert_hour);
                             }
@@ -335,12 +344,21 @@
                                         label: "Trade Balance",
                                         backgroundColor: "rgba(224,224,224, 1)",
                                         pointBackgroundColor: "rgba(160,160,160, 1)",
-                                        pointStyle: "cross",
                                         data: arrayOfTradeBalances
+                                    },
+                                    {
+                                        label: "Stop Loss Position",
+                                        backgroundColor: "#ffb3b3",
+                                        pointBackgroundColor: " #ff6666",
+                                        data: arrayOStopLoss
                                     }
                                 ]
                             };
-                            var options = { };
+                            var options = {elements: {
+                                    point:{
+                                        radius: 0
+                                    }
+                                } };
 
                             var element = document.getElementById("tradeBalanceZone");
                             var canv = document.createElement('canvas');
@@ -366,6 +384,7 @@
                     $scope.zoom = zoomValue;
 
                     let arrayOfTradeBalances = [];
+                    let arrayOStopLoss = [];
                     let datetimeOfTradeBalances = [];
                     let resp = $scope.respData;
                     let zoom = zoomValue;
@@ -377,6 +396,7 @@
 
                     for(let i=0; i<zoom; i++){
                         arrayOfTradeBalances.unshift(resp[i].eur_balance);
+                        arrayOStopLoss.unshift(Fact.SLossValue);
                         datetimeOfTradeBalances.unshift(resp[i].insert_date+' '+resp[i].insert_hour);
                     }
 
@@ -389,6 +409,13 @@
                                 pointBackgroundColor: "rgba(160,160,160, 1)",
                                 pointStyle: "cross",
                                 data: arrayOfTradeBalances
+                            },
+                            {
+                                label: "Stop Loss Position",
+                                backgroundColor: "#ffb3b3",
+                                pointBackgroundColor: "#ff6666",
+                                pointStyle: 'none',
+                                data: arrayOStopLoss
                             }
                         ]
                     };
@@ -457,7 +484,7 @@
             });
 
             /* OPEN ORDERS CONTROLLER */
-            app.controller('Ctrl_OpenOrders', function($scope, $http, $interval) {
+            app.controller('Ctrl_OpenOrders', function($scope, $http, $interval, Fact) {
                 $http.get("home_openOrders")
                     .then(function(response) {
                         $scope.myOpenOrders = response.data;
@@ -470,10 +497,13 @@
 
                         }
                         $scope.myMinTradeBalance = minTradeBalancevalue;
+                        Fact.SLossValue = minTradeBalancevalue;
                     }).catch(function(response) {
                     $scope.myOpenOrders = 'Erreur';
                     $scope.myMinTradeBalance = 0;
                 });
+
+
                 $interval(function() {
                     $http.get("home_openOrders")
                         .then(function(response) {
@@ -486,6 +516,7 @@
                                 }
                             }
                             $scope.myMinTradeBalance = minTradeBalancevalue;
+                            Fact.SLossValue = minTradeBalancevalue;
                         })
                         .catch(function(response) {
                             $scope.myOpenOrders = 'Erreur';
