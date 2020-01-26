@@ -47,19 +47,19 @@
 
         <div class="row justify-content-md-center">
             <div class="col-4">
-                <div ng-controller="Ctrl_tradeBalance">
+                <div id="tradeBalanceZone" ng-controller="Ctrl_tradeBalance">
                     <br />
                     <h4>Current Trade Balance : {{myTradeBalance}} &euro;</h4>
-                    <table class="table table-striped table-dark table-center-text table-sm">
+                    <table class="table table-striped table-dark table-center-text table-sm table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">15m</th>
-                                <th scope="col">1h</th>
-                                <th scope="col">3h</th>
-                                <th scope="col">6h</th>
-                                <th scope="col">12h</th>
-                                <th scope="col">1d</th>
-                                <th scope="col">Max</th>
+                                <th scope="col" ng-click="changeGraphZoom(15)">15m</th>
+                                <th scope="col" ng-click="changeGraphZoom(60)">1h</th>
+                                <th scope="col" ng-click="changeGraphZoom(180)">3h</th>
+                                <th scope="col" ng-click="changeGraphZoom(360)">6h</th>
+                                <th scope="col" ng-click="changeGraphZoom(720)">12h</th>
+                                <th scope="col" ng-click="changeGraphZoom(1440)">1d</th>
+                                <th scope="col" ng-click="changeGraphZoom(0)">Max</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,7 +77,8 @@
                     <canvas id="TradeBalanceLineChart" width="200" height="200"></canvas>
                 </div>
             </div>
-            <div class="col-5">
+
+            <div class="col-8">
                 <br />
                 <div>
                     <h4>Balance details</h4>
@@ -132,7 +133,6 @@
                     </table>
                     <h4>Min Trade Balance value: {{myMinTradeBalance.toFixed(2)}} &euro;</h4>
                 </div>
-
             </div>
         </div>
         <div class="row justify-content-md-center">
@@ -178,15 +178,15 @@
                         let resp =  response.data;
                         let arrayOfTradeBalances = [];
                         let datetimeOfTradeBalances = [];
+                        $scope.respData = response.data;
 
-                        let i = 1;
-                        for(let d in resp){
-                            if(resp.hasOwnProperty(d)){
-                                arrayOfTradeBalances.unshift(resp[d].eur_balance);
-                                datetimeOfTradeBalances.unshift(resp[d].insert_date+' '+resp[d].insert_hour);
-                                i++;
-                            }
+                        $scope.zoom = resp.length;
+
+                        for(let i=0; i<resp.length; i++){
+                            arrayOfTradeBalances.unshift(resp[i].eur_balance);
+                            datetimeOfTradeBalances.unshift(resp[i].insert_date+' '+resp[i].insert_hour);
                         }
+
                         $scope.myTradeBalance = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
                         // Evolution calculation
                         let lastValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
@@ -233,14 +233,6 @@
                         evolutionMax = ((lastValue - oldestValue) / oldestValue) * 100;
                         $scope.TBEvolutionMax = evolutionMax.toFixed(2);
 
-                        if(arrayOfTradeBalances.length > 1440){
-                            datetimeOfTradeBalances = datetimeOfTradeBalances.slice(-1439, -1);
-                            arrayOfTradeBalances = arrayOfTradeBalances.slice(-1439, -1);
-                        }else{
-                            datetimeOfTradeBalances = datetimeOfTradeBalances.slice(--datetimeOfTradeBalances-1, -1);
-                            arrayOfTradeBalances = arrayOfTradeBalances.slice(-arrayOfTradeBalances.length-1, -1);
-                        }
-
                         let data = {
                             labels: datetimeOfTradeBalances,
                             datasets: [
@@ -265,23 +257,32 @@
                             options: options
                         });
 
-
                     });
                 $interval(function() {
                     $http.get("home_tradeBalance")
                         .then(function(response) {
+
+                            var elmnt = document.getElementById("TradeBalanceLineChart");
+                            elmnt.remove();
+
                             let resp =  response.data;
+                            $scope.respData = response.data;
+
                             let arrayOfTradeBalances = [];
                             let datetimeOfTradeBalances = [];
 
-                            let i = 1;
-                            for(let d in resp){
-                                if(resp.hasOwnProperty(d)){
-                                    arrayOfTradeBalances.unshift(resp[d].eur_balance);
-                                    datetimeOfTradeBalances.unshift(resp[d].insert_date+' '+resp[d].insert_hour);
-                                    i++;
-                                }
+                            let zoom = $scope.zoom;
+
+                            if($scope.zoom === 0){
+                                zoom = resp.length;
+                                $scope.zoom = resp.length;
                             }
+
+                            for(let i=0; i<zoom; i++){
+                                arrayOfTradeBalances.unshift(resp[i].eur_balance);
+                                datetimeOfTradeBalances.unshift(resp[i].insert_date+' '+resp[i].insert_hour);
+                            }
+
                             $scope.myTradeBalance = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
                             // Evolution calculation
                             let lastValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
@@ -327,15 +328,6 @@
                             evolutionMax = ((lastValue - oldestValue) / oldestValue) * 100;
                             $scope.TBEvolutionMax = evolutionMax.toFixed(2);
 
-
-                            if(arrayOfTradeBalances.length > 1440){
-                                datetimeOfTradeBalances = datetimeOfTradeBalances.slice(-1439, -1);
-                                arrayOfTradeBalances = arrayOfTradeBalances.slice(-1439, -1);
-                            }else{
-                                datetimeOfTradeBalances = datetimeOfTradeBalances.slice(--datetimeOfTradeBalances-1, -1);
-                                arrayOfTradeBalances = arrayOfTradeBalances.slice(-arrayOfTradeBalances.length-1, -1);
-                            }
-
                             let data = {
                                 labels: datetimeOfTradeBalances,
                                 datasets: [
@@ -350,6 +342,13 @@
                             };
                             var options = { };
 
+                            var element = document.getElementById("tradeBalanceZone");
+                            var canv = document.createElement('canvas');
+                            canv.id = 'TradeBalanceLineChart';
+                            canv.width = '200';
+                            canv.height = '200';
+                            element.appendChild(canv);
+
                             var ctx = document.getElementById("TradeBalanceLineChart").getContext("2d");
                             var myLineChart = new Chart(ctx, {
                                 type: 'line',
@@ -357,13 +356,64 @@
                                 options: options
                             });
 
-                            oldestValue = arrayOfTradeBalances[0];
-                            lastValue = arrayOfTradeBalances[arrayOfTradeBalances.length-1];
-                            let evolution = ((lastValue - oldestValue) / oldestValue) * 100;
-                            evolution = evolution.toFixed(2);
-                            $scope.myTradeBalanceEvolution = evolution;
                         });
                 },60000);
+
+                $scope.changeGraphZoom = function(zoomValue) {
+                    var elmnt = document.getElementById("TradeBalanceLineChart");
+                    elmnt.remove();
+
+                    $scope.zoom = zoomValue;
+
+                    let arrayOfTradeBalances = [];
+                    let datetimeOfTradeBalances = [];
+                    let resp = $scope.respData;
+                    let zoom = zoomValue;
+
+                    if($scope.zoom === 0){
+                        zoom = resp.length;
+                        $scope.zoom = resp.length;
+                    }
+
+                    for(let i=0; i<zoom; i++){
+                        arrayOfTradeBalances.unshift(resp[i].eur_balance);
+                        datetimeOfTradeBalances.unshift(resp[i].insert_date+' '+resp[i].insert_hour);
+                    }
+
+                    let data = {
+                        labels: datetimeOfTradeBalances,
+                        datasets: [
+                            {
+                                label: "Trade Balance",
+                                backgroundColor: "rgba(224,224,224, 1)",
+                                pointBackgroundColor: "rgba(160,160,160, 1)",
+                                pointStyle: "cross",
+                                data: arrayOfTradeBalances
+                            }
+                        ]
+                    };
+                    var options = {elements: {
+                            point:{
+                                radius: 0
+                            }
+                        } };
+
+                    var element = document.getElementById("tradeBalanceZone");
+                    var canv = document.createElement('canvas');
+                    canv.id = 'TradeBalanceLineChart';
+                    canv.width = '200';
+                    canv.height = '200';
+                    element.appendChild(canv);
+
+                    var ctx = document.getElementById("TradeBalanceLineChart").getContext("2d");
+                    var myLineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: data,
+                        options: options
+                    });
+
+                }
+
             });
 
             /* DATE CONTROLLER */
