@@ -23,11 +23,13 @@ app.use(express.static(path.join(__dirname, 'views')));
 var indexRouter = require('./routes/index');
 var marketRouter = require('./routes/market');
 var analysesRouter = require('./routes/analyse');
+var historyRouter = require('./routes/history');
 var settingsRouter = require('./routes/settings');
 
 app.use('/', indexRouter);
 app.use('/market', marketRouter);
 app.use('/analyse', analysesRouter);
+app.use('/history', historyRouter);
 app.use('/settings', settingsRouter);
 
 // CALL API REST ROUTES
