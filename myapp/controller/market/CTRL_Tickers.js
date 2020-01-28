@@ -43,19 +43,23 @@ module.exports = {
                     for(old in ticker24hAgo){
                         if(ticker24hAgo.hasOwnProperty(old)){
                             if(lastTicker[last].pair == ticker24hAgo[old].pair){
-                                let evolution = ((lastTicker[last].ask_price - ticker24hAgo[old].ask_price) / ticker24hAgo[old].ask_price)*100;
-                                let pair = lastTicker[last].pair;
-                                let cvl_currency = pair.substr(-3);
-                                let ticker = {
-                                    pair: lastTicker[last].pair,
-                                    ask_price: lastTicker[last].ask_price,
-                                    bid_price: lastTicker[last].bid_price,
-                                    low24h: lastTicker[last].low_last_24,
-                                    high24h: lastTicker[last].high_last_24,
-                                    cvl_currency: cvl_currency,
-                                    evol: evolution
+                                let eurPair = lastTicker[last].pair;
+                                eurPair = eurPair.substr(-3);
+                                if(eurPair === "EUR") {
+                                    let evolution = ((lastTicker[last].ask_price - ticker24hAgo[old].ask_price) / ticker24hAgo[old].ask_price) * 100;
+                                    let pair = lastTicker[last].pair;
+                                    let cvl_currency = pair.substr(-3);
+                                    let ticker = {
+                                        pair: lastTicker[last].pair,
+                                        ask_price: lastTicker[last].ask_price,
+                                        bid_price: lastTicker[last].bid_price,
+                                        low24h: lastTicker[last].low_last_24,
+                                        high24h: lastTicker[last].high_last_24,
+                                        cvl_currency: cvl_currency,
+                                        evol: evolution
+                                    }
+                                    marketInfo.push(ticker);
                                 }
-                                marketInfo.push(ticker);
                             }
                         }
                     }
