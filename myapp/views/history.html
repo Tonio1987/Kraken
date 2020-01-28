@@ -46,3 +46,70 @@
         </div>
     </div>
 </div>
+<div ng-controller="Ctrl_History_TradeBalance" class="row justify-content-md-center">
+    <div class="col-8">
+        <br />
+        <h4>Trade Balance History</h4>
+        <div class="card">
+            <div class="card-body">
+                <canvas id="HistoryTradeBalance"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('Ctrl_History_TradeBalance', function($scope, $http) {
+        $http.get("history_tradeBalance")
+            .then(function (response) {
+                let resp = response.data;
+                let arrayOfTradeBalances = [];
+                let datetimeOfTradeBalances = [];
+
+                for (let i = 0; i < resp.length; i++) {
+                    arrayOfTradeBalances.unshift(resp[i].eur_balance);
+                    datetimeOfTradeBalances.unshift(resp[i].insert_date + ' ' + resp[i].insert_hour);
+                }
+
+                let data = {
+                    labels: datetimeOfTradeBalances,
+                    datasets: [
+                        {
+                            label: "Trade Balance History",
+                            backgroundColor: "rgba(224,224,224, 1)",
+                            pointBackgroundColor: "rgba(160,160,160, 1)",
+                            pointStyle: "cross",
+                            data: arrayOfTradeBalances
+                        }
+                    ]
+                };
+                var options = {
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+                };
+                var ctx = document.getElementById("HistoryTradeBalance").getContext("2d");
+                var myLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: options
+                });
+            });
+    });
+
+    // DATE Controller
+    app.controller('Ctrl_Date', function($scope, $interval) {
+        $interval(function() {
+            var currentdate = new Date();
+            var datetime = "Time : " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + "  -  "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            $scope.today = datetime;
+        },1000);
+    });
+</script>

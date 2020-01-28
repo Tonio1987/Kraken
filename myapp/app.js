@@ -62,6 +62,10 @@ app.use('/analyse_MMEvolPairData', MMEvolPairDataRouter);
 app.use('/analyse_MMComparePairData', MMComparePairDataRouter);
 app.use('/analyse_MMIndicatorsPairData', MMIndicatorsPairDataRouter);
 
+// HISTORY
+var history_TradeBalanceRouter = require('./routes/rest_api/history/History_TradeBalance');
+
+app.use('/history_tradeBalance', history_TradeBalanceRouter);
 
 // SETTINGS
 var cronTasksRouter = require('./routes/rest_api/settings/CronTasks');
