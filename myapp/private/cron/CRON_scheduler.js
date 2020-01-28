@@ -38,6 +38,9 @@ const CTRL_PurgeKeltner = require('../controller/purge_controller/CTRL_PurgeKelt
 const CTRL_PurgeOHLC = require('../controller/purge_controller/CTRL_PurgeOHLC');
 const CTRL_PurgeATR = require('../controller/purge_controller/CTRL_PurgeATR');
 
+// HISTORY
+const CTRL_History_TradeBalance = require('../controller/history_controller/CTRL_HistoryBalance');
+
 let server_start_time = moment();
 
 // INIT TASKS ATTRIBUTES
@@ -72,6 +75,9 @@ let task_Robot_StopLossOrder = null;
 
 // PURGE TASKS
 let task_PurgeData = null;
+
+// HISTORY
+let task_History_TradeBalance = null;
 
 // HANDLER DYNAMIC FUNCTION
 let Handler={};
@@ -308,6 +314,17 @@ Handler.init_task_PurgeData = function(cron_expression){
     });
 };
 
+// HISTORY TRADE BALANCE
+Handler.init_task_History_TradeBalance = function (cron_expression){
+    task_History_TradeBalance = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> History Trade Balance');
+        CTRL_History_TradeBalance.loadHistory_TradeBalance();
+    }, {
+        scheduled: false
+    });
+};
+
+// KRAKEN
 Handler.start_task_ServerOk = function(){task_ServerOk.start();};
 Handler.stop_task_ServerOk = function(){task_ServerOk.stop();};
 
@@ -338,6 +355,7 @@ Handler.stop_task_LoadOpenOrders = function(){task_LoadOpenOrders.stop();};
 Handler.start_task_LoadMarketTrades = function(){task_LoadMarketTrades.start();};
 Handler.stop_task_LoadMarketTrades = function(){task_LoadMarketTrades.stop();};
 
+// ALGORITHM
 Handler.start_task_LoadOHLC1H = function(){task_LoadOHLC1h.start();};
 Handler.stop_task_LoadOHLC1H = function(){task_LoadOHLC1h.stop();};
 
@@ -368,11 +386,17 @@ Handler.stop_task_KeltnerCalculation1H = function(){task_KeltnerCalculation_1H.s
 Handler.start_task_KeltnerCalculation1D = function(){task_KeltnerCalculation_1D.start();};
 Handler.stop_task_KeltnerCalculation1D = function(){task_KeltnerCalculation_1D.stop();};
 
+// ROBOT
 Handler.start_task_Robot_StopLossOrder = function(){task_Robot_StopLossOrder.start();};
 Handler.stop_task_Robot_StopLossOrder = function(){task_Robot_StopLossOrder.stop();};
 
+// PURGE DATA
 Handler.start_task_PurgeData = function(){task_PurgeData.start();};
 Handler.stop_task_PurgeData = function(){task_PurgeData.stop();};
+
+// HISTORY
+Handler.start_task_History_TradeBalance = function(){task_History_TradeBalance.start();};
+Handler.stop_task_History_TradeBalance = function(){task_History_TradeBalance.stop();};
 
 
 module.exports = {
