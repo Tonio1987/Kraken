@@ -48,7 +48,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    get24hAgoTicker: function (callback, lastTicker) {
+    get24hAgoTicker: function (callback, param_fw2) {
         new Promise(function (resolve, reject) {
             const yesterday = moment().add(-1, 'days').valueOf();
             const yesterday1m = moment().add({days:-1,minutes:1}).valueOf();
@@ -68,7 +68,7 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, lastTicker);
+            callback(null, data, param_fw2);
         }).catch(function(err) {
             callback(err, null);
         });

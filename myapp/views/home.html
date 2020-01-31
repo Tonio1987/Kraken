@@ -122,6 +122,7 @@
                             <th scope="col">Order subtype</th>
                             <th scope="col">Volume</th>
                             <th scope="col">Price</th>
+                            <th scope="col">Gain Espected</th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="order in myOpenOrders">
@@ -131,6 +132,7 @@
                             <td>{{order.ordertype}}</td>
                             <td>{{order.vol}}</td>
                             <td>{{order.price}} &euro;</td>
+                            <td ng-class="{'text-red': order.evolution < 0, 'text-green': order.evolution >= 0}">{{order.evolution}} &percnt;</td>
                         </tr>
                         </tbody>
                     </table>
@@ -176,7 +178,7 @@
 
             // SHARE DATA BETWEEN CONTROLLERS WITH FACTORY
             app.factory('Fact', function(){
-                return { SLossValue: ''};
+                return { SLossValue: '', Balance: ''};
             });
 
             /* TRADE BALANCE CONTROLLER */
@@ -184,11 +186,11 @@
                 $http.get("home_tradeBalance")
                     .then(function(response) {
                         let resp =  response.data;
+
                         let arrayOfTradeBalances = [];
                         let datetimeOfTradeBalances = [];
 
                         $scope.respData = response.data;
-
                         $scope.zoom = resp.length;
 
                         for(let i=0; i<resp.length; i++){
@@ -276,7 +278,6 @@
 
                             let resp =  response.data;
                             $scope.respData = response.data;
-
 
                             let arrayOfTradeBalances = [];
                             let arrayOStopLoss = [];
@@ -468,10 +469,11 @@
             });
 
             // BALANCE CONTROLLER
-            app.controller('Ctrl_Balance', function($scope, $http, $interval) {
+            app.controller('Ctrl_Balance', function($scope, $http, $interval, Fact) {
                 $http.get("home_balance")
                     .then(function(response) {
                         $scope.myBalance = response.data;
+                        Fact.Balance = response.data;
                     }).catch(function(response) {
                     $scope.myBalance = 'Erreur';
                 });
@@ -479,6 +481,7 @@
                     $http.get("home_balance")
                         .then(function(response) {
                             $scope.myBalance = response.data;
+                            Fact.Balance = response.data;
                         })
                         .catch(function(response) {
                             $scope.myBalance = 'Erreur';
@@ -488,38 +491,66 @@
 
             /* OPEN ORDERS CONTROLLER */
             app.controller('Ctrl_OpenOrders', function($scope, $http, $interval, Fact) {
-                $http.get("home_openOrders")
-                    .then(function(response) {
-                        $scope.myOpenOrders = response.data;
-                        let openOrders = response.data;
-                        let minTradeBalancevalue = 0;
-                        for(let order in openOrders){
-                            if(openOrders.hasOwnProperty(order)){
-                                minTradeBalancevalue = minTradeBalancevalue + openOrders[order].vol*openOrders[order].price;
+                $scope.$watch(function(){
+                    return Fact.Balance;
+                }, function(){
+                    $http.get("home_openOrders")
+                        .then(function(response) {
+                            $scope.myOpenOrders = response.data;
+                            let Balance = Fact.Balance;
+                            let openOrders = response.data;
+                            let minTradeBalanceValue = 0;
+                            for(let order in openOrders){
+                                if(openOrders.hasOwnProperty(order)){
+                                    minTradeBalanceValue = minTradeBalanceValue + openOrders[order].vol*openOrders[order].price;
+
+                                    for(let elem in Balance){
+                                        if(Balance.hasOwnProperty(elem)){
+                                            let evolution = 0;
+                                            let c = Balance[elem].currency.substr(1);
+                                            console.log(openOrders[order].pair+' '+c);
+                                            if(openOrders[order].pair === c+"EUR"){
+                                                evolution = (((openOrders[order].price - Balance[elem].buy_price ) / Balance[elem].buy_price)*100).toFixed(2);
+                                                openOrders[order].evolution = evolution;
+                                            }
+                                        }
+                                    }
+                                }
                             }
 
-                        }
-                        $scope.myMinTradeBalance = minTradeBalancevalue;
-                        Fact.SLossValue = minTradeBalancevalue;
-                    }).catch(function(response) {
-                    $scope.myOpenOrders = 'Erreur';
-                    $scope.myMinTradeBalance = 0;
+                            $scope.myMinTradeBalance = minTradeBalanceValue;
+                            Fact.SLossValue = minTradeBalanceValue;
+                        }).catch(function(response) {
+                        $scope.myOpenOrders = 'Erreur';
+                        $scope.myMinTradeBalance = 0;
+                    });
                 });
-
 
                 $interval(function() {
                     $http.get("home_openOrders")
                         .then(function(response) {
                             $scope.myOpenOrders = response.data;
                             let openOrders = response.data;
-                            let minTradeBalancevalue = 0;
+                            let Balance = Fact.Balance;
+                            let minTradeBalanceValue = 0;
                             for(let order in openOrders){
                                 if(openOrders.hasOwnProperty(order)){
-                                    minTradeBalancevalue = minTradeBalancevalue + openOrders[order].vol*openOrders[order].price;
+                                    minTradeBalanceValue = minTradeBalanceValue + openOrders[order].vol*openOrders[order].price;
+                                    for(let elem in Balance){
+                                        if(Balance.hasOwnProperty(elem)){
+                                            let evolution = 0;
+                                            let c = Balance[elem].currency.substr(1);
+                                            console.log(openOrders[order].pair+' '+c);
+                                            if(openOrders[order].pair === c+"EUR"){
+                                                evolution = (((openOrders[order].price - Balance[elem].buy_price ) / Balance[elem].buy_price)*100).toFixed(2);
+                                                openOrders[order].evolution = evolution;
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                            $scope.myMinTradeBalance = minTradeBalancevalue;
-                            Fact.SLossValue = minTradeBalancevalue;
+                            $scope.myMinTradeBalance = minTradeBalanceValue;
+                            Fact.SLossValue = minTradeBalanceValue;
                         })
                         .catch(function(response) {
                             $scope.myOpenOrders = 'Erreur';
@@ -527,6 +558,7 @@
                         });
                 },30000);
             });
+
 
             /* CLOSED ORDERS CONTROLLER */
             app.controller('Ctrl_ClosedOrders', function($scope, $http) {
