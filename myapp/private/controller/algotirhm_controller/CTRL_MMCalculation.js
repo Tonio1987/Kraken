@@ -1,3 +1,4 @@
+var colors = require('colors/safe');
 const async = require('async');
 const moment = require('moment');
 const DB_AssetPairs = require('../../persistence/algorithm/mm/DB_AssetPairs');

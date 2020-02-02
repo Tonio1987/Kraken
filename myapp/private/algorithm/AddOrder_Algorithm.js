@@ -1,3 +1,4 @@
+var colors = require('colors/safe');
 const moment = require('moment');
 moment.locale('fr');
 
@@ -203,11 +204,11 @@ module.exports = {
                             let order_id = OpenOrders[j].orderid;
                             let openOrderPrice = OpenOrders[j].price.toFixed(pairsConvertion[orders[i].pair].decimal);
                             if(openOrderPrice < orders[i].price) {
-                                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- FOR PAIR : '+ OpenOrders[j].pair +' OLD OPEN ORDER PRICE :  '+ openOrderPrice + ' - KELTNER ' + coefKeltnerTrigger + 'X - NEW OPEN ORDER PRICE : ' + orders[i].price);
+                                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS '), colors.brightYellow('--- FOR PAIR : '+ OpenOrders[j].pair +' OLD OPEN ORDER PRICE : '+ openOrderPrice + ' - KELTNER ' + coefKeltnerTrigger + 'X - NEW OPEN ORDER PRICE : ' + orders[i].price));
                                 ordersToCancel.push(order_id);
                                 ordersToPosition.push(orders[i]);
                             }else{
-                                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- FOR PAIR : '+ OpenOrders[j].pair +' KEEP OLD OPEN ORDER PRICE :  '+ openOrderPrice + ' - LAST KELTNER ' + coefKeltnerTrigger + 'X - PRICE : ' + orders[i].price);
+                                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS '), colors.brightWhite('--- FOR PAIR : '+ OpenOrders[j].pair +' KEEP OLD OPEN ORDER PRICE : '+ openOrderPrice + ' - LAST KELTNER ' + coefKeltnerTrigger + 'X - PRICE : ' + orders[i].price));
                             }
                         }
                         if(j===OpenOrders.length-1){
@@ -226,8 +227,8 @@ module.exports = {
                 }
             }
 
-            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL');
-            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToPosition.length+' PREPARED ORDER(S) TO POSITION');
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS --- '), colors.brightWhite(ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL'));
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS --- '), colors.brightWhite(ordersToPosition.length+' PREPARED ORDER(S) TO POSITION'));
 
             let preparedOrders = {
                 ordersToCancel: ordersToCancel,

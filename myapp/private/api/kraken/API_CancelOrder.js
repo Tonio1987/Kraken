@@ -1,3 +1,4 @@
+var colors = require('colors/safe');
 const kraken = require('node-kraken-api');
 const moment = require('moment');
 
@@ -11,7 +12,7 @@ const api = kraken({
 function loop(i, ordersToCancel, preparedOrders, callback) {
     if (i < ordersToCancel.length){
         new Promise(function (resolve, reject) {
-            console.log('\x1b[33m', moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- API --- CANCEL ORDER : '+ordersToCancel[i], '\x1b[0m');
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' ***   API   ***'), colors.brightYellow(' - CANCEL ORDER : '+ordersToCancel[i]));
             api.call('CancelOrder',
                 {
                     txid: ordersToCancel[i]
