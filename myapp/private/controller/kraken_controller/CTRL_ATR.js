@@ -38,35 +38,43 @@ module.exports = {
 
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if(!err){
-                for(let i=0; i<allPairs.length; i++){
-                    DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, allPairs[i].name, count);
+                for(let i=0; i<allPairs.length; i++) {
+                    if (i + 1 == allPairs.length) {
+                        DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, allPairs[i].name, count, true);
+                    } else{
+                        DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, allPairs[i].name, count, false);
+                    }
                 }
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_load_LastATR1H(err, ohlcs, pair, count) {
+        function STEP_DB_load_LastATR1H(err, ohlcs, pair, count, iter) {
             if(!err){
-                DB_ATR.getLastATR_1h(STEP_DB_insertATR, pair, ohlcs, count)
+                DB_ATR.getLastATR_1h(STEP_DB_insertATR, pair, ohlcs, count, iter)
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertATR(err, atr, pair, ohlcs, count) {
+        function STEP_DB_insertATR(err, atr, pair, ohlcs, count, iter) {
             if(!err){
-                DB_ATR.insertATR(STEP_finish, ohlcs, atr, pair, "1_HOUR", count, insert_date, insert_hour, timestamp);
+                DB_ATR.insertATR(STEP_finish, ohlcs, atr, pair, "1_HOUR", count, insert_date, insert_hour, timestamp, iter);
             }else{
                 console.log('Erreur with pair : '+pair);
                 STEP_finish(err);
             }
         }
 
-        function STEP_finish(err, data, pair) {
+        function STEP_finish(err, data, pair, iter) {
             if(err){
                 console.log(err);
                 console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 HOUR FAILED', '\x1b[0m');
+            }
+
+            if(iter){
+
             }
         }
     },
@@ -97,34 +105,43 @@ module.exports = {
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if (!err) {
                 for(let i=0; i<allPairs.length; i++){
-                    DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1H, allPairs[i].name, count);
+                    if (i+1 == allPairs.length){
+                        DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1H, allPairs[i].name, count, true);
+                    }else{
+                        DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1H, allPairs[i].name, count, false);
+                    }
+
                 }
             } else {
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_load_LastATR1D(err, ohlcs, pair, count) {
+        function STEP_DB_load_LastATR1D(err, ohlcs, pair, count, iter) {
             if(!err){
-                DB_ATR.getLastATR_1d(STEP_DB_insertATR, pair, ohlcs, count)
+                DB_ATR.getLastATR_1d(STEP_DB_insertATR, pair, ohlcs, count, iter)
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertATR(err, atr, pair, ohlcs, count) {
+        function STEP_DB_insertATR(err, atr, pair, ohlcs, count, iter) {
             if (!err) {
-                DB_ATR.insertATR(STEP_finish, ohlcs, atr, pair, "1_DAY", count, insert_date, insert_hour, timestamp);
+                DB_ATR.insertATR(STEP_finish, ohlcs, atr, pair, "1_DAY", count, insert_date, insert_hour, timestamp, iter);
             } else {
                 console.log('Erreur with pair : ' + pair);
                 STEP_finish(err);
             }
         }
 
-        function STEP_finish(err, data, pair) {
+        function STEP_finish(err, data, pair, iter) {
             if (err) {
                 console.log(err);
                 console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 DAY FAILED', '\x1b[0m');
+            }
+
+            if(iter){
+
             }
         }
     }

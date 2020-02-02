@@ -5,7 +5,7 @@ moment.locale('fr');
 
 
 module.exports = {
-    getLastATR_1h: function (callback, pair) {
+    getLastATR_1h: function (callback, pair, param_fw1) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -22,12 +22,12 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair);
+            callback(null, data, pair, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });
     },
-    getLastATR_1d: function (callback, pair) {
+    getLastATR_1d: function (callback, pair, param_fw1) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -44,7 +44,7 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair);
+            callback(null, data, pair, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });

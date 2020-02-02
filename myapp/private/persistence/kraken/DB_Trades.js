@@ -22,7 +22,7 @@ function prepareData(data, pair, insert_date, insert_hour, timestamp){
 }
 
 module.exports = {
-    insertTrades: function (callback, data, pair, insert_date, insert_hour, timestamp) {
+    insertTrades: function (callback, data, pair, insert_date, insert_hour, timestamp, param_fw1) {
         var trades = prepareData(data, pair, insert_date, insert_hour, timestamp);
         new Promise(function (resolve, reject) {
             if(trades.length > 0){
@@ -45,7 +45,7 @@ module.exports = {
                 resolve(true);
             }
         }).then(function (res) {
-            callback(null, res);
+            callback(null, res, param_fw1);
         }).catch(function (err) {
             callback(err, null);
         });

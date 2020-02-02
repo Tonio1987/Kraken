@@ -119,7 +119,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getEurPair: function (callback, currency, param_fw1) {
+    getEurPair: function (callback, currency, param_fw1, param_fw2) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -136,7 +136,7 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, currency, param_fw1);
+            callback(null, data, currency, param_fw1, param_fw2);
         }).catch(function(err) {
             callback(err, null);
         });

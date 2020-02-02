@@ -38,9 +38,14 @@ module.exports = {
 
         function STEP_DB_getEurPair(err, data) {
             if(!err){
+                let j = data.length;
                 for (var i in data) {
                     if (data.hasOwnProperty(i)) {
-                        DB_AssetPairs.getEurPair(STEP_DB_getLastTicker, i, data[i]);
+                        if (j+1 == data.length){
+                            DB_AssetPairs.getEurPair(STEP_DB_getLastTicker, i, data[i], true);
+                        }else{
+                            DB_AssetPairs.getEurPair(STEP_DB_getLastTicker, i, data[i], false);
+                        }
                     }
                 }
             }else {
@@ -48,42 +53,46 @@ module.exports = {
             }
         }
 
-        function STEP_DB_getLastTicker(err, data, currency, nb_units) {
+        function STEP_DB_getLastTicker(err, data, currency, nb_units, iter) {
             if(!err){
                 if(data.length > 0){
-                    DB_Ticker.getLastTicker(STEP_DB_getLastBalance, data[0].name, currency, nb_units)
+                    DB_Ticker.getLastTicker(STEP_DB_getLastBalance, data[0].name, currency, nb_units, iter)
                 }else{
                     // Cas de l'EURO ou du DOGE
-                    STEP_DB_getLastBalance(err, data, null, currency, nb_units);
+                    STEP_DB_getLastBalance(err, data, null, currency, nb_units, iter);
                 }
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_getLastBalance(err, data, pair, currency, nb_units) {
+        function STEP_DB_getLastBalance(err, data, pair, currency, nb_units, iter) {
             if(!err){
-                DB_Balance.getLastBalanceElement(STEP_DB_insertBalance, currency, data, nb_units);
+                DB_Balance.getLastBalanceElement(STEP_DB_insertBalance, currency, data, nb_units, iter);
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertBalance(err, lastBalance, currency, ticker, nb_units) {
+        function STEP_DB_insertBalance(err, lastBalance, currency, ticker, nb_units, iter) {
             if(!err){
                 if(ticker.length > 0){
-                    DB_Balance.insertBalance(STEP_finish, lastBalance, ticker[0].bid_price, currency, nb_units, date, hour, timestamp);
+                    DB_Balance.insertBalance(STEP_finish, lastBalance, ticker[0].bid_price, currency, nb_units, date, hour, timestamp, iter);
                 }else{
-                    DB_Balance.insertBalance(STEP_finish, lastBalance, 0, currency, nb_units, date, hour, timestamp);
+                    DB_Balance.insertBalance(STEP_finish, lastBalance, 0, currency, nb_units, date, hour, timestamp, iter);
                 }
             }else{
                 STEP_finish(err);
             }
         }
-        function STEP_finish(err, data) {
+        function STEP_finish(err, data, iter) {
             if(err){
                 console.log(err);
                 console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Balance FAILED', '\x1b[0m');
+            }
+
+            if(iter){
+
             }
         }
     }

@@ -7,7 +7,7 @@ const api = kraken({
 });
 
 module.exports = {
-    kraken_OHLC_1h: function(callback, pair, param_fw1) {
+    kraken_OHLC_1h: function(callback, pair, param_fw1, param_fw2) {
         return new Promise(function (resolve, reject) {
             api.call('OHLC', { pair: pair, interval: 60, count: 1 }, (err, data) => {
                 if (err) {
@@ -17,12 +17,12 @@ module.exports = {
                 resolve(data);
             });
         }).then(function(data){
-            callback(null, data, pair, param_fw1);
+            callback(null, data, pair, param_fw1, param_fw2);
         }).catch(function(err) {
             callback(err, null, pair);
         });
     },
-    kraken_OHLC_1d: function(callback, pair, param_fw1) {
+    kraken_OHLC_1d: function(callback, pair, param_fw1, param_fw2) {
         return new Promise(function (resolve, reject) {
             api.call('OHLC', { pair: pair, interval: 1440, count: 1 }, (err, data) => {
                 if (err) {
@@ -32,7 +32,7 @@ module.exports = {
                 resolve(data);
             });
         }).then(function(data){
-            callback(null, data, pair, param_fw1);
+            callback(null, data, pair, param_fw1, param_fw2);
         }).catch(function(err) {
             callback(err, null, null);
         });

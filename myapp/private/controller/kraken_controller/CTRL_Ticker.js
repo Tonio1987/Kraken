@@ -35,24 +35,32 @@ module.exports = {
         function STEP_API_loadTicker(err, allPairs) {
             if(!err){
                 for(let i=0; i<allPairs.length; i++){
-                    API_Ticker.kraken_Ticker(STEP_DB_insertTicker, allPairs[i].name);
+                    if (i+1 == allPairs.length){
+                        API_Ticker.kraken_Ticker(STEP_DB_insertTicker, allPairs[i].name, true);
+                    }else{
+                        API_Ticker.kraken_Ticker(STEP_DB_insertTicker, allPairs[i].name, false);
+                    }
                 }
             }else{
                 STEP_finish(err);
             }
         }
-        function STEP_DB_insertTicker(err, data, pair) {
+        function STEP_DB_insertTicker(err, data, pair, iter) {
             if(!err){
-                DB_Ticker.insertTicker(STEP_finish, data, pair, insert_date, insert_hour, timestamp);
+                DB_Ticker.insertTicker(STEP_finish, data, pair, insert_date, insert_hour, timestamp, iter);
             }else{
                 console.log('Erreur with pair : '+pair);
                 STEP_finish(err);
             }
         }
-        function STEP_finish(err, data) {
+        function STEP_finish(err, data, iter) {
             if(err){
                 console.log(err);
                 console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Ticker FAILED', '\x1b[0m');
+            }
+
+            if(iter){
+
             }
         }
     }

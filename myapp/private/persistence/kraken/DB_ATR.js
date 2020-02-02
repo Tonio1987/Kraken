@@ -168,7 +168,7 @@ function prepareData(ohlcs, atr, pair, interval, count, insert_date, insert_hour
 }
 
 module.exports = {
-    insertATR: function (callback, ohlcs, atr, pair, interval, count, insert_date, insert_hour, timestamp) {
+    insertATR: function (callback, ohlcs, atr, pair, interval, count, insert_date, insert_hour, timestamp, param_fw1) {
         var atr = prepareData(ohlcs, atr, pair, interval, count, insert_date, insert_hour, timestamp);
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
@@ -187,7 +187,7 @@ module.exports = {
                 }
             });
         }).then(function (res) {
-            callback(null, res);
+            callback(null, res, param_fw1);
         }).catch(function (err) {
             callback(err, null);
         });

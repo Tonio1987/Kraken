@@ -84,7 +84,7 @@ function prepareData(data, pair, interval, count, insert_date, insert_hour, time
 }
 
 module.exports = {
-    insertOHLC: function (callback, data, pair, interval, count, insert_date, insert_hour, timestamp) {
+    insertOHLC: function (callback, data, pair, interval, count, insert_date, insert_hour, timestamp, param_fw1) {
         var ohlc = prepareData(data, pair, interval, count, insert_date, insert_hour, timestamp);
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
@@ -103,7 +103,7 @@ module.exports = {
                 }
             });
         }).then(function(res){
-            callback(null, res);
+            callback(null, res, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });
@@ -132,7 +132,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getLast14OHLC_1h: function (callback, pair, param_fw1) {
+    getLast14OHLC_1h: function (callback, pair, param_fw1, param_fw2) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -149,12 +149,12 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair, param_fw1);
+            callback(null, data, pair, param_fw1, param_fw2);
         }).catch(function(err) {
             callback(err, null);
         });
     },
-    getLast14OHLC_1d: function (callback, pair, param_fw1) {
+    getLast14OHLC_1d: function (callback, pair, param_fw1, param_fw2) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -171,7 +171,7 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair, param_fw1);
+            callback(null, data, pair, param_fw1, param_fw2);
         }).catch(function(err) {
             callback(err, null);
         });

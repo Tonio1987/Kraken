@@ -39,7 +39,7 @@ function prepareData(lastBalance, bid_price, currency, nb_units, date, hour, tim
 }
 
 module.exports = {
-    insertBalance: function (callback, lastBalance, bid_price, currency, nb_units, date, hour, timestamp) {
+    insertBalance: function (callback, lastBalance, bid_price, currency, nb_units, date, hour, timestamp, param_fw1) {
         var elementOfMyBalance = prepareData(lastBalance, bid_price, currency, nb_units, date, hour, timestamp);
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function (err, db) {
@@ -58,12 +58,12 @@ module.exports = {
                 }
             });
         }).then(function(res){
-            callback(null, res);
+            callback(null, res, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });
      },
-    getLastBalanceElement: function (callback, currency, param_fw1, param_fw2) {
+    getLastBalanceElement: function (callback, currency, param_fw1, param_fw2, param_fw3) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -81,7 +81,7 @@ module.exports = {
                 }
             });
         }).then(function(res){
-            callback(null, res, currency, param_fw1, param_fw2);
+            callback(null, res, currency, param_fw1, param_fw2, param_fw3);
         }).catch(function(err) {
             callback(err, null);
         });

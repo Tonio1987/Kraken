@@ -4,7 +4,7 @@ var MongoClient = require('mongodb').MongoClient;
 moment.locale('fr');
 
 module.exports = {
-    insertTicker: function (callback, data, pair, insert_date, insert_hour, timestamp) {
+    insertTicker: function (callback, data, pair, insert_date, insert_hour, timestamp, param_fw1) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -42,7 +42,7 @@ module.exports = {
                 }
             });
         }).then(function(res){
-            callback(null, res);
+            callback(null, res, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });

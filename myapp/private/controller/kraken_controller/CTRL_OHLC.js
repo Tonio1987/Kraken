@@ -39,24 +39,32 @@ module.exports = {
         function STEP_API_loadOHLC(err, count, allPairs) {
             if(!err){
                 for(let i=0; i<allPairs.length; i++){
-                    API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, allPairs[i].name, count);
+                    if (i+1 == allPairs.length){
+                        API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, allPairs[i].name, count, true);
+                    }else{
+                        API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, allPairs[i].name, count, false);
+                    }
                 }
             }else{
                 STEP_finish(err);
             }
         }
-        function STEP_DB_insertOHLC(err, data, pair, count) {
+        function STEP_DB_insertOHLC(err, data, pair, count, iter) {
             if(!err){
-                DB_OHLC.insertOHLC(STEP_finish, data, pair, "1_HOUR", count, insert_date, insert_hour, timestamp);
+                DB_OHLC.insertOHLC(STEP_finish, data, pair, "1_HOUR", count, insert_date, insert_hour, timestamp, iter);
             }else{
                 console.log('Erreur with pair : '+pair);
                 STEP_finish(err);
             }
         }
-        function STEP_finish(err, data) {
+        function STEP_finish(err, data, iter) {
             if(err){
                 console.log(err);
                 console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load OHLC 1 HOUR FAILED', '\x1b[0m');
+            }
+
+            if(iter){
+
             }
         }
     },
@@ -85,26 +93,34 @@ module.exports = {
         function STEP_API_loadOHLC(err, count, allPairs) {
             if (!err) {
                 for(let i=0; i<allPairs.length; i++){
-                    API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, allPairs[i].name, count);
+                    if (i+1 == allPairs.length){
+                        API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, allPairs[i].name, count, true);
+                    }else{
+                        API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, allPairs[i].name, count, false);
+                    }
                 }
             } else {
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertOHLC(err, data, pair, count) {
+        function STEP_DB_insertOHLC(err, data, pair, count, iter) {
             if (!err) {
-                DB_OHLC.insertOHLC(STEP_finish, data, pair, "1_DAY", count, insert_date, insert_hour, timestamp);
+                DB_OHLC.insertOHLC(STEP_finish, data, pair, "1_DAY", count, insert_date, insert_hour, timestamp, iter);
             } else {
                 console.log('Erreur with pair : ' + pair);
                 STEP_finish(err);
             }
         }
 
-        function STEP_finish(err, data) {
+        function STEP_finish(err, data, iter) {
             if (err) {
                 console.log(err);
                 console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load OHLC 1 DAY FAILED', '\x1b[0m');
+            }
+
+            if(iter){
+
             }
         }
     }
