@@ -69,35 +69,24 @@ module.exports = {
                 mm540_on_1440_diff: 0,
                 mm720_on_1440_diff: 0,
             };
-            for(let ticker in data){
-                if (data.hasOwnProperty(ticker)) {
-                    count++;
-                }else{
-                    reject();
-                }
-            }
-            count = 0;
-            for(let i in data){
-                if (data.hasOwnProperty(i)) {
-                    sum = sum + data[i].ask_price;
-                    count++;
-                    if(count === 5){mm.mm5 = sum/count;}
-                    if(count === 15){mm.mm15 = sum/count;}
-                    if(count === 30){mm.mm30 = sum/count;}
-                    if(count === 45){mm.mm45 = sum/count;}
-                    if(count === 60){mm.mm60 = sum/count;}
-                    if(count === 75){mm.mm75 = sum/count;}
-                    if(count === 90){mm.mm90 = sum/count;}
-                    if(count === 105){mm.mm105 = sum/count;}
-                    if(count === 120){mm.mm120 = sum/count;}
-                    if(count === 180){mm.mm180 = sum/count;}
-                    if(count === 360){mm.mm360 = sum/count;}
-                    if(count === 540){mm.mm540 = sum/count;}
-                    if(count === 720){mm.mm720 = sum/count;}
-                    if(count === 1440){mm.mm1440 = sum/count;}
-                }else{
-                    reject();
-                }
+
+            for(let i=0; i<data.length; i++){
+                sum = sum + data[i].ask_price;
+                count++;
+                if(count === 5){mm.mm5 = sum/count;}
+                if(count === 15){mm.mm15 = sum/count;}
+                if(count === 30){mm.mm30 = sum/count;}
+                if(count === 45){mm.mm45 = sum/count;}
+                if(count === 60){mm.mm60 = sum/count;}
+                if(count === 75){mm.mm75 = sum/count;}
+                if(count === 90){mm.mm90 = sum/count;}
+                if(count === 105){mm.mm105 = sum/count;}
+                if(count === 120){mm.mm120 = sum/count;}
+                if(count === 180){mm.mm180 = sum/count;}
+                if(count === 360){mm.mm360 = sum/count;}
+                if(count === 540){mm.mm540 = sum/count;}
+                if(count === 720){mm.mm720 = sum/count;}
+                if(count === 1440){mm.mm1440 = sum/count;}
             }
             if(mm.mm5 >= mm.mm60){mm.mm5_upto_60 = true;}
             if(mm.mm5 >= mm.mm180){mm.mm5_upto_180 = true;}

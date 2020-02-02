@@ -32,12 +32,11 @@ module.exports = {
         function STEP_DB_getAllPairs() {
             DB_AssetPairs.getAllPairs(STEP_API_loadTrades);
         }
-        function STEP_API_loadTrades(err, data) {
+        function STEP_API_loadTrades(err, allPairs) {
             if(!err){
-                data.forEach(function(pair){
-                    API_Trades.kraken_Trades(STEP_DB_insertTrades, pair.name);
-                });
-
+                for(let i=0; i<allPairs.length; i++){
+                    API_Trades.kraken_Trades(STEP_DB_insertTrades, allPairs[i].name);
+                }
             }else{
                 STEP_finish(err);
             }

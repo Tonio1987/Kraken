@@ -5,7 +5,6 @@ module.exports = {
     calculateMMEvol: function(callback, data, date, hour, timestamp) {
         new Promise(function (resolve, reject) {
 
-            let count = 0;
             let  mmEvol = {
                 insert_date: date,
                 insert_hour: hour,
@@ -222,13 +221,10 @@ module.exports = {
                 evol_720p_mm1440: 0,
                 evol_1440p_mm1440: 0
             };
-            for(let MM in data){
-                if (data.hasOwnProperty(MM)) {
-                    count++;
-                }else{
-                    reject();
-                }
-            }
+
+            let count = data.length;
+
+
             if(count >= 2) {
                 mmEvol.evol_1p_mm5 = ((data[0].mm5 - data[1].mm5) / data[1].mm5) * 100;
                 mmEvol.evol_1p_mm15 = ((data[0].mm15 - data[1].mm15) / data[1].mm15) * 100;

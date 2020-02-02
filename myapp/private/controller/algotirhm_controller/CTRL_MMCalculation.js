@@ -27,9 +27,9 @@ module.exports = {
 
         function STEP_DB_getTickerByPair(err, data) {
             if(!err) {
-                data.forEach(function (pair) {
-                    DB_Ticker.getLast1440Ticker(STEP_ALGO_calculateNN, pair.name);
-                });
+                for(let i=0; i<data.length; i++){
+                    DB_Ticker.getLast1440Ticker(STEP_ALGO_calculateNN, data[i].name);
+                }
             }else{
                 STEP_finish(err);
             }

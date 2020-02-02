@@ -119,10 +119,8 @@ module.exports = {
        function STEP_DB_getEurPairs(err, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
                let currencyList = [];
-               for(elem in LastBalance){
-                   if(LastBalance.hasOwnProperty(elem)){
-                       currencyList.push(LastBalance[elem].currency)
-                   }
+               for(let i=0; i<LastBalance.length; i++){
+                   currencyList.push(LastBalance[i].currency)
                }
                DB_AssetPairs.getEurPairs(STEP_DB_getLastKeltner, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders)
            }else{
@@ -133,10 +131,8 @@ module.exports = {
        function STEP_DB_getLastKeltner(err, eurPairs, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
                let pairList = [];
-               for(elem in eurPairs){
-                   if(eurPairs.hasOwnProperty(elem)){
-                       pairList.push(eurPairs[elem].name);
-                   }
+               for(let i=0; i<eurPairs.length; i++){
+                   pairList.push(eurPairs[i].name);
                }
                DB_Keltner.getLastKeltner(STEP_DB_getLastTickerTimestamp, pairList, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders);
            }else{

@@ -38,9 +38,9 @@ module.exports = {
 
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if(!err){
-                allPairs.forEach(function(pair){
-                    DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, pair.name, count);
-                });
+                for(let i=0; i<allPairs.length; i++){
+                    DB_OHLC.getLast14OHLC_1h(STEP_DB_load_LastATR1H, allPairs[i].name, count);
+                }
             }else{
                 STEP_finish(err);
             }
@@ -96,9 +96,9 @@ module.exports = {
 
         function STEP_DB_loadLast14OHLC(err, count, allPairs) {
             if (!err) {
-                allPairs.forEach(function (pair) {
-                    DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1D, pair.name, count);
-                });
+                for(let i=0; i<allPairs.length; i++){
+                    DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1H, allPairs[i].name, count);
+                }
             } else {
                 STEP_finish(err);
             }

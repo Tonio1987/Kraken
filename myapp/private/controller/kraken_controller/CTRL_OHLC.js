@@ -38,9 +38,9 @@ module.exports = {
 
         function STEP_API_loadOHLC(err, count, allPairs) {
             if(!err){
-                allPairs.forEach(function(pair){
-                    API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, pair.name, count);
-                });
+                for(let i=0; i<allPairs.length; i++){
+                    API_OHLC.kraken_OHLC_1h(STEP_DB_insertOHLC, allPairs[i].name, count);
+                }
             }else{
                 STEP_finish(err);
             }
@@ -84,9 +84,9 @@ module.exports = {
 
         function STEP_API_loadOHLC(err, count, allPairs) {
             if (!err) {
-                allPairs.forEach(function (pair) {
-                    API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, pair.name, count);
-                });
+                for(let i=0; i<allPairs.length; i++){
+                    API_OHLC.kraken_OHLC_1d(STEP_DB_insertOHLC, allPairs[i].name, count);
+                }
             } else {
                 STEP_finish(err);
             }

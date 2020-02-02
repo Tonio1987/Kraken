@@ -28,9 +28,9 @@ module.exports = {
 
         function STEP_DB_getLastMM(err, data) {
             if(!err) {
-                data.forEach(function (pair) {
-                    DB_MM.getLastMM(STEP_DB_getLastMMC, pair.name);
-                });
+                for(let i=0; i<data.length; i++){
+                    DB_MM.getLastMM(STEP_DB_getLastMMC, data[i].name);
+                }
             }else{
                 STEP_finish(err);
             }

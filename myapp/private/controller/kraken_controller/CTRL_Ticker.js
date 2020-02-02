@@ -32,11 +32,11 @@ module.exports = {
         function STEP_DB_getAllPairs() {
             DB_AssetPairs.getAllPairs(STEP_API_loadTicker);
         }
-        function STEP_API_loadTicker(err, data) {
+        function STEP_API_loadTicker(err, allPairs) {
             if(!err){
-                data.forEach(function(pair){
-                    API_Ticker.kraken_Ticker(STEP_DB_insertTicker, pair.name);
-                });
+                for(let i=0; i<allPairs.length; i++){
+                    API_Ticker.kraken_Ticker(STEP_DB_insertTicker, allPairs[i].name);
+                }
             }else{
                 STEP_finish(err);
             }

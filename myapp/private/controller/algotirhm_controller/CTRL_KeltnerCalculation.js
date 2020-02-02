@@ -31,9 +31,9 @@ module.exports = {
 
         function STEP_DB_getLastATR(err, allPairs) {
             if (!err) {
-                allPairs.forEach(function (pair) {
-                    DB_ATR.getLastATR_1h(STEP_DB_getLastTicker, pair.name);
-                });
+                for(let i=0; i<allPairs.length; i++){
+                    DB_ATR.getLastATR_1h(STEP_DB_getLastTicker, allPairs[i].name);
+                }
             } else {
                 STEP_finish(err);
             }

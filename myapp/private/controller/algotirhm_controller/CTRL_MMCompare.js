@@ -26,9 +26,9 @@ module.exports = {
 
         function STEP_DB_getLast1440MM(err, data) {
             if(!err) {
-                data.forEach(function (pair) {
-                    DB_MM.getLast1440MM(STEP_ALGO_compareMM, pair.name);
-                });
+                for(let i=0; i<data.length; i++){
+                    DB_MM.getLast1440MM(STEP_ALGO_compareMM,  data[i].name);
+                }
             }else{
                 STEP_finish(err);
             }
