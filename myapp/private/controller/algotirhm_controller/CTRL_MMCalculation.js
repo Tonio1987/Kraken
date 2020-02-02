@@ -59,13 +59,12 @@ module.exports = {
         function STEP_finish(err, data, iter) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MM FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate MM : '), colors.brightRed('[ FAILED ]'));
             }
             if(iter){
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process MM FINISHED');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate MM : '), colors.brightGreen('[ DONE ]'));
                 callback();
             }
-
         }
     }
 };

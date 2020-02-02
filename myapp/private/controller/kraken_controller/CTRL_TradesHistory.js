@@ -1,3 +1,4 @@
+var colors = require('colors');
 const API_TradesHistory = require('../../api/kraken/API_TradesHistory');
 const DB_TradeHistory = require('../../persistence/kraken/DB_TradesHistory');
 const async = require('async');
@@ -32,8 +33,9 @@ module.exports = {
         function STEP_finish(err, data) {
             if(err){
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Trade History FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Trade History : '), colors.brightRed('[ FAILED ]'));
             }
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Trade History : '), colors.brightGreen('[ DONE ]'));
         }
     }
 };

@@ -29,7 +29,7 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Cron Tasks FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Cron Tasks : '), colors.brightRed('[ FAILED ]'));
             }
         }
     },
@@ -57,7 +57,7 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Cron Tasks FAILED');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Cron Tasks : '), colors.brightRed('[ FAILED ]'));
             }
         }
     }

@@ -1,3 +1,4 @@
+var colors = require('colors');
 const async = require('async');
 const moment = require('moment');
 
@@ -29,9 +30,9 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load History TradeBalance FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load History TradeBalance : '), colors.brightRed('[ FAILED ]'));
             }
-            console.log('\x1b[33m', moment().format('L') + ' - '+ moment().format('LTS') + ' - CONTROLER -> END - Process Load History TradeBalance', '\x1b[0m');
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load History TradeBalance : '), colors.brightGreen('[ DONE ]'));
         }
     }
 };

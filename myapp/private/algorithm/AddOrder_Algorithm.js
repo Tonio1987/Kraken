@@ -227,8 +227,8 @@ module.exports = {
                 }
             }
 
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS --- '), colors.brightWhite(ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL'));
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS --- '), colors.brightWhite(ordersToPosition.length+' PREPARED ORDER(S) TO POSITION'));
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS '), colors.brightWhite('--- '), colors.brightWhite(ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL'));
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan('*** CONTROLLER *** '), colors.magenta('- ROBOT STOP LOSS '), colors.brightWhite('--- '), colors.brightWhite(ordersToPosition.length+' PREPARED ORDER(S) TO POSITION'));
 
             let preparedOrders = {
                 ordersToCancel: ordersToCancel,

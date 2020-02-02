@@ -1,3 +1,4 @@
+var colors = require('colors');
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_ATR = require('../../persistence/kraken/DB_ATR');
 const DB_OHLC = require('../../persistence/kraken/DB_OHLC');
@@ -70,11 +71,10 @@ module.exports = {
         function STEP_finish(err, data, pair, iter) {
             if(err){
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 HOUR FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load ATR 1 HOUR : '), colors.brightRed('[ FAILED ]'));
             }
-
             if(iter){
-
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load ATR 1 HOUR : '), colors.brightGreen('[ DONE ]'));
             }
         }
     },
@@ -137,11 +137,11 @@ module.exports = {
         function STEP_finish(err, data, pair, iter) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load ATR 1 DAY FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load ATR 1 DAY : '), colors.brightRed('[ FAILED ]'));
             }
 
             if(iter){
-
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load ATR 1 DAY : '), colors.brightGreen('[ DONE ]'));
             }
         }
     }

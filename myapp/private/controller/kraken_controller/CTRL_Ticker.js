@@ -1,3 +1,4 @@
+var colors = require('colors');
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
 const API_Ticker = require('../../api/kraken/API_Ticker');
@@ -56,11 +57,11 @@ module.exports = {
         function STEP_finish(err, data, iter) {
             if(err){
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Ticker FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Ticker : '), colors.brightRed('[ FAILED ]'));
             }
 
             if(iter){
-
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Ticker : '), colors.brightGreen('[ DONE ]'));
             }
         }
     }

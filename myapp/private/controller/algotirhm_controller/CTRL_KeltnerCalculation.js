@@ -1,3 +1,4 @@
+var colors = require('colors/safe');
 const async = require('async');
 const moment = require('moment');
 const DB_AssetPairs = require('../../persistence/algorithm/keltner/DB_AssetPairs');
@@ -70,7 +71,7 @@ module.exports = {
         function STEP_finish(err, data, iter) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate Keltner 1H FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1H : '), colors.brightRed('[ FAILED ]'));
             }
             if(iter){
 
@@ -139,10 +140,7 @@ module.exports = {
         function STEP_finish(err, data, iter) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate Keltner 1D FAILED', '\x1b[0m');
-            }
-            if(iter){
-
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1D : '), colors.brightRed('[ FAILED ]'));
             }
         }
     }

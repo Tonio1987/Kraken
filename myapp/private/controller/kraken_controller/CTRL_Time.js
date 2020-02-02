@@ -1,3 +1,4 @@
+var colors = require('colors');
 const API_Time = require('../../api/kraken/API_Time');
 const async = require('async');
 const moment = require('moment');
@@ -18,8 +19,9 @@ module.exports = {
         function STEP_finish(err, data) {
             if(err){
                 console.log(err);
-                console.log('\x1b[31m',moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Load Time FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Time : '), colors.brightRed('[ FAILED ]'));
             }
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Time : '), colors.brightGreen('[ DONE ]'));
         }
     }
 };

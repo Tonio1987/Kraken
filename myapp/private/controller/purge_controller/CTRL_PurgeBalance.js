@@ -1,3 +1,4 @@
+var colors = require('colors');
 const async = require('async');
 const moment = require('moment');
 
@@ -34,9 +35,9 @@ module.exports = {
         function STEP_finish(err, data) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - CONTROLER - > Process Purge Balance Data FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Purge Balance Data : '), colors.brightRed('[ FAILED ]'));
             }
-            console.log('\x1b[31m', moment().format('L') + ' - '+ moment().format('LTS') + ' - CONTROLER -> END - Purge BALANCE Data', '\x1b[0m');
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Purge Balance Data : '), colors.brightGreen('[ DONE ]'));
         }
     }
 };

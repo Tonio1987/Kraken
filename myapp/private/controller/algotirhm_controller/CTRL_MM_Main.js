@@ -1,3 +1,4 @@
+var colors = require('colors/safe');
 const async = require('async');
 const moment = require('moment');
 
@@ -17,7 +18,7 @@ module.exports = {
         });
 
         function STEP_CTRL_MMCalculation() {
-            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Processing MM');
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM ... '));
             CTRL_MMCalculation.CalculateMM(STEP_CTRL_MMAlgorithms);
         }
 
@@ -31,15 +32,15 @@ module.exports = {
             });
 
             function STEP_CTRL_MMEvolCalculation() {
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Processing MM Evolution');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Evol ... '));
                 CTRL_MMEvolCalculation.CalculateMMEvol(STEP_finish, 'MMEvolCalculation');
             }
             function STEP_CTRL_MMCompareCalculation() {
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Processing MM Compare');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Compare ... '));
                 CTRL_MMCompare.CalculateMMCompare(STEP_finish, 'MMCompare');
             }
             function STEP_CTRL_MMIndicators() {
-                console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Processing MM Indicators');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Indicators ... '));
                 CTRL_MMIndicators.CalculateMMIndicators(STEP_finish, 'MMIndicators');
             }
         }
@@ -47,9 +48,9 @@ module.exports = {
         function STEP_finish(err, step) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process MM FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process MM : '+step+' '), colors.brightRed('[ FAILED ]'));
             }
-            console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process '+ step +' FINISHED');
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process MM : '+step+' '), colors.brightGreen('[ DONE ]'));
         }
     }
 };

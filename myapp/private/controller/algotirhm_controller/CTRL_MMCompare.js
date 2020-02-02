@@ -1,3 +1,4 @@
+var colors = require('colors/safe');
 const async = require('async');
 const moment = require('moment');
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
@@ -58,7 +59,7 @@ module.exports = {
         function STEP_finish(err, data, iter) {
             if (err) {
                 console.log(err);
-                console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process MM Comparaison FAILED', '\x1b[0m');
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate MM Compare : '), colors.brightRed('[ FAILED ]'));
             }
             if(iter){
                 callback(err, step);

@@ -46,7 +46,7 @@ module.exports = {
         });
 
        function STEP_DB_dropOpenOrders_1() {
-           console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'---> DROP OPEN ORDERS');
+           console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- DROP OPEN ORDERS');
            DB_OpenOrders.dropOpenOrders(STEP_API_getOpenOrders_1);
        }
 
@@ -232,11 +232,10 @@ module.exports = {
 
         function STEP_finish(err, data) {
             if(err){
-                var error = ''+err;
-                console.log(error);
-                console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +' --- PROCESS FAILED'.brightRed);
+                console.log(err);
+                console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +' PROCESS STOP LOSS ORDER : '.white + '[ FAILED ]'.brightRed);
             }
-            console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +' --- END --- STOP LOSS ORDER'.brightGreen);
+            console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +' PROCESS STOP LOSS ORDER : '.white + '[ DONE ]'.brightGreen);
         }
     }
 };
