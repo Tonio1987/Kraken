@@ -163,42 +163,36 @@ module.exports = {
             let coefKeltnerTrigger = ActiveTriggersKeltner[0].value;
 
             // INSERT LAST TICKER IN KELTNER DATA
-            for(elem in LastKeltners) {
-                if (LastKeltners.hasOwnProperty(elem)) {
-                    for(ticker in LastTicker) {
-                        if (LastTicker.hasOwnProperty(ticker)) {
-                            if(LastTicker[ticker].pair === LastKeltners[elem].pair){
-                                LastKeltners[elem].last_ticker = LastTicker[ticker].ask_price;
-                            }
-                        }
+            for(let i=0; i<LastKeltners.length; i++){
+                for(let j=0; j<LastTicker.length; j++){
+                    if(LastTicker[j].pair === LastKeltners[i].pair){
+                        LastKeltners[i].last_ticker = LastTicker[j].ask_price;
                     }
                 }
             }
 
+
             // PREPARE ORDERS CONSIDERING BALANCE
-            for(elem in LastKeltners) {
-                if (LastKeltners.hasOwnProperty(elem)) {
-                    for(bal in LastBalance) {
-                        if (LastBalance.hasOwnProperty(bal)) {
-                            if(pairsConvertion[LastBalance[bal].currency].value === LastKeltners[elem].pair){
-                                let keltnerPrice = LastKeltners[elem].last_ticker - (coefKeltnerTrigger*LastKeltners[elem].last_ATR);
-                                keltnerPrice = keltnerPrice.toFixed(pairsConvertion[LastKeltners[elem].pair].decimal);
-                                let ord =
-                                    {
-                                        pair: LastKeltners[elem].pair,
-                                        type:  'sell',
-                                        ordertype: 'stop-loss',
-                                        price:  keltnerPrice,
-                                        volume: LastBalance[bal].units,
-                                        starttm:  0,
-                                        expiretm: 0
-                                    };
-                                orders.push(ord);
-                            }
-                        }
+            for(let i=0; i<LastKeltners.length; i++) {
+                for (let j = 0; j < LastBalance.length; j++) {
+                    if(pairsConvertion[LastBalance[j].currency].value === LastKeltners[i].pair){
+                        let keltnerPrice = LastKeltners[i].last_ticker - (coefKeltnerTrigger*LastKeltners[i].last_ATR);
+                        keltnerPrice = keltnerPrice.toFixed(pairsConvertion[LastKeltners[i].pair].decimal);
+                        let ord =
+                            {
+                                pair: LastKeltners[i].pair,
+                                type:  'sell',
+                                ordertype: 'stop-loss',
+                                price:  keltnerPrice,
+                                volume: LastBalance[j].units,
+                                starttm:  0,
+                                expiretm: 0
+                            };
+                        orders.push(ord);
                     }
                 }
             }
+
             // HANDLE PREVIOUSLKY OPEN ORDERS POSITIONED
             if(OpenOrders.length > 0) {
                 var old_stoploss = false;
@@ -234,13 +228,7 @@ module.exports = {
 
             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToCancel.length+' PREPARED ORDER(S) TO CANCEL');
             console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ordersToPosition.length+' PREPARED ORDER(S) TO POSITION');
-            /*
-            for(elem in ordersToPosition){
-                if(ordersToPosition.hasOwnProperty(elem)){
-                    console.log(moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- ROBOT STOP LOSS --- '+ ordersToPosition[elem].type+' '+ordersToPosition[elem].ordertype+' '+ordersToPosition[elem].volume+' '+ordersToPosition[elem].pair+' '+ordersToPosition[elem].price);
-                }
-            }
-            */
+
             let preparedOrders = {
                 ordersToCancel: ordersToCancel,
                 orders: ordersToPosition
