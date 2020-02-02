@@ -18,7 +18,7 @@ module.exports = {
         });
 
         function STEP_CTRL_MMCalculation() {
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM ... '));
+            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM ... '), color.brightYellow('[ RUNNING ]'));
             CTRL_MMCalculation.CalculateMM(STEP_CTRL_MMAlgorithms);
         }
 
@@ -32,15 +32,15 @@ module.exports = {
             });
 
             function STEP_CTRL_MMEvolCalculation() {
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Evol ... '));
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Evol ... '), color.brightYellow('[ RUNNING ]'));
                 CTRL_MMEvolCalculation.CalculateMMEvol(STEP_finish, 'MMEvolCalculation');
             }
             function STEP_CTRL_MMCompareCalculation() {
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Compare ... '));
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Compare ... '), color.brightYellow('[ RUNNING ]'));
                 CTRL_MMCompare.CalculateMMCompare(STEP_finish, 'MMCompare');
             }
             function STEP_CTRL_MMIndicators() {
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Indicators ... '));
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Indicators ... '), color.brightYellow('[ RUNNING ]'));
                 CTRL_MMIndicators.CalculateMMIndicators(STEP_finish, 'MMIndicators');
             }
         }

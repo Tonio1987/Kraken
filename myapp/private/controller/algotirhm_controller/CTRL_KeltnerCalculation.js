@@ -74,7 +74,7 @@ module.exports = {
                 console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1H : '), colors.brightRed('[ FAILED ]'));
             }
             if(iter){
-
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1H : '), colors.brightGreen('[ DONE ]'));
             }
         }
     },
@@ -115,7 +115,7 @@ module.exports = {
 
         function STEP_DB_getLastTicker(err, lastATR, pair, iter) {
             if (!err){
-                DB_Ticker.getLastTicker(STEP_ALGO_KeltnerCalculation, pair, lastATR);
+                DB_Ticker.getLastTicker(STEP_ALGO_KeltnerCalculation, pair, lastATR, iter);
             } else {
                 STEP_finish(err);
             }
@@ -123,7 +123,7 @@ module.exports = {
 
         function STEP_ALGO_KeltnerCalculation(err, lastTicker, pair, lastATR, iter) {
             if (!err){
-                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, pair, lastTicker, lastATR, "1_DAY", date, hour, timestamp);
+                ALGO_Keltner.calculateKeltner(STEP_DB_insertKeltner, pair, lastTicker, lastATR, "1_DAY", date, hour, timestamp, iter);
             } else {
                 STEP_finish(err);
             }
@@ -131,7 +131,7 @@ module.exports = {
 
         function STEP_DB_insertKeltner(err, keltner, iter) {
             if (!err) {
-                DB_Keltner.insertKeltner(STEP_finish, keltner);
+                DB_Keltner.insertKeltner(STEP_finish, keltner, iter);
             } else {
                 STEP_finish(err);
             }
@@ -141,6 +141,10 @@ module.exports = {
             if (err) {
                 console.log(err);
                 console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1D : '), colors.brightRed('[ FAILED ]'));
+            }
+
+            if(iter){
+                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1D : '), colors.brightGreen('[ DONE ]'));
             }
         }
     }
