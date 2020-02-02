@@ -2,7 +2,7 @@ const moment = require('moment');
 moment.locale('fr');
 
 module.exports = {
-    calculateMMCompare: function(callback, MM1440, date, hour, timestamp) {
+    calculateMMCompare: function(callback, MM1440, date, hour, timestamp, param_fw1) {
         new Promise(function (resolve, reject) {
             if(MM1440.length > 0){
                 // LAST MOVING AVERAGE COMPARAISON
@@ -755,7 +755,7 @@ module.exports = {
                 resolve(mmCompare);
             }
         }).then(function(res){
-            callback(null, res);
+            callback(null, res, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });

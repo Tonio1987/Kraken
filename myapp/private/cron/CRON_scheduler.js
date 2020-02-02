@@ -17,10 +17,11 @@ const CTRL_OHLC = require('../controller/kraken_controller/CTRL_OHLC');
 const CTRL_ATR = require('../controller/kraken_controller/CTRL_ATR');
 
 // ALGORITHM
-const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
-const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
-const CTRL_MMCompareCalculation = require('../controller/algotirhm_controller/CTRL_MMCompare');
-const CTRL_MMIndicators = require('../controller/algotirhm_controller/CTRL_MMIndicators');
+const CTRL_MM = require('../controller/algotirhm_controller/CTRL_MM_Main');
+//const CTRL_MMCalculation = require('../controller/algotirhm_controller/CTRL_MMCalculation');
+//const CTRL_MMEvolCalculation = require('../controller/algotirhm_controller/CTRL_MMEvolCalculation');
+//const CTRL_MMCompareCalculation = require('../controller/algotirhm_controller/CTRL_MMCompare');
+//const CTRL_MMIndicators = require('../controller/algotirhm_controller/CTRL_MMIndicators');
 const CTRL_KeltnerCalculation = require('../controller/algotirhm_controller/CTRL_KeltnerCalculation');
 
 // ROBOT
@@ -64,9 +65,12 @@ let task_LoadATR1d = null;
 
 // ALGORITHM TASKS
 let task_MMCalculation = null;
+/*
+let task_MMCalculation = null;
 let task_MMEvolCalculation = null;
 let task_MMCompareCalculation = null;
 let task_MMIndicators = null;
+*/
 let task_KeltnerCalculation_1H = null;
 let task_KeltnerCalculation_1D = null;
 
@@ -225,6 +229,15 @@ Handler.init_task_LoadATR1D = function(cron_expression){
 // CALCULATE MOVING AVERAGES
 Handler.init_task_MMCalculation = function(cron_expression){
     task_MMCalculation = cron.schedule(cron_expression, () =>  {
+        console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Launch MM ALGORITHMS');
+        CTRL_MM.Launch_MM_Algorithms();
+    }, {
+        scheduled: false
+    });
+};
+/*
+Handler.init_task_MMCalculation = function(cron_expression){
+    task_MMCalculation = cron.schedule(cron_expression, () =>  {
         console.log(moment().format('L') + ' - '+ moment().format('LTS') + ' - CRON -> Calculate MM');
         CTRL_MMCalculation.CalculateMM();
     }, {
@@ -261,7 +274,7 @@ Handler.init_task_MMIndicators = function(cron_expression){
         scheduled: false
     });
 };
-
+*/
 
 // CALCULATE KELTNER 1H
 Handler.init_task_KeltnerCalculation1H = function(cron_expression){
@@ -370,6 +383,9 @@ Handler.stop_task_LoadATR1D = function(){task_LoadATR1d.stop();};
 
 Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
 Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
+/*
+Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
+Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
 
 Handler.start_task_MMEvolCalculation = function(){task_MMEvolCalculation.start();};
 Handler.stop_task_MMEvolCalculation = function(){task_MMEvolCalculation.stop();};
@@ -379,7 +395,7 @@ Handler.stop_task_MMCompareCalculation = function(){task_MMCompareCalculation.st
 
 Handler.start_task_MMIndicators = function(){task_MMIndicators.start();};
 Handler.stop_task_MMIndicators = function(){task_MMIndicators.stop();};
-
+*/
 Handler.start_task_KeltnerCalculation1H = function(){task_KeltnerCalculation_1H.start();};
 Handler.stop_task_KeltnerCalculation1H = function(){task_KeltnerCalculation_1H.stop();};
 

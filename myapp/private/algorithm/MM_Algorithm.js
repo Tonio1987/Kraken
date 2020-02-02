@@ -2,7 +2,7 @@ const moment = require('moment');
 moment.locale('fr');
 
 module.exports = {
-    calculateMM: function(callback, data, date, hour, timestamp) {
+    calculateMM: function(callback, data, date, hour, timestamp, param_fw1) {
         new Promise(function (resolve, reject) {
 
             let count = 0;
@@ -134,7 +134,7 @@ module.exports = {
 
             resolve(mm);
         }).then(function(res){
-            callback(null, res);
+            callback(null, res, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });

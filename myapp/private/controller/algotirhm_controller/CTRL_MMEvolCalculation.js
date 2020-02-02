@@ -6,7 +6,7 @@ const DB_MMEvol = require('../../persistence/algorithm/mm_evol/DB_MobileMEvoluti
 const ALGO_MMEvol = require('../../algorithm/MMEvol_Algorithm');
 
 module.exports = {
-    CalculateMMEvol: function () {
+    CalculateMMEvol: function (callback, step) {
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
@@ -27,33 +27,40 @@ module.exports = {
         function STEP_DB_getLast1440MM(err, data) {
             if(!err) {
                 for(let i=0; i<data.length; i++){
-                    DB_MM.getLast1440MM(STEP_ALGO_calculateMMEvol, data[i].name);
+                    if (i+1 == data.length){
+                        DB_MM.getLast1440MM(STEP_ALGO_calculateMMEvol, data[i].name, true);
+                    }else{
+                        DB_MM.getLast1440MM(STEP_ALGO_calculateMMEvol, data[i].name, false);
+                    }
                 }
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_ALGO_calculateMMEvol(err, data) {
+        function STEP_ALGO_calculateMMEvol(err, data, iter) {
             if(!err) {
-                ALGO_MMEvol.calculateMMEvol(STEP_DB_insertMMEvol, data, date, hour, timestamp);
+                ALGO_MMEvol.calculateMMEvol(STEP_DB_insertMMEvol, data, date, hour, timestamp, iter);
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_DB_insertMMEvol(err, data) {
+        function STEP_DB_insertMMEvol(err, data, iter) {
             if(!err) {
-                DB_MMEvol.insertMMEvolution(STEP_finish, data);
+                DB_MMEvol.insertMMEvolution(STEP_finish, data, iter);
             }else{
                 STEP_finish(err);
             }
         }
 
-        function STEP_finish(err, data) {
+        function STEP_finish(err, data, iter) {
             if (err) {
                 console.log(err);
                 console.log('\x1b[31m', moment().format('L') + ' - ' + moment().format('LTS') + ' - ### CONTROLER ### - > Process Calculate MMEvol FAILED', '\x1b[0m');
+            }
+            if(iter){
+                callback(err, step);
             }
         }
     }
