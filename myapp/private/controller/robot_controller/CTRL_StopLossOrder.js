@@ -199,7 +199,6 @@ module.exports = {
            if(!err){
                if(preparedOrders.orders.length>0){
                    logger.warn('*** CONTROLLER *** -> ROBOT STOP LOSS --- CALL ADD ORDER API');
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- CALL THE ADD ORDER API');
                    API_AddOrder.kraken_AddOrder(STEP_DB_dropOpenOrders, preparedOrders.orders);
                }else{
                    STEP_DB_dropOpenOrders();

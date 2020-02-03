@@ -1,5 +1,8 @@
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
 
-var colors = require('colors/safe');
 const kraken = require('node-kraken-api');
 const moment = require('moment');
 
@@ -12,7 +15,8 @@ const api = kraken({
 function loop(i, orders, callback) {
     if (i < orders.length){
         new Promise(function (resolve, reject) {
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' ***   API   ***'), colors.brightGreen(' - ADD ORDER : '+orders[i].type+' '+orders[i].ordertype+' '+orders[i].volume+' '+orders[i].pair+' price : '+orders[i].price));
+            logger.warn('***   API   *** - ADD ORDER : '+orders[i].type+' '+orders[i].ordertype+' '+orders[i].volume+' '+orders[i].pair+' price : '+orders[i].price);
+
             api.call('AddOrder',
             {
                 pair: orders[i].pair,
