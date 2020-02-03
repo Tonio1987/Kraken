@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const async = require('async');
 const moment = require('moment');
 
@@ -20,10 +24,10 @@ module.exports = {
 
         function STEP_finish(err, data) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- >  Process Purge ATR Data 1 hour '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Purge ATR Data 1 hour ... [ FAILED ]');
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- >  Process Purge ATR Data 1 hour '), colors.brightGreen('[ DONE ]'));
+            logger.warn('*** CONTROLLER *** ->  Process Purge ATR Data 1 hour ... [ DONE ]');
         }
     },
     purgeATRData1d: function () {
@@ -41,10 +45,10 @@ module.exports = {
 
         function STEP_finish(err, data) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- >  Process Purge ATR Data 1 day '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Purge ATR Data 1 day ... [ FAILED ]');
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- >  Process Purge ATR Data 1 day '), colors.brightGreen('[ DONE ]'));
+            logger.warn('*** CONTROLLER *** ->  Process Purge ATR Data 1 day ... [ DONE ]');
         }
     }
 };

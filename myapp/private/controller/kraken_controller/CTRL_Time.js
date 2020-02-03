@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const API_Time = require('../../api/kraken/API_Time');
 const async = require('async');
 const moment = require('moment');
@@ -18,10 +22,10 @@ module.exports = {
         }
         function STEP_finish(err, data) {
             if(err){
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Time : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Check Server time ... [ FAILED ]');
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Time : '), colors.brightGreen('[ DONE ]'));
+            logger.info('*** CONTROLLER *** ->  Process Check Server time ... [ DONE ]');
         }
     }
 };

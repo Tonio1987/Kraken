@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const API_AssetPairs = require('../../api/kraken/API_AssetPairs');
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const async = require('async');
@@ -41,10 +45,10 @@ module.exports = {
         }
         function STEP_finish(err, data) {
             if(err){
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load AssetPairs : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Load Asset Pairs ... [ FAILED ]');
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load AssetPairs : '), colors.brightGreen('[ DONE ]'));
+            logger.info('*** CONTROLLER *** ->  Process Load Asset Pairs ... [ DONE ]');
         }
     }
 };

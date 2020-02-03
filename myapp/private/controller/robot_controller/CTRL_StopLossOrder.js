@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 
 const API_AddOrder = require('../../api/kraken/API_AddOrder');
 const API_CancelOrder = require('../../api/kraken/API_CancelOrder');
@@ -46,22 +50,22 @@ module.exports = {
         });
 
        function STEP_DB_dropOpenOrders_1() {
-           console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- DROP OPEN ORDERS');
+           logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- DROP OPEN ORDERS');
            DB_OpenOrders.dropOpenOrders(STEP_API_getOpenOrders_1);
        }
 
        function STEP_API_getOpenOrders_1(err, data) {
-           console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- CALL OPEN ORDERS API');
+           logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- CALL OPEN ORDERS API');
            API_OpenOrders.kraken_OpenOrders(STEP_DB_insertOpenOrders_1);
        }
 
        function STEP_DB_insertOpenOrders_1(err, data) {
            if(!err){
                if(Object.keys(data).length > 0){
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- PREVIOUS OPEN ORDERS ARE IN POSITION');
+                   logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- PREVIOUS OPEN ORDERS ARE IN POSITION');
                    DB_OpenOrders.upsertOpenOrders(STEP_DB_getAutonomousTrigger, data);
                }else{
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- NO OPEN ORDERS');
+                   logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- NO OPEN ORDERS');
                    STEP_DB_getAutonomousTrigger();
                }
            }else{
@@ -81,10 +85,10 @@ module.exports = {
        function STEP_CHECK_AutonomousMode(err, trigger) {
            if(!err){
                if(trigger[0].active === true){
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- AUTONOMOUS MODE : ON');
+                   logger.warn('*** CONTROLLER *** -> ROBOT STOP LOSS --- AUTONOMOUS MODE : ON');
                    STEP_DB_getOpenOrders();
                }else{
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- AUTONOMOUS MODE : OFF');
+                   logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- AUTONOMOUS MODE : OFF');
                    STEP_finish(null, true);
                }
            }else{
@@ -93,13 +97,13 @@ module.exports = {
        }
 
        function STEP_DB_getOpenOrders() {
-           console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- GET OPEN ORDERS IN DB');
+           logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- GET OPEN ORDERS IN DB');
            DB_OpenOrders.getOpenOrders(STEP_DB_getLastBalanceTimestamp);
        }
 
        function STEP_DB_getLastBalanceTimestamp(err, OpenOrders) {
            if(!err){
-               console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- GET LAST BALANCE');
+               logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- GET LAST BALANCE');
                DB_Balance.getMaxInsertTimestamp(STEP_DB_getLastBalance, OpenOrders);
            }else{
                STEP_finish(err);
@@ -116,7 +120,7 @@ module.exports = {
 
        function STEP_DB_getKeltnerTrigger(err, LastBalance, OpenOrders) {
            if(!err){
-               console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- GET KELTNER TRIGGER');
+               logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- GET KELTNER TRIGGER');
                DB_Trigger.getActiveTriggersKeltner(STEP_DB_getEurPairs, LastBalance, OpenOrders);
            }else{
                STEP_finish(err);
@@ -125,7 +129,7 @@ module.exports = {
 
        function STEP_DB_getEurPairs(err, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
-               console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- GET EURO PAIRS');
+               logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- GET EURO PAIRS');
                let currencyList = [];
                for(let i=0; i<LastBalance.length; i++){
                    currencyList.push(LastBalance[i].currency)
@@ -138,7 +142,7 @@ module.exports = {
 
        function STEP_DB_getLastKeltner(err, eurPairs, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders) {
            if(!err){
-               console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- GET LAST KELTYNER');
+               logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- GET LAST KELTYNER');
                let pairList = [];
                for(let i=0; i<eurPairs.length; i++){
                    pairList.push(eurPairs[i].name);
@@ -151,7 +155,7 @@ module.exports = {
 
        function STEP_DB_getLastTickerTimestamp(err, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders) {
            if(!err){
-               console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- GET LAST TICKER');
+               logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- GET LAST TICKER');
                DB_Ticker.getMaxInsertTimestamp(STEP_DB_getLastTicker, pairList, LastKeltners, currencyList, ActiveTriggersKeltner,  LastBalance, OpenOrders);
            }else{
                STEP_finish(err);
@@ -166,10 +170,11 @@ module.exports = {
            }
        }
 
+       // PREPARE ORDERS
         function STEP_ALGO_PrepareOrder(err, LastTicker, pairList, LastKeltners, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders) {
            if(!err){
-               console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- PREPARING ORDERS');
-                ALGO_AddOrder.prepareStopLossOrders(STEP_API_cancelOldStopLossOrder, LastTicker, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders);
+               logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- PREPARING ORDERS');
+               ALGO_AddOrder.prepareStopLossOrders(STEP_API_cancelOldStopLossOrder, LastTicker, LastKeltners, pairList, currencyList, ActiveTriggersKeltner, LastBalance, OpenOrders);
             }else{
                 STEP_finish(err);
             }
@@ -179,7 +184,7 @@ module.exports = {
         function STEP_API_cancelOldStopLossOrder(err, preparedOrders) {
            if(!err){
                if(preparedOrders.ordersToCancel.length>0){
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- CALL THE CANCEL ORDER API');
+                   logger.warn('*** CONTROLLER *** -> ROBOT STOP LOSS --- CALL CANCEL ORDER API');
                    API_CancelOrder.kraken_CancelOrder(STEP_API_addNewStopLossOrder, preparedOrders.ordersToCancel, preparedOrders);
                }else{
                    STEP_API_addNewStopLossOrder(err,  preparedOrders);
@@ -193,6 +198,7 @@ module.exports = {
        function STEP_API_addNewStopLossOrder(err, preparedOrders) {
            if(!err){
                if(preparedOrders.orders.length>0){
+                   logger.warn('*** CONTROLLER *** -> ROBOT STOP LOSS --- CALL ADD ORDER API');
                    console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- CALL THE ADD ORDER API');
                    API_AddOrder.kraken_AddOrder(STEP_DB_dropOpenOrders, preparedOrders.orders);
                }else{
@@ -207,22 +213,22 @@ module.exports = {
            if(err){
               console.log(err);
            }
-           console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- DROP OPEN ORDERS');
+           logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- DROP OPEN ORDERS');
            DB_OpenOrders.dropOpenOrders(STEP_API_getOpenOrders);
        }
 
        function STEP_API_getOpenOrders(err, data) {
-            console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- CALL OPEN ORDERS API');
-            API_OpenOrders.kraken_OpenOrders(STEP_DB_insertOpenOrders);
+           logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- CALL OPEN ORDERS API');
+           API_OpenOrders.kraken_OpenOrders(STEP_DB_insertOpenOrders);
        }
 
        function STEP_DB_insertOpenOrders(err, data) {
            if(!err){
                if(Object.keys(data).length > 0){
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- NEW OPEN ORDERS ARE IN POSITION');
+                   logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- NEW OPEN ORDERS ARE IN POSITION');
                    DB_OpenOrders.upsertOpenOrders(STEP_finish, data);
                }else{
-                   console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +'--- NO OPEN ORDERS');
+                   logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS --- NO OPEN ORDER');
                    STEP_finish(false);
                }
            }else{
@@ -233,9 +239,9 @@ module.exports = {
         function STEP_finish(err, data) {
             if(err){
                 console.log(err);
-                console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +' PROCESS STOP LOSS ORDER : '.white + '[ FAILED ]'.brightRed);
+                logger.error('*** CONTROLLER *** -> ROBOT STOP LOSS ---  PROCESS STOP LOSS ORDER : [ FAILED ]');
             }
-            console.log(moment().format('L').yellow + ' - ' + moment().format('LTS').yellow + ' *** CONTROLLER *** '.cyan +'- ROBOT STOP LOSS '.magenta +' PROCESS STOP LOSS ORDER : '.white + '[ DONE ]'.brightGreen);
+            logger.info('*** CONTROLLER *** -> ROBOT STOP LOSS ---  PROCESS STOP LOSS ORDER : [ DONE ]');
         }
     }
 };

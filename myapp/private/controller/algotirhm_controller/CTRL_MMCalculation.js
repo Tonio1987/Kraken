@@ -1,4 +1,8 @@
-var colors = require('colors/safe');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const async = require('async');
 const moment = require('moment');
 const DB_AssetPairs = require('../../persistence/algorithm/mm/DB_AssetPairs');
@@ -58,11 +62,11 @@ module.exports = {
 
         function STEP_finish(err, data, iter) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate MM : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Calculate MM ... [ FAILED ]');
             }
             if(iter){
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate MM : '), colors.brightGreen('[ DONE ]'));
+                logger.info('*** CONTROLLER *** ->  Process Calculate MM ... [ DONE ]');
                 callback();
             }
         }

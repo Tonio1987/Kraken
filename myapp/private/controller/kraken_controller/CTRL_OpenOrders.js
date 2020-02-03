@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const API_OpenOrders = require('../../api/kraken/API_OpenOrders');
 const DB_OpenOrders = require('../../persistence/kraken/DB_OpenOrders');
 const async = require('async');
@@ -41,10 +45,10 @@ module.exports = {
         }
         function STEP_finish(err, data) {
             if(err){
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Open Orders : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Load Open Orders ... [ FAILED ]');
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Open Orders : '), colors.brightGreen('[ DONE ]'));
+            logger.info('*** CONTROLLER *** ->  Process Load Open Orders ... [ DONE ]');
         }
     }
 };

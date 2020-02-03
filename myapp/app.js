@@ -1,6 +1,7 @@
 // CONFIGURE ENV
 require('dotenv').config();
 
+
 // CALL TRADING ROBOT
 var robot = require('./private/TraderRobot');
 

@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_OHLC = require('../../persistence/kraken/DB_OHLC');
 const API_OHLC = require('../../api/kraken/API_OHLC');
@@ -60,12 +64,11 @@ module.exports = {
         }
         function STEP_finish(err, data, iter) {
             if(err){
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load OHLC 1 HOUR : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Load OHLC 1 HOUR ... [ FAILED ]');
             }
-
             if(iter){
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load OHLC 1 HOUR : '), colors.brightGreen('[ DONE ]'));
+                logger.info('*** CONTROLLER *** ->  Process Load OHLC 1 HOUR ... [ DONE ]');
             }
         }
     },
@@ -115,13 +118,12 @@ module.exports = {
         }
 
         function STEP_finish(err, data, iter) {
-            if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load OHLC 1 DAY : '), colors.brightRed('[ FAILED ]'));
+            if(err){
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Load OHLC 1 DAY ... [ FAILED ]');
             }
-
             if(iter){
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load OHLC 1 DAY : '), colors.brightGreen('[ DONE ]'));
+                logger.info('*** CONTROLLER *** ->  Process Load OHLC 1 DAY ... [ DONE ]');
             }
         }
     }

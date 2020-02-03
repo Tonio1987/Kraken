@@ -1,4 +1,7 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
 const async = require('async');
 const moment = require('moment');
 
@@ -34,10 +37,10 @@ module.exports = {
 
         function STEP_finish(err, data) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Purge MobileM Compare Data : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Purge MobileM Compare data ... [ FAILED ]');
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Purge MobileM Compare Data : '), colors.brightGreen('[ DONE ]'));
+            logger.warn('*** CONTROLLER *** ->  Process Purge MobileM Compare data ... [ DONE ]');
         }
     }
 };

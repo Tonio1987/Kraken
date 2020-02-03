@@ -1,4 +1,8 @@
-var colors = require('colors/safe');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const async = require('async');
 const moment = require('moment');
 
@@ -18,7 +22,7 @@ module.exports = {
         });
 
         function STEP_CTRL_MMCalculation() {
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM ... '), color.brightYellow('[ RUNNING ]'));
+            logger.info('*** CONTROLLER *** ->  Processing MM ...  [ RUNNING ]');
             CTRL_MMCalculation.CalculateMM(STEP_CTRL_MMAlgorithms);
         }
 
@@ -32,25 +36,26 @@ module.exports = {
             });
 
             function STEP_CTRL_MMEvolCalculation() {
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Evol ... '), color.brightYellow('[ RUNNING ]'));
+                logger.info('*** CONTROLLER *** ->  Processing MMEvolCalculation ...  [ RUNNING ]');
                 CTRL_MMEvolCalculation.CalculateMMEvol(STEP_finish, 'MMEvolCalculation');
             }
             function STEP_CTRL_MMCompareCalculation() {
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Compare ... '), color.brightYellow('[ RUNNING ]'));
+                logger.info('*** CONTROLLER *** ->  Processing MMCompare ...  [ RUNNING ]');
                 CTRL_MMCompare.CalculateMMCompare(STEP_finish, 'MMCompare');
             }
             function STEP_CTRL_MMIndicators() {
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Processing MM Indicators ... '), color.brightYellow('[ RUNNING ]'));
+                logger.info('*** CONTROLLER *** ->  Processing MMIndicators ...  [ RUNNING ]');
                 CTRL_MMIndicators.CalculateMMIndicators(STEP_finish, 'MMIndicators');
             }
         }
 
         function STEP_finish(err, step) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process MM : '+step+' '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process MM '+step+' ... [ FAILED ]');
+
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process MM : '+step+' '), colors.brightGreen('[ DONE ]'));
+            logger.info('*** CONTROLLER *** ->  Process MM '+step+' ... [ DONE ]');
         }
     }
 };

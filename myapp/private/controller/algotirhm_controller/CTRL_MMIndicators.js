@@ -1,4 +1,8 @@
-var colors = require('colors/safe');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const async = require('async');
 const moment = require('moment');
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
@@ -68,10 +72,11 @@ module.exports = {
 
         function STEP_finish(err, data, iter) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate MM Indicator : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Calculate MM Indicators ... [ FAILED ]');
             }
             if(iter){
+                logger.info('*** CONTROLLER *** ->  Process Calculate MM Indicators ... [ DONE ]');
                 callback(err, step);
             }
         }

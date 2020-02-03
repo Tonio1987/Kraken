@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const API_TradeBalance = require('../../api/kraken/API_TradeBalance');
 const DB_TradeBalance = require('../../persistence/kraken/DB_TradeBalance');
 const async = require('async');
@@ -33,10 +37,10 @@ module.exports = {
         }
         function STEP_finish(err, data) {
             if(err){
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Trade Balance : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Load Trade Balance ... [ FAILED ]');
             }
-            console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Trade Balance : '), colors.brightGreen('[ DONE ]'));
+            logger.info('*** CONTROLLER *** ->  Process Load Trade Balance ... [ DONE ]');
         }
 
 

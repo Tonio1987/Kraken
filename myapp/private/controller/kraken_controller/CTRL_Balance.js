@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const API_Balance = require('../../api/kraken/API_Balance');
 const DB_Balance = require('../../persistence/kraken/DB_Balance');
 const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
@@ -88,12 +92,11 @@ module.exports = {
         }
         function STEP_finish(err, data, iter) {
             if(err){
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Balance : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Load Balance ... [ FAILED ]');
             }
-
             if(iter){
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Balance : '), colors.brightGreen('[ DONE ]'));
+                logger.info('*** CONTROLLER *** ->  Process Load Balance ... [ DONE ]');
             }
         }
     }

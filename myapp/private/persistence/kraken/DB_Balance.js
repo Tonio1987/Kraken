@@ -1,3 +1,8 @@
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const moment = require('moment/moment');
 const MongoClient = require('mongodb').MongoClient;
 
@@ -9,7 +14,7 @@ function prepareData(lastBalance, bid_price, currency, nb_units, date, hour, tim
         if(lastBalance.hasOwnProperty(elem)){
             if(lastBalance[elem].currency == currency){
                 if(lastBalance[elem].units != nb_units){
-                    console.log('\x1b[32m', moment().format('L') + ' - ' + moment().format('LTS') + ' - > --- DB BALANCE --- NEW ELEMENT IN BALANCE : '+currency + ' '+ nb_units +  '  OLD : '+ lastBalance[elem].units, '\x1b[0m');
+                    logger.warn('*** CONTROLLER *** ->  DB BALANCE --- NEW ELEMENT IN BALANCE : '+currency + ' '+ nb_units +  '  OLD : '+ lastBalance[elem].units);
                     change = true;
                 }
             }

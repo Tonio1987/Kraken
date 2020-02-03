@@ -1,4 +1,8 @@
-var colors = require('colors');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
 const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
 const API_Ticker = require('../../api/kraken/API_Ticker');
@@ -56,12 +60,11 @@ module.exports = {
         }
         function STEP_finish(err, data, iter) {
             if(err){
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Ticker : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Load Ticker... [ FAILED ]');
             }
-
             if(iter){
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Load Ticker : '), colors.brightGreen('[ DONE ]'));
+                logger.info('*** CONTROLLER *** ->  Process Load Ticker ... [ DONE ]');
             }
         }
     }

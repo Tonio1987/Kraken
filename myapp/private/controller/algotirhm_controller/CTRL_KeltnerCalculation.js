@@ -1,4 +1,8 @@
-var colors = require('colors/safe');
+// LOG SYSTEM
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const async = require('async');
 const moment = require('moment');
 const DB_AssetPairs = require('../../persistence/algorithm/keltner/DB_AssetPairs');
@@ -70,11 +74,11 @@ module.exports = {
 
         function STEP_finish(err, data, iter) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1H : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Calculate Keltner 1H ... [ FAILED ]');
             }
             if(iter){
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1H : '), colors.brightGreen('[ DONE ]'));
+                logger.info('*** CONTROLLER *** ->  Process Calculate Keltner 1H ... [ DONE ]');
             }
         }
     },
@@ -139,12 +143,11 @@ module.exports = {
 
         function STEP_finish(err, data, iter) {
             if (err) {
-                console.log(err);
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1D : '), colors.brightRed('[ FAILED ]'));
+                logger.error(err);
+                logger.error('*** CONTROLLER *** ->  Process Calculate Keltner 1D ... [ FAILED ]');
             }
-
             if(iter){
-                console.log(colors.yellow(moment().format('L') + ' - ' + moment().format('LTS')), colors.cyan(' *** CONTROLER ***'), colors.white('- > Process Calculate Keltner 1D : '), colors.brightGreen('[ DONE ]'));
+                logger.info('*** CONTROLLER *** ->  Process Calculate Keltner 1D ... [ DONE ]');
             }
         }
     }
