@@ -15,7 +15,9 @@ module.exports = {
     Launch_MM_Algorithms: function () {
         async.series([
             STEP_CTRL_MMCalculation,
-            STEP_CTRL_MMAlgorithms,
+            STEP_CTRL_MMEvolCalculation,
+            STEP_CTRL_MMCompareCalculation,
+            STEP_CTRL_MMIndicators,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
@@ -23,39 +25,28 @@ module.exports = {
 
         function STEP_CTRL_MMCalculation() {
             logger.info('*** CONTROLLER *** ->  Processing MM ...  [ RUNNING ]');
-            CTRL_MMCalculation.CalculateMM(STEP_CTRL_MMAlgorithms);
+            CTRL_MMCalculation.CalculateMM(STEP_CTRL_MMEvolCalculation, STEP_finish);
+        }
+        function STEP_CTRL_MMEvolCalculation() {
+            logger.info('*** CONTROLLER *** ->  Processing MMEvolCalculation ...  [ RUNNING ]');
+            CTRL_MMEvolCalculation.CalculateMMEvol(STEP_CTRL_MMCompareCalculation, STEP_finish);
+        }
+        function STEP_CTRL_MMCompareCalculation() {
+            logger.info('*** CONTROLLER *** ->  Processing MMCompare ...  [ RUNNING ]');
+            CTRL_MMCompare.CalculateMMCompare(STEP_CTRL_MMIndicators, STEP_finish);
+        }
+        function STEP_CTRL_MMIndicators() {
+            logger.info('*** CONTROLLER *** ->  Processing MMIndicators ...  [ RUNNING ]');
+            CTRL_MMIndicators.CalculateMMIndicators(STEP_finish, STEP_finish);
         }
 
-        function STEP_CTRL_MMAlgorithms() {
-            async.parallel([
-                STEP_CTRL_MMEvolCalculation,
-                STEP_CTRL_MMCompareCalculation,
-                STEP_CTRL_MMIndicators
-            ], function (err, result) {
-                // Nothing to do here
-            });
-
-            function STEP_CTRL_MMEvolCalculation() {
-                logger.info('*** CONTROLLER *** ->  Processing MMEvolCalculation ...  [ RUNNING ]');
-                CTRL_MMEvolCalculation.CalculateMMEvol(STEP_finish, 'MMEvolCalculation');
-            }
-            function STEP_CTRL_MMCompareCalculation() {
-                logger.info('*** CONTROLLER *** ->  Processing MMCompare ...  [ RUNNING ]');
-                CTRL_MMCompare.CalculateMMCompare(STEP_finish, 'MMCompare');
-            }
-            function STEP_CTRL_MMIndicators() {
-                logger.info('*** CONTROLLER *** ->  Processing MMIndicators ...  [ RUNNING ]');
-                CTRL_MMIndicators.CalculateMMIndicators(STEP_finish, 'MMIndicators');
-            }
-        }
-
-        function STEP_finish(err, step) {
+        function STEP_finish(err) {
             if (err) {
                 logger.error(err);
-                logger.error('*** CONTROLLER *** ->  Process MM '+step+' ... [ FAILED ]');
+                logger.error('*** CONTROLLER *** ->  Process MM ... [ FAILED ]');
 
             }
-            logger.info('*** CONTROLLER *** ->  Process MM '+step+' ... [ DONE ]');
+            logger.info('*** CONTROLLER *** ->  Process MM  ... [ DONE ]');
         }
     }
 };

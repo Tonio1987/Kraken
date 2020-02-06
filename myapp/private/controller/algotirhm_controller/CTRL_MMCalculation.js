@@ -11,7 +11,7 @@ const DB_MM = require('../../persistence/algorithm/mm/DB_MobileM');
 const ALGO_MM = require('../../algorithm/MM_Algorithm');
 
 module.exports = {
-    CalculateMM: function (callback) {
+    CalculateMM: function (callback, err_callback) {
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
@@ -64,6 +64,7 @@ module.exports = {
             if (err) {
                 logger.error(err);
                 logger.error('*** CONTROLLER *** ->  Process Calculate MM ... [ FAILED ]');
+                err_callback(err);
             }
             if(iter){
                 logger.info('*** CONTROLLER *** ->  Process Calculate MM ... [ DONE ]');

@@ -43,15 +43,20 @@ module.exports = {
 
         function STEP_DB_getEurPair(err, data) {
             if(!err){
-                let j = data.length;
+                let j = 0;
+                let k = 0;
+                for (var i in data) {
+                    j++;
+                }
                 for (var i in data) {
                     if (data.hasOwnProperty(i)) {
-                        if (j+1 == data.length){
+                        if (k === j-1){
                             DB_AssetPairs.getEurPair(STEP_DB_getLastTicker, i, data[i], true);
                         }else{
                             DB_AssetPairs.getEurPair(STEP_DB_getLastTicker, i, data[i], false);
                         }
                     }
+                    k++;
                 }
             }else {
                 STEP_finish(err);

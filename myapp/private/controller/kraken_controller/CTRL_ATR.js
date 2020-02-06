@@ -110,9 +110,9 @@ module.exports = {
             if (!err) {
                 for(let i=0; i<allPairs.length; i++){
                     if (i+1 == allPairs.length){
-                        DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1H, allPairs[i].name, count, true);
+                        DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1D, allPairs[i].name, count, true);
                     }else{
-                        DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1H, allPairs[i].name, count, false);
+                        DB_OHLC.getLast14OHLC_1d(STEP_DB_load_LastATR1D, allPairs[i].name, count, false);
                     }
 
                 }

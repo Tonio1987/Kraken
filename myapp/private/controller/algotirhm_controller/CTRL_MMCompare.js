@@ -11,7 +11,7 @@ const DB_MMCompare = require('../../persistence/algorithm/mm_compare/DB_MobileMC
 const ALGO_MMCompare = require('../../algorithm/MM_Compare_Algorithm');
 
 module.exports = {
-    CalculateMMCompare: function (callback, step) {
+    CalculateMMCompare: function (callback, err_callback) {
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
@@ -64,10 +64,11 @@ module.exports = {
             if (err) {
                 logger.error(err);
                 logger.error('*** CONTROLLER *** ->  Process Calculate MM Compare ... [ FAILED ]');
+                err_callback(err);
             }
             if(iter){
                 logger.info('*** CONTROLLER *** ->  Process Calculate MM Compare ... [ DONE ]');
-                callback(err, step);
+                callback();
             }
         }
     }

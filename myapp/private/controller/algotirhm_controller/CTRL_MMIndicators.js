@@ -12,7 +12,7 @@ const DB_MMIndicator = require('../../persistence/algorithm/mm_indicators/DB_MMI
 const ALGO_MMIndicators = require('../../algorithm/MM_Indicator_Algorithm');
 
 module.exports = {
-    CalculateMMIndicators: function (callback, step) {
+    CalculateMMIndicators: function (callback, err_callback) {
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
@@ -74,10 +74,11 @@ module.exports = {
             if (err) {
                 logger.error(err);
                 logger.error('*** CONTROLLER *** ->  Process Calculate MM Indicators ... [ FAILED ]');
+                err_callback(err);
             }
             if(iter){
                 logger.info('*** CONTROLLER *** ->  Process Calculate MM Indicators ... [ DONE ]');
-                callback(err, step);
+                callback();
             }
         }
     }

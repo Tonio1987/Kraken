@@ -216,7 +216,7 @@ module.exports = {
             callback(err, null);
         });
     },
-    getLastATR_1h: function (callback, pair, param_fw1, param_fw2) {
+    getLastATR_1h: function (callback, pair, param_fw1, param_fw2, param_fw3) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -233,12 +233,12 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair, param_fw1, param_fw2);
+            callback(null, data, pair, param_fw1, param_fw2, param_fw3);
         }).catch(function(err) {
             callback(err, null);
         });
     },
-    getLastATR_1d: function (callback, pair, param_fw1, param_fw2) {
+    getLastATR_1d: function (callback, pair, param_fw1, param_fw2, param_fw3) {
         new Promise(function (resolve, reject) {
             MongoClient.connect(process.env.MONGO_SERVER_URL, {useUnifiedTopology: true}, function(err, db) {
                 if (err){
@@ -255,7 +255,7 @@ module.exports = {
                 }
             });
         }).then(function(data){
-            callback(null, data, pair, param_fw1, param_fw2);
+            callback(null, data, pair, param_fw1, param_fw2, param_fw3);
         }).catch(function(err) {
             callback(err, null);
         });

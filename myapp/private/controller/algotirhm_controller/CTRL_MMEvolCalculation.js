@@ -11,7 +11,7 @@ const DB_MMEvol = require('../../persistence/algorithm/mm_evol/DB_MobileMEvoluti
 const ALGO_MMEvol = require('../../algorithm/MMEvol_Algorithm');
 
 module.exports = {
-    CalculateMMEvol: function (callback, step) {
+    CalculateMMEvol: function (callback, err_callback) {
         var date = moment().format('L');
         var hour = moment().format('LTS');
         var timestamp = new Date().getTime();
@@ -63,10 +63,11 @@ module.exports = {
             if (err) {
                 logger.error(err);
                 logger.error('*** CONTROLLER *** ->  Process Calculate MM Evolution ... [ FAILED ]');
+                err_callback(err);
             }
             if(iter){
                 logger.info('*** CONTROLLER *** ->  Process Calculate MM Evolution ... [ DONE ]');
-                callback(err, step);
+                callback();
             }
         }
     }
