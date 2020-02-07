@@ -93,7 +93,6 @@
                             <th scope="col">Current Price</th>
                             <th scope="col">EUR value</th>
                             <th scope="col">Inv Evol</th>
-                            <th scope="col">SLoss Price</th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="asset in myBalance">
@@ -103,11 +102,7 @@
                             <td>{{asset.price.toFixed(4)}} &euro;</td>
                             <td>{{asset.eur_value.toFixed(2)}} &euro;</td>
                             <td ng-class="{'text-red': asset.evolution < 0,'text-green': asset.evolution >= 0}">{{asset.evolution.toFixed(3)}} &percnt;</td>
-                            <td>
-                                ATR 1X - <label ng-class="{'text-yellow': asset.hyp_sell_price < asset.buy_price,'text-green': asset.hyp_sell_price >= asset.buy_price}">{{asset.hyp_sell_price.toFixed(4)}} &euro; </label><br/>
-                                ATR 2X - <label ng-class="{'text-yellow': asset.hyp_sell_price2x < asset.buy_price,'text-green': asset.hyp_sell_price2x >= asset.buy_price}">{{asset.hyp_sell_price2x.toFixed(4)}} &euro; </label><br/>
-                                ATR 3X - <label ng-class="{'text-yellow': asset.hyp_sell_price3x < asset.buy_price,'text-green': asset.hyp_sell_price3x >= asset.buy_price}">{{asset.hyp_sell_price3x.toFixed(4)}} &euro; </label><br/>
-                            </td>
+
                         </tr>
                         </tbody>
                     </table>
@@ -345,16 +340,16 @@
                                 labels: datetimeOfTradeBalances,
                                 datasets: [
                                     {
+                                        label: "Stop Loss Position",
+                                        backgroundColor: "#ffb3b3",
+                                        pointBackgroundColor: "#ff6666",
+                                        data: arrayOStopLoss
+                                    },
+                                    {
                                         label: "Trade Balance",
                                         backgroundColor: "rgba(224,224,224, 1)",
                                         pointBackgroundColor: "rgba(160,160,160, 1)",
                                         data: arrayOfTradeBalances
-                                    },
-                                    {
-                                        label: "Stop Loss Position",
-                                        backgroundColor: "#ffb3b3",
-                                        pointBackgroundColor: " #ff6666",
-                                        data: arrayOStopLoss
                                     }
                                 ]
                             };
@@ -408,18 +403,18 @@
                         labels: datetimeOfTradeBalances,
                         datasets: [
                             {
-                                label: "Trade Balance",
-                                backgroundColor: "rgba(224,224,224, 1)",
-                                pointBackgroundColor: "rgba(160,160,160, 1)",
-                                pointStyle: "cross",
-                                data: arrayOfTradeBalances
-                            },
-                            {
                                 label: "Stop Loss Position",
                                 backgroundColor: "#ffb3b3",
                                 pointBackgroundColor: "#ff6666",
                                 pointStyle: 'none',
                                 data: arrayOStopLoss
+                            },
+                            {
+                                label: "Trade Balance",
+                                backgroundColor: "rgba(224,224,224, 1)",
+                                pointBackgroundColor: "rgba(160,160,160, 1)",
+                                pointStyle: "cross",
+                                data: arrayOfTradeBalances
                             }
                         ]
                     };
@@ -507,8 +502,13 @@
                                     for(let elem in Balance){
                                         if(Balance.hasOwnProperty(elem)){
                                             let evolution = 0;
-                                            let c = Balance[elem].currency.substr(1);
-                                            console.log(openOrders[order].pair+' '+c);
+                                            let c = '';
+                                            if(Balance[elem].currency.substr(0,1) === 'X'){
+                                                c = Balance[elem].currency.substr(1);
+                                            }else{
+                                                c = Balance[elem].currency;
+                                            }
+
                                             if(openOrders[order].pair === c+"EUR"){
                                                 evolution = (((openOrders[order].price - Balance[elem].buy_price ) / Balance[elem].buy_price)*100).toFixed(2);
                                                 openOrders[order].evolution = evolution;
@@ -539,8 +539,12 @@
                                     for(let elem in Balance){
                                         if(Balance.hasOwnProperty(elem)){
                                             let evolution = 0;
-                                            let c = Balance[elem].currency.substr(1);
-                                            console.log(openOrders[order].pair+' '+c);
+                                            let c = '';
+                                            if(Balance[elem].currency.substr(0,1) === 'X'){
+                                                c = Balance[elem].currency.substr(1);
+                                            }else{
+                                                c = Balance[elem].currency;
+                                            }
                                             if(openOrders[order].pair === c+"EUR"){
                                                 evolution = (((openOrders[order].price - Balance[elem].buy_price ) / Balance[elem].buy_price)*100).toFixed(2);
                                                 openOrders[order].evolution = evolution;

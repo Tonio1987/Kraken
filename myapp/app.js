@@ -1,6 +1,8 @@
 // CONFIGURE ENV
 require('dotenv').config();
 
+// NOTIFIER
+var Push = require( 'pushover-notifications' )
 
 // CALL TRADING ROBOT
 var robot = require('./private/TraderRobot');
@@ -88,4 +90,25 @@ app.use('/settings_autonomousModeTrigger', triggerAutonomousModeRouter);
 app.use('/settings_changeAutonomousModeTriggerStatus', changeAutonomousModeTriggerStatusRouter);
 
 // INIT APP
+var p = new Push( {
+    user: process.env['PUSHOVER_USER'],
+    token: process.env['PUSHOVER_TOKEN'],
+})
+
+var msg = {
+    message: 'Kraken - Serve is RUNNING !',	// required
+    title: "Kraken  - Serve is RUNNING !",
+    sound: 'magic',
+    device: 'IphoneXSTonio',
+    priority: 1
+}
+
+p.send( msg, function( err, result ) {
+    if ( err ) {
+        throw(err);
+    }
+    console.log( result );
+})
+
+
 module.exports = app;

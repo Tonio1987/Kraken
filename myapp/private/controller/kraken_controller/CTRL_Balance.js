@@ -7,6 +7,7 @@ const API_Balance = require('../../api/kraken/API_Balance');
 const DB_Balance = require('../../persistence/kraken/DB_Balance');
 const DB_Ticker = require('../../persistence/kraken/DB_Ticker');
 const DB_AssetPairs = require('../../persistence/kraken/DB_AssetPairs');
+const NOTIFIER = require('../../notification/notify');
 const async = require('async');
 const moment = require('moment');
 
@@ -32,6 +33,7 @@ module.exports = {
             STEP_DB_getLastTicker,
             STEP_DB_getLastBalance,
             STEP_DB_insertBalance,
+            STEP_API_Notify_Change,
             STEP_finish
         ], function (err, result) {
             // Nothing to do here
@@ -87,13 +89,26 @@ module.exports = {
         function STEP_DB_insertBalance(err, lastBalance, currency, ticker, nb_units, iter) {
             if(!err){
                 if(ticker.length > 0){
-                    DB_Balance.insertBalance(STEP_finish, lastBalance, ticker[0].bid_price, currency, nb_units, date, hour, timestamp, iter);
+                    DB_Balance.insertBalance(STEP_API_Notify_Change, lastBalance, ticker[0].bid_price, currency, nb_units, date, hour, timestamp, iter);
                 }else{
-                    DB_Balance.insertBalance(STEP_finish, lastBalance, 0, currency, nb_units, date, hour, timestamp, iter);
+                    DB_Balance.insertBalance(STEP_API_Notify_Change, lastBalance, 0, currency, nb_units, date, hour, timestamp, iter);
                 }
             }else{
                 STEP_finish(err);
             }
+        }
+
+        function STEP_API_Notify_Change(err, data, change, iter){
+            if(!err){
+                if(change){
+                    NOTIFIER.notify(STEP_finish, "Kraken - New Elements in Balance !", "Kraken - New Elements in Balance !", iter);
+                }else{
+                    STEP_finish(err, data, iter);
+                }
+            }else{
+                STEP_finish(err);
+            }
+
         }
         function STEP_finish(err, data, iter) {
             if(err){

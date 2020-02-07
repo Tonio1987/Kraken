@@ -9,7 +9,7 @@ module.exports = {
             STEP_DB_getBalanceMaxInsertTimestamp,
             STEP_DB_getLastBalance,
             STEP_DB_getBalanceChanges,
-            STEP_DB_getKeltnerMaxInsertTimestamp,,
+            STEP_DB_getKeltnerMaxInsertTimestamp,
             STEP_DB_getLastKeltner,
             STEP_ALGO_CalculateCurrencyEvolution,
             STEP_finish
