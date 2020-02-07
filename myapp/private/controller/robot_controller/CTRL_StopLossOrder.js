@@ -213,7 +213,7 @@ module.exports = {
            if(!err) {
                let message = '';
                for(let i=0; i<data.length; i++){
-                   message = message+'New Stop Loss !\n '+orders[i].type+' '+orders[i].ordertype+' \n'+orders[i].volume+' '+orders[i].pair+' \nprice : '+orders[i].price+'\n\n';
+                   message = message+'New Stop Loss !\n '+data[i].type+' '+data[i].ordertype+' \n'+data[i].volume+' '+data[i].pair+' \nprice : '+data[i].price+'\n\n';
                }
                NOTIFIER.notify(STEP_DB_dropOpenOrders, message, "Kraken - New Stop Loss !");
            }else{
