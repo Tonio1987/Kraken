@@ -3,6 +3,7 @@ var log4js = require('log4js');
 var logger = log4js.getLogger();
 logger.level = 'debug';
 
+const NOTIFIER = require('../../notification/notify');
 
 const API_AddOrder = require('../../api/kraken/API_AddOrder');
 const API_CancelOrder = require('../../api/kraken/API_CancelOrder');
@@ -199,12 +200,24 @@ module.exports = {
            if(!err){
                if(preparedOrders.orders.length>0){
                    logger.warn('*** CONTROLLER *** -> ROBOT STOP LOSS --- CALL ADD ORDER API');
-                   API_AddOrder.kraken_AddOrder(STEP_DB_dropOpenOrders, preparedOrders.orders);
+                   API_AddOrder.kraken_AddOrder(STEP_API_Notify_Change, preparedOrders.orders);
                }else{
                    STEP_DB_dropOpenOrders();
                }
            }else{
                STEP_finish(err);
+           }
+       }
+
+       function STEP_API_Notify_Change(err, data){
+           if(!err) {
+               let message = '';
+               for(let i=0; i<data.length; i++){
+                   message = message+'New Stop Loss !\n '+orders[i].type+' '+orders[i].ordertype+' \n'+orders[i].volume+' '+orders[i].pair+' \nprice : '+orders[i].price+'\n\n';
+               }
+               NOTIFIER.notify(STEP_DB_dropOpenOrders, message, "Kraken - New Stop Loss !");
+           }else{
+               STEP_DB_dropOpenOrders(err, data);
            }
        }
 

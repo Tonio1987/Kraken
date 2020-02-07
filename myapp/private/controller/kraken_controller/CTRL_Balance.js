@@ -108,8 +108,8 @@ module.exports = {
             }else{
                 STEP_finish(err);
             }
-
         }
+
         function STEP_finish(err, data, iter) {
             if(err){
                 logger.error(err);
