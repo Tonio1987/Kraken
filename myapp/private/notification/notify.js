@@ -22,7 +22,6 @@ module.exports = {
                 resolve(result);
             })
         }).then(function(res){
-            console.log( res );
             callback(null, res, param_fw1);
         }).catch(function(err) {
             callback(err, null, param_fw1);
