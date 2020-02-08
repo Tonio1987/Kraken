@@ -63,7 +63,7 @@ module.exports = {
                 }
             });
         }).then(function(res){
-            callback(null, res, elementOfMyBalance.change, param_fw1);
+            callback(null, res, elementOfMyBalance, param_fw1);
         }).catch(function(err) {
             callback(err, null);
         });

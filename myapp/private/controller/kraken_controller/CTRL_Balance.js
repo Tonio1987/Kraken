@@ -98,10 +98,10 @@ module.exports = {
             }
         }
 
-        function STEP_API_Notify_Change(err, data, change, iter){
+        function STEP_API_Notify_Change(err, data, elementOfBalance, iter){
             if(!err){
-                if(change){
-                    NOTIFIER.notify(STEP_finish, "Kraken - New Elements in Balance ! "+data.units+" "+data.currency+" - Price : "+data.price+" - EUR Value : "+data.eur_value, "Kraken - New Elements in Balance !", 'bugle', iter);
+                if(elementOfBalance.change){
+                    NOTIFIER.notify(STEP_finish, "Kraken - New Elements in Balance ! "+elementOfBalance.units+" "+elementOfBalance.currency+" - Price : "+elementOfBalance.price+" - EUR Value : "+elementOfBalance.eur_value, "Kraken - New Elements in Balance !", 'bugle', iter);
                 }else{
                     STEP_finish(err, data, iter);
                 }
