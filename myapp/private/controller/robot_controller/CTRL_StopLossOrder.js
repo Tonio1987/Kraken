@@ -215,7 +215,7 @@ module.exports = {
                for(let i=0; i<data.length; i++){
                    message = message+'New Stop Loss !\n '+data[i].type+' '+data[i].ordertype+' \n'+data[i].volume+' '+data[i].pair+' \nprice : '+data[i].price+'\n\n';
                }
-               NOTIFIER.notify(STEP_DB_dropOpenOrders, message, "Kraken - New Stop Loss !");
+               NOTIFIER.notify(STEP_DB_dropOpenOrders, message, "Kraken - New Stop Loss !", 'magic');
            }else{
                STEP_DB_dropOpenOrders(err, data);
            }

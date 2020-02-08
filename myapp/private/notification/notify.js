@@ -1,7 +1,7 @@
 var Push = require( 'pushover-notifications' )
 
 module.exports = {
-    notify: function (callback, message, title, param_fw1) {
+    notify: function (callback, message, title, sound, param_fw1) {
         var p = new Push( {
             user: process.env['PUSHOVER_USER'],
             token: process.env['PUSHOVER_TOKEN'],
@@ -10,7 +10,7 @@ module.exports = {
         var msg = {
             message: message,	// required
             title: title,
-            sound: 'magic',
+            sound: sound,
             device: 'IphoneXSTonio',
             priority: 1
         }

@@ -101,7 +101,7 @@ module.exports = {
         function STEP_API_Notify_Change(err, data, change, iter){
             if(!err){
                 if(change){
-                    NOTIFIER.notify(STEP_finish, "Kraken - New Elements in Balance ! "+data.units+" "+data.currency+" - Price : "+data.price+" - EUR Value : "+data.eur_value, "Kraken - New Elements in Balance !", iter);
+                    NOTIFIER.notify(STEP_finish, "Kraken - New Elements in Balance ! "+data.units+" "+data.currency+" - Price : "+data.price+" - EUR Value : "+data.eur_value, "Kraken - New Elements in Balance !", 'bugle', iter);
                 }else{
                     STEP_finish(err, data, iter);
                 }
