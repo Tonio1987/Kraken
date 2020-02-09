@@ -214,3 +214,7 @@
 {"_id":{"$oid":"5e06610c2ce6924edc3419f4"},"order_type":"sell","order_type2":"stop-loss","algorithm":"Keltner","value":{"$numberDouble":"2.5"},"active":false}
 {"_id":{"$oid":"5e0661572ce6924edc3419f5"},"order_type":"sell","order_type2":"stop-loss","algorithm":"Keltner","value":{"$numberInt":"3"},"active":true}
 {"_id":{"$oid":"5e067740465f694edc947d15"},"order_type":"all","algorithm":"AutonomousRobot","active":true}
+{"_id":{"$oid":"5e3ec0fbb709834254842244"},"order_type":"sell","order_type2":"stop-loss","algorithm":"Keltner","value":{"$numberDouble":"3.5"},"active":false}
+{"_id":{"$oid":"5e3ec103b709834254842245"},"order_type":"sell","order_type2":"stop-loss","algorithm":"Keltner","value":{"$numberInt":"4"},"active":false}
+{"_id":{"$oid":"5e3ec133b709834254842246"},"order_type":"sell","order_type2":"stop-loss","algorithm":"Keltner","value":{"$numberDouble":"4.5"},"active":false}
+{"_id":{"$oid":"5e3ec13bb709834254842247"},"order_type":"sell","order_type2":"stop-loss","algorithm":"Keltner","value":{"$numberInt":"5"},"active":false}
