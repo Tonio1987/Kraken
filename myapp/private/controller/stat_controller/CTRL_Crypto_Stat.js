@@ -91,7 +91,7 @@ module.exports = {
 
         function STEP_ALGO_crypto_evol(err, Ticker_180, pair, Ticker_1, Ticker_15, Ticker_30, Ticker_60, iter){
             if(!err){
-                ALGO_crypto_evol.calculateCryptoEvol(STEP_DB_insert_stat, date, hour, timestamp, pair, Ticker_1, Ticker_15, Ticker_30, Ticker_60, Ticker_180, iter);
+                ALGO_crypto_evol.calculateCryptoEvol(STEP_DB_insert_stat, insert_date, insert_hour, timestamp, pair, Ticker_1, Ticker_15, Ticker_30, Ticker_60, Ticker_180, iter);
             }else{
                 STEP_finish(err, null, iter)
             }
