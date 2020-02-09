@@ -14,7 +14,6 @@ const CTRL_MMIndicators = require('./CTRL_MMIndicators');
 module.exports = {
     Launch_MM_Algorithms: function () {
         async.series([
-            STEP_CTRL_MMCalculation,
             STEP_CTRL_MMEvolCalculation,
             STEP_CTRL_MMCompareCalculation,
             STEP_CTRL_MMIndicators,
@@ -23,10 +22,6 @@ module.exports = {
             // Nothing to do here
         });
 
-        function STEP_CTRL_MMCalculation() {
-            logger.info('*** CONTROLLER *** ->  Processing MM ...  [ RUNNING ]');
-            CTRL_MMCalculation.CalculateMM(STEP_CTRL_MMEvolCalculation, STEP_finish);
-        }
         function STEP_CTRL_MMEvolCalculation() {
             logger.info('*** CONTROLLER *** ->  Processing MMEvolCalculation ...  [ RUNNING ]');
             CTRL_MMEvolCalculation.CalculateMMEvol(STEP_CTRL_MMCompareCalculation, STEP_finish);

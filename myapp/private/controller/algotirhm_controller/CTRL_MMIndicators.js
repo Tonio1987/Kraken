@@ -18,7 +18,6 @@ module.exports = {
         var timestamp = new Date().getTime();
         async.waterfall([
             STEP_DB_getAllPairs,
-            STEP_DB_getLastMM,
             STEP_DB_getLastMMC,
             STEP_ALGO_MMIndicators,
             STEP_DB_insertMMIndicator,
@@ -31,13 +30,13 @@ module.exports = {
             DB_AssetPairs.getAllPairs(STEP_DB_getLastMM);
         }
 
-        function STEP_DB_getLastMM(err, data) {
+        function STEP_DB_getLastMMC(err, data) {
             if(!err) {
                 for(let i=0; i<data.length; i++){
                     if (i+1 == data.length){
-                        DB_MM.getLastMM(STEP_DB_getLastMMC, data[i].name, true);
+                        DB_MMCompare.getLastMMC(STEP_ALGO_MMIndicators, data[i].name, true);
                     }else{
-                        DB_MM.getLastMM(STEP_DB_getLastMMC, data[i].name, false);
+                        DB_MMCompare.getLastMMC(STEP_ALGO_MMIndicators, data[i].name, false);
                     }
                 }
             }else{
@@ -45,18 +44,9 @@ module.exports = {
             }
         }
 
-        function STEP_DB_getLastMMC(err, MM, pair, iter) {
+        function STEP_ALGO_MMIndicators(err, MMC, pair, iter) {
             if(!err) {
-                DB_MMCompare.getLastMMC(STEP_ALGO_MMIndicators, pair, MM, iter);
-            }else{
-                STEP_finish(err);
-            }
-        }
-
-
-        function STEP_ALGO_MMIndicators(err, MMC, pair, MM, iter) {
-            if(!err) {
-                ALGO_MMIndicators.calculateMMIndicators(STEP_DB_insertMMIndicator, pair, MM, MMC, date, hour, timestamp, iter);
+                ALGO_MMIndicators.calculateMMIndicators(STEP_DB_insertMMIndicator, pair, MMC, date, hour, timestamp, iter);
             }else{
                 STEP_finish(err);
             }

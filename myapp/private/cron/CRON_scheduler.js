@@ -21,11 +21,14 @@ const CTRL_OHLC = require('../controller/kraken_controller/CTRL_OHLC');
 const CTRL_ATR = require('../controller/kraken_controller/CTRL_ATR');
 
 // ALGORITHM
-const CTRL_MM = require('../controller/algotirhm_controller/CTRL_MM_Main');
+const CTRL_MM = require('../controller/algotirhm_controller/CTRL_MMCalculation');
 const CTRL_KeltnerCalculation = require('../controller/algotirhm_controller/CTRL_KeltnerCalculation');
 
 // ROBOT
 const CTRL_StopLossOrders = require('../controller/robot_controller/CTRL_StopLossOrder');
+
+// STAT
+const CTRL_Crypto_Stat = require('../controller/stat_controller/CTRL_Crypto_Stat');
 
 // PURGE DATA
 const CTRL_PurgeBalance = require('../controller/purge_controller/CTRL_PurgeBalance');
@@ -65,6 +68,7 @@ let task_LoadATR1d = null;
 
 // ALGORITHM TASKS
 let task_MMCalculation = null;
+let task_MMAlgorithms = null;
 let task_KeltnerCalculation_1H = null;
 let task_KeltnerCalculation_1D = null;
 
@@ -73,6 +77,9 @@ let task_Robot_StopLossOrder = null;
 
 // PURGE TASKS
 let task_PurgeData = null;
+
+// STAT
+let task_stat_EvolCrypto = null;
 
 // HISTORY
 let task_History_TradeBalance = null;
@@ -223,12 +230,23 @@ Handler.init_task_LoadATR1D = function(cron_expression){
 // CALCULATE MOVING AVERAGES
 Handler.init_task_MMCalculation = function(cron_expression){
     task_MMCalculation = cron.schedule(cron_expression, () =>  {
-        logger.info('*** CRON SCHEDULER *** -> Load MM ALGORITHMS ... [ RUNNING ]');
-        CTRL_MM.Launch_MM_Algorithms();
+        logger.info('*** CRON SCHEDULER *** -> Load MM CALCULATION ... [ RUNNING ]');
+        CTRL_MM.CalculateMM();
     }, {
         scheduled: false
     });
 };
+
+// LAUNCH MM ALGORITHMS
+Handler.init_task_MMAlgorithms = function(cron_expression){
+    task_MMAlgorithms = cron.schedule(cron_expression, () =>  {
+        logger.info('*** CRON SCHEDULER *** -> Load MM ALGORITHMS ... [ RUNNING ]');
+        CTRL_MMAlgorithms.Launch_MM_Algorithms();
+    }, {
+        scheduled: false
+    });
+};
+
 
 // CALCULATE KELTNER 1H
 Handler.init_task_KeltnerCalculation1H = function(cron_expression){
@@ -255,6 +273,16 @@ Handler.init_task_Robot_StopLossOrder = function(cron_expression){
     task_Robot_StopLossOrder = cron.schedule(cron_expression, () =>  {
         logger.info('*** CRON SCHEDULER *** -> ROBOT STOP LOSS ... [ RUNNING ]');
         CTRL_StopLossOrders.generateStopLossOrders();
+    }, {
+        scheduled: false
+    });
+};
+
+// STAT
+Handler.init_task_stat_EvolCrypto = function(cron_expression){
+    task_stat_EvolCrypto = cron.schedule(cron_expression, () =>  {
+        logger.info('*** CRON SCHEDULER *** -> Calculate Crypto Statistics ... [ RUNNING ]');
+        CTRL_Crypto_Stat.calculateStats();
     }, {
         scheduled: false
     });
@@ -338,6 +366,9 @@ Handler.stop_task_LoadATR1D = function(){task_LoadATR1d.stop();};
 Handler.start_task_MMCalculation = function(){task_MMCalculation.start();};
 Handler.stop_task_MMCalculation = function(){task_MMCalculation.stop();};
 
+Handler.start_task_MMAlgorithms = function(){task_MMAlgorithms.start();};
+Handler.stop_task_MMAlgorithms = function(){task_MMAlgorithms.stop();};
+
 Handler.start_task_KeltnerCalculation1H = function(){task_KeltnerCalculation_1H.start();};
 Handler.stop_task_KeltnerCalculation1H = function(){task_KeltnerCalculation_1H.stop();};
 
@@ -351,6 +382,10 @@ Handler.stop_task_Robot_StopLossOrder = function(){task_Robot_StopLossOrder.stop
 // PURGE DATA
 Handler.start_task_PurgeData = function(){task_PurgeData.start();};
 Handler.stop_task_PurgeData = function(){task_PurgeData.stop();};
+
+// STAT
+Handler.start_task_stat_EvolCrypto = function(){task_stat_EvolCrypto.start();};
+Handler.stop_task_stat_EvolCrypto = function(){task_stat_EvolCrypto.stop();};
 
 // HISTORY
 Handler.start_task_History_TradeBalance = function(){task_History_TradeBalance.start();};
