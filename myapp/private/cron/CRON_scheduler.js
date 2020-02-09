@@ -22,6 +22,7 @@ const CTRL_ATR = require('../controller/kraken_controller/CTRL_ATR');
 
 // ALGORITHM
 const CTRL_MM = require('../controller/algotirhm_controller/CTRL_MMCalculation');
+const CTRL_MMAlgorithms = require('../controller/algotirhm_controller/CTRL_MM_Algorithms');
 const CTRL_KeltnerCalculation = require('../controller/algotirhm_controller/CTRL_KeltnerCalculation');
 
 // ROBOT
