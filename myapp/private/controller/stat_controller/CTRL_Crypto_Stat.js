@@ -50,9 +50,9 @@ module.exports = {
             if(!err){
                 for(let i=0; i<allPairs.length; i++){
                     if (i+1 == allPairs.length){
-                        DB_Ticker.getTicker(STEP_API_loadTicker_15, allPairs[i].pair, ts_1Min_inf, ts_1Min_sup, true)
+                        DB_Ticker.getTicker(STEP_DB_loadTicker_15, allPairs[i].pair, ts_1Min_inf, ts_1Min_sup, true)
                     }else{
-                        DB_Ticker.getTicker(STEP_API_loadTicker_15, allPairs[i].pair, ts_1Min_inf, ts_1Min_sup, false)
+                        DB_Ticker.getTicker(STEP_DB_loadTicker_15, allPairs[i].pair, ts_1Min_inf, ts_1Min_sup, false)
                     }
                 }
             }else{
@@ -60,28 +60,28 @@ module.exports = {
             }
         }
 
-        function STEP_API_loadTicker_15(err, Ticker_1, pair, iter) {
+        function STEP_DB_loadTicker_15(err, Ticker_1, pair, iter) {
             if (!err) {
-                DB_Ticker.getTicker(STEP_API_loadTicker_30, pair, ts_15Min_inf, ts_15Min_sup, Ticker_1, iter)
+                DB_Ticker.getTicker(STEP_DB_loadTicker_30, pair, ts_15Min_inf, ts_15Min_sup, Ticker_1, iter)
             }else{
                 STEP_finish(err, null, iter)
             }
         }
-        function STEP_API_loadTicker_30(err, Ticker_15, pair, Ticker_1, iter) {
+        function STEP_DB_loadTicker_30(err, Ticker_15, pair, Ticker_1, iter) {
             if(!err){
-                DB_Ticker.getTicker(STEP_API_loadTicker_60, pair, ts_30Min_inf, ts_30Min_sup, Ticker_1, Ticker_15, iter)
+                DB_Ticker.getTicker(STEP_DB_loadTicker_60, pair, ts_30Min_inf, ts_30Min_sup, Ticker_1, Ticker_15, iter)
             }else{
                 STEP_finish(err, null, iter)
             }
         }
-        function STEP_API_loadTicker_60(err, Ticker_30, pair, Ticker_1, Ticker_15, iter) {
+        function STEP_DB_loadTicker_60(err, Ticker_30, pair, Ticker_1, Ticker_15, iter) {
             if(!err){
-                DB_Ticker.getTicker(STEP_API_loadTicker_180, pair, ts_60Min_inf, ts_60Min_sup, Ticker_1, Ticker_15, Ticker_30, iter)
+                DB_Ticker.getTicker(STEP_DB_loadTicker_180, pair, ts_60Min_inf, ts_60Min_sup, Ticker_1, Ticker_15, Ticker_30, iter)
             }else{
                 STEP_finish(err, null, iter)
             }
         }
-        function STEP_API_loadTicker_180(err, Ticker_60, pair, Ticker_1, Ticker_15, Ticker_30, iter) {
+        function STEP_DB_loadTicker_180(err, Ticker_60, pair, Ticker_1, Ticker_15, Ticker_30, iter) {
             if(!err){
                 DB_Ticker.getTicker(STEP_ALGO_crypto_evol, pair, ts_180Min_inf, ts_180Min_sup, Ticker_1, Ticker_15, Ticker_30, Ticker_60, iter)
             }else{
