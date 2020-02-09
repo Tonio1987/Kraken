@@ -60,7 +60,7 @@
             <br />
             <h4>Mobile Averages Graph for pair {{p}}</h4>
             <div class="card">
-                <div class="card-body">
+                <div id="graphZone" class="card-body">
                     <canvas id="MobileAverageLineChart"></canvas>
                 </div>
             </div>
@@ -635,6 +635,9 @@
             return Fact.MMGraph;
         }, function(){
             if(Fact.MMGraph.length > 0){
+                var elmnt = document.getElementById("MobileAverageLineChart");
+                elmnt.remove();
+
                 $scope.p = Fact.MMGraph[0].pair;
                 let MMData = Fact.MMGraph;
                 let arrayOfMM5 = [];
@@ -722,7 +725,14 @@
                     }
                 };
 
-                myLineChart = new Chart(document.getElementById("MobileAverageLineChart"), {
+                var element = document.getElementById("graphZone");
+                var canv = document.createElement('canvas');
+                canv.id = 'MobileAverageLineChart';
+                canv.width = '100';
+                canv.height = '50';
+                element.appendChild(canv);
+
+                let myLineChart = new Chart(document.getElementById("MobileAverageLineChart"), {
                     type: 'line',
                     data: graphData,
                     options: graphOptions
