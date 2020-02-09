@@ -43,7 +43,7 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_AssetPairs.getEurPair(STEP_API_loadTicker);
+            DB_AssetPairs.getEurPair(STEP_DB_loadTicker_1);
         }
 
         function STEP_DB_loadTicker_1(err, allPairs) {
