@@ -489,7 +489,11 @@
                                             let evolution = 0;
                                             let c = '';
                                             if(Balance[elem].currency.substr(0,1) === 'X'){
-                                                c = Balance[elem].currency.substr(1);
+                                                if(Balance[elem].currency === 'XTZ'){
+                                                    c = Balance[elem].currency;
+                                                }else{
+                                                    c = Balance[elem].currency.substr(1);
+                                                }
                                             }else{
                                                 c = Balance[elem].currency;
                                             }
@@ -526,7 +530,11 @@
                                             let evolution = 0;
                                             let c = '';
                                             if(Balance[elem].currency.substr(0,1) === 'X'){
-                                                c = Balance[elem].currency.substr(1);
+                                                if(Balance[elem].currency === 'XTZ'){
+                                                    c = Balance[elem].currency;
+                                                }else{
+                                                    c = Balance[elem].currency.substr(1);
+                                                }
                                             }else{
                                                 c = Balance[elem].currency;
                                             }
