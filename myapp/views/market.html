@@ -129,7 +129,7 @@
                         .catch(function(response) {
                             $scope.cryptoEvolIndic = 'Erreur';
                         });
-                },60000);
+                },900000);
             });
 
             // MARKET Controller
@@ -148,7 +148,7 @@
                         .catch(function(response) {
                             $scope.tickers = 'Erreur';
                         });
-                },60000);
+                },900000);
 
                 $scope.loadIndicators = function(pair) {
                     $scope.pair = pair;
@@ -257,7 +257,7 @@
 
                     // init
                     if($scope.remainingTimeBeforeRefresh === 0 || !$scope.remainingTimeBeforeRefresh){
-                        $scope.remainingTimeBeforeRefresh = 60;
+                        $scope.remainingTimeBeforeRefresh = 900;
                     }
                     $scope.remainingTimeBeforeRefresh--;
 
