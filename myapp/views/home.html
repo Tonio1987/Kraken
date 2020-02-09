@@ -254,6 +254,7 @@
                                     radius: 0
                                 }
                             } };
+
                         var ctx = document.getElementById("TradeBalanceLineChart").getContext("2d");
                         var myLineChart = new Chart(ctx, {
                             type: 'line',
@@ -273,7 +274,6 @@
                             $scope.respData = response.data;
 
                             let arrayOfTradeBalances = [];
-                            let arrayOStopLoss = [];
                             let datetimeOfTradeBalances = [];
 
                             let zoom = $scope.zoom;
@@ -284,7 +284,6 @@
                             }
 
                             for(let i=0; i<zoom; i++){
-                                arrayOStopLoss.unshift(Fact.SLossValue);
                                 arrayOfTradeBalances.unshift(resp[i].eur_balance);
                                 datetimeOfTradeBalances.unshift(resp[i].insert_date+' '+resp[i].insert_hour);
                             }
@@ -364,7 +363,6 @@
                                 data: data,
                                 options: options
                             });
-
                         });
                 },60000);
 
@@ -375,7 +373,6 @@
                     $scope.zoom = zoomValue;
 
                     let arrayOfTradeBalances = [];
-                    let arrayOStopLoss = [];
                     let datetimeOfTradeBalances = [];
                     let resp = $scope.respData;
                     let zoom = zoomValue;
@@ -387,7 +384,6 @@
 
                     for(let i=0; i<zoom; i++){
                         arrayOfTradeBalances.unshift(resp[i].eur_balance);
-                        arrayOStopLoss.unshift(Fact.SLossValue);
                         datetimeOfTradeBalances.unshift(resp[i].insert_date+' '+resp[i].insert_hour);
                     }
 
