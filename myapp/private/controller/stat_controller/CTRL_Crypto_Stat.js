@@ -17,16 +17,17 @@ module.exports = {
         let insert_date = moment().format('L');
         let insert_hour = moment().format('LTS');
         let timestamp = new Date().getTime();
-        let ts_1Min_inf = moment(new Date()).add(-2, 'minute').valueOf();
-        let ts_1Min_sup = moment(new Date()).add(-1, 'minute').valueOf();
-        let ts_15Min_inf = moment(new Date()).add(-16, 'minute').valueOf();
-        let ts_15Min_sup = moment(new Date()).add(-15, 'minute').valueOf();
-        let ts_30Min_inf = moment(new Date()).add(-31, 'minute').valueOf();
-        let ts_30Min_sup = moment(new Date()).add(-30, 'minute').valueOf();
-        let ts_60Min_inf = moment(new Date()).add(-61, 'minute').valueOf();
-        let ts_60Min_sup = moment(new Date()).add(-60, 'minute').valueOf();
-        let ts_180Min_inf = moment(new Date()).add(-181, 'minute').valueOf();
-        let ts_180Min_sup = moment(new Date()).add(-180, 'minute').valueOf();
+        let now = moment();
+        let ts_1Min_inf = moment(now).add(-3, 'minute').valueOf();
+        let ts_1Min_sup = moment(now).add(-1, 'minute').valueOf();
+        let ts_15Min_inf = moment(now).add(-17, 'minute').valueOf();
+        let ts_15Min_sup = moment(now).add(-15, 'minute').valueOf();
+        let ts_30Min_inf = moment(now).add(-32, 'minute').valueOf();
+        let ts_30Min_sup = moment(now).add(-30, 'minute').valueOf();
+        let ts_60Min_inf = moment(now).add(-62, 'minute').valueOf();
+        let ts_60Min_sup = moment(now).add(-60, 'minute').valueOf();
+        let ts_180Min_inf = moment(now).add(-182, 'minute').valueOf();
+        let ts_180Min_sup = moment(now).add(-180, 'minute').valueOf();
 
         async.waterfall([
             STEP_DB_getAllPairs,
@@ -50,9 +51,9 @@ module.exports = {
             if(!err){
                 for(let i=0; i<allPairs.length; i++){
                     if (i+1 == allPairs.length){
-                        DB_Ticker.getTicker(STEP_DB_loadTicker_15, allPairs[i].pair, ts_1Min_inf, ts_1Min_sup, true)
+                        DB_Ticker.getTicker(STEP_DB_loadTicker_15, allPairs[i].name, ts_1Min_inf, ts_1Min_sup, true)
                     }else{
-                        DB_Ticker.getTicker(STEP_DB_loadTicker_15, allPairs[i].pair, ts_1Min_inf, ts_1Min_sup, false)
+                        DB_Ticker.getTicker(STEP_DB_loadTicker_15, allPairs[i].name, ts_1Min_inf, ts_1Min_sup, false)
                     }
                 }
             }else{

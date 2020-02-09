@@ -44,6 +44,34 @@
                     </div>
                 </div>
             </div>
+            <div class="row justify-content-md-center">
+                <div class="col-6">
+                    <div ng-controller="Ctrl_CryptoEvol" class="text-center">
+                        <br />
+                        <h4>Crypto Evolution Indicators</h4>
+                        <table class="table table-striped table-dark table-hover table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">Pair</th>
+                                <th scope="col">Evol 15M</th>
+                                <th scope="col">Evol 30M</th>
+                                <th scope="col">Evol 60M</th>
+                                <th scope="col">Evol 3H</th>
+                            </tr>
+                            </thead>
+                            <tbody ng-repeat="indic in cryptoEvolIndic | orderBy:'-evol_180'">
+                            <tr class="table-row">
+                                <td>{{indic.pair}}</td>
+                                <td ng-class="{'text-red': indic.evol_15 < 0, 'text-green': indic.evol_15 >= 0}">{{indic.evol_15}} &percnt;</td>
+                                <td ng-class="{'text-red': indic.evol_30 < 0, 'text-green': indic.evol_30 >= 0}">{{indic.evol_30}} &percnt;</td>
+                                <td ng-class="{'text-red': indic.evol_60 < 0, 'text-green': indic.evol_60 >= 0}">{{indic.evol_60}} &percnt;</td>
+                                <td ng-class="{'text-red': indic.evol_180 < 0, 'text-green': indic.evol_180 >= 0}">{{indic.evol_180}} &percnt;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div class="row justify-content-md-center" ng-controller="Ctrl_Market">
                 <div class="col-7">
                     <br />
@@ -84,6 +112,25 @@
         </div>
         <script>
             var app = angular.module('myApp', []);
+
+            // CryptoEvol Controller
+            app.controller('Ctrl_CryptoEvol', function($scope, $http, $interval) {
+                $http.get("market_CryptoEvol")
+                    .then(function(response) {
+                        $scope.cryptoEvolIndic = response.data;
+                    }).catch(function(response) {
+                    $scope.cryptoEvolIndic = 'Erreur';
+                });
+                $interval(function() {
+                    $http.get("market_CryptoEvol")
+                        .then(function(response) {
+                            $scope.cryptoEvolIndic = response.data;
+                        })
+                        .catch(function(response) {
+                            $scope.cryptoEvolIndic = 'Erreur';
+                        });
+                },60000);
+            });
 
             // MARKET Controller
             app.controller('Ctrl_Market', function($scope, $http, $interval) {

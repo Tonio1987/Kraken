@@ -27,7 +27,7 @@ module.exports = {
         });
 
         function STEP_DB_getAllPairs() {
-            DB_AssetPairs.getAllPairs(STEP_DB_getLastMM);
+            DB_AssetPairs.getAllPairs(STEP_DB_getLastMMC);
         }
 
         function STEP_DB_getLastMMC(err, data) {

@@ -49,10 +49,12 @@ app.use('/home_last5ClosedOrders', last5ClosedOrdersRouter);
 
 // MARKET
 var marketInfoRouter = require('./routes/rest_api/market/MarketInfo');
-var marketIndIcatorsEvolution = require('./routes/rest_api/market/IcatorsEvolution');
+var marketIndIcatorsEvolutionRouter = require('./routes/rest_api/market/IcatorsEvolution');
+var cryptoEvolRouter = require('./routes/rest_api/market/CryptoEvol');
 
 app.use('/market_marketInfo', marketInfoRouter);
-app.use('/market_Indicators', marketIndIcatorsEvolution);
+app.use('/market_Indicators', marketIndIcatorsEvolutionRouter);
+app.use('/market_CryptoEvol', cryptoEvolRouter);
 
 // ANALYSE
 var pairsListRouter = require('./routes/rest_api/analyse/PairsList');

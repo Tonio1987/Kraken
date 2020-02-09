@@ -5,10 +5,10 @@ module.exports = {
     calculateCryptoEvol: function(callback, date, hour, timestamp, pair, Ticker_1, Ticker_15, Ticker_30, Ticker_60, Ticker_180, param_fw1) {
         new Promise(function (resolve, reject) {
 
-            let evol_15 = ((Ticker_1.ask_price - Ticker_15.ask_price) /  Ticker_15.ask_price)*100;
-            let evol_30 = ((Ticker_1.ask_price - Ticker_30.ask_price) /  Ticker_30.ask_price)*100;
-            let evol_60 = ((Ticker_1.ask_price - Ticker_60.ask_price) /  Ticker_60.ask_price)*100;
-            let evol_180 = ((Ticker_1.ask_price - Ticker_180.ask_price) /  Ticker_180.ask_price)*100;
+            let evol_15 = (((Ticker_1[0].ask_price - Ticker_15[0].ask_price) / Ticker_15[0].ask_price)*100).toFixed(2);
+            let evol_30 = (((Ticker_1[0].ask_price - Ticker_30[0].ask_price) / Ticker_30[0].ask_price)*100).toFixed(2);
+            let evol_60 = (((Ticker_1[0].ask_price - Ticker_60[0].ask_price) / Ticker_60[0].ask_price)*100).toFixed(2);
+            let evol_180 = (((Ticker_1[0].ask_price - Ticker_180[0].ask_price) / Ticker_180[0].ask_price)*100).toFixed(2);
 
             let cryptoEvol = {
                 insert_date: date,

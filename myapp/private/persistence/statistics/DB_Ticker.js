@@ -11,7 +11,7 @@ module.exports = {
                     reject(err);
                 } else{
                     var dbo = db.db(process.env.MONGO_SERVER_DATABASE);
-                    dbo.collection("Ticker").find({pair: pair, insert_timestamp: {$gte: inf}, insert_timestamp: {$lt: sup}}).toArray(function(err, result) {
+                    dbo.collection("Ticker").find({pair: pair, insert_timestamp: {$gte: inf, $lt: sup}}).toArray(function(err, result) {
                         if (err){
                             reject(err);
                         }
