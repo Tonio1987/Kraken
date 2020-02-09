@@ -18,5 +18,5 @@
 {"_id":{"$oid":"5e11f3a6dad9120a4cf65c88"},"name":"task_KeltnerCalculation1D","cron_expression":"0 4 0 */1 * *","active":true}
 {"_id":{"$oid":"5e1c897e41d2f73a1c5f1282"},"name":"task_LoadAssetPairs","cron_expression":"55 */1 * * * *","active":false}
 {"_id":{"$oid":"5e30a6fe9b168ed2c410b046"},"name":"task_History_TradeBalance","cron_expression":"0 30 6 */1 * *","active":true}
-{"_id":{"$oid":"5e40112ade4c2843c8fd84e5"},"name":"task_stat_EvolCrypto","cron_expression":"0 30 */1 * * *","active":true}
-{"_id":{"$oid":"5e4019e8de4c2843c8fd84e6"},"name":"task_MMAlgorithms","cron_expression":"40 30 */1 * * *","active":true}
+{"_id":{"$oid":"5e40112ade4c2843c8fd84e5"},"name":"task_stat_EvolCrypto","cron_expression":"0 */15 * * * *","active":true}
+{"_id":{"$oid":"5e4019e8de4c2843c8fd84e6"},"name":"task_MMAlgorithms","cron_expression":"40 */30 * * * *","active":true}
